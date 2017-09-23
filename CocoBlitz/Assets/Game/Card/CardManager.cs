@@ -26,7 +26,7 @@ public class CardManager  {
 
     public static Dictionary<ColorEnum, Color32> ColorColorMap = new Dictionary<ColorEnum, Color32>
         {
-            { ColorEnum.Brown, new Color32( 43, 29, 14, 255)},
+            { ColorEnum.Brown, new Color32( 160, 109, 41, 255)},
             { ColorEnum.Yellow, new Color32(255,250,205, 255) },
             { ColorEnum.Green, new Color32(152,251,152, 255) },
             { ColorEnum.Red, new Color32(255,0,0, 255) },
