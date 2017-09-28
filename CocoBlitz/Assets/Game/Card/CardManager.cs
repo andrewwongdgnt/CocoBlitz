@@ -27,10 +27,10 @@ public class CardManager  {
     public static Dictionary<ColorEnum, Color32> ColorColorMap = new Dictionary<ColorEnum, Color32>
         {
             { ColorEnum.Brown, new Color32( 160, 109, 41, 255)},
-            { ColorEnum.Yellow, new Color32(255,250,205, 255) },
-            { ColorEnum.Green, new Color32(152,251,152, 255) },
-            { ColorEnum.Red, new Color32(255,0,0, 255) },
-            { ColorEnum.Blue, new Color32(0,0,255, 255) },
+            { ColorEnum.Yellow, new Color32(255,250,40, 255) },
+            { ColorEnum.Green, new Color32(85,184,83, 255) },
+            { ColorEnum.Red, new Color32(222,0,0, 255) },
+            { ColorEnum.Blue, new Color32(15,167,217, 255) },
         };
 
     public static HashSet<EntityEnum> Entities_2Card = new HashSet<EntityEnum>
