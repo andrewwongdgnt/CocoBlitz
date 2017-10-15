@@ -4,20 +4,31 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameModel : MonoBehaviour {
 
     public Card[] cards_2Entities;
     public Text pointsScoreText;
     public Text penaltiesScoreText;
+    public Text timerText;
 
     private int points_score;
     private int penalties_score;
     private CardManager.EntityEnum? correctEntity = null;
     private GameObject[] cardGameObjects;
+
+    private float timer=0f;
+    private int pointsToReach = 0;
+
+    private bool gameOver;
+
     // Use this for initialization
     void Start () {
         cardGameObjects = GameObject.FindGameObjectsWithTag("Card");
+        timer = GameManager.currentGameMode == GameManager.GameModeEnum.RackUpThePoints ? GameManager.timer : 0f;
+        pointsToReach = 0;
+        gameOver = false;
         Begin();
     }
 
@@ -91,6 +102,8 @@ public class GameModel : MonoBehaviour {
 
     public void Guess(CardManager.EntityEnum entity)
     {
+        if (gameOver)
+            SceneManager.LoadScene("Game");
         Debug.Log("your guess: " + entity);
         Debug.Log("correct entity: " + correctEntity);
 
@@ -104,11 +117,57 @@ public class GameModel : MonoBehaviour {
             penalties_score++;
             penaltiesScoreText.text = penalties_score.ToString();
         }
-        Begin();
+        pointsToReach = points_score - penalties_score;
+        CheckForGameOver();
+        if (!gameOver)
+            Begin();
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    private void CheckForGameOver()
+    {
+        if (GameManager.currentGameMode == GameManager.GameModeEnum.FastestTime)
+        {
+            if (pointsToReach >= GameManager.pointsToReach)
+                gameOver = true;
+        }
+        else if (GameManager.currentGameMode == GameManager.GameModeEnum.RackUpThePoints)
+        {
+            if (timer <= 0)
+                gameOver = true;
+        }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+        if (GameManager.currentGameMode == GameManager.GameModeEnum.FastestTime)
+        {
+            timer += Time.deltaTime;
+        }
+        else if (GameManager.currentGameMode == GameManager.GameModeEnum.RackUpThePoints)
+        {
+            timer -= Time.deltaTime;
+        }
+
+        CheckForGameOver();
+        if (!gameOver) { 
+            timerText.text = TransformTime(timer);
+            timerText.color = new Color32(0, 0, 0, 255);
+        }
+        else {
+            timerText.color = new Color32(0, 255, 0, 255);
+        }
+    }
+
+    private string TransformTime(float timer)
+    {
+        if (timer < 0)
+            return TransformTime(0);
+        int minutes = Mathf.FloorToInt(timer / 60F);
+        int seconds = Mathf.FloorToInt(timer - minutes * 60);
+        string niceTime = string.Format("{0:0}:{1:00}", minutes, seconds);
+
+        return niceTime;
+    }
 }
