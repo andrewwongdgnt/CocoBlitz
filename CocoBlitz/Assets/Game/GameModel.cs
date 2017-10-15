@@ -26,15 +26,25 @@ public class GameModel : MonoBehaviour {
     // Use this for initialization
     void Start () {
         cardGameObjects = GameObject.FindGameObjectsWithTag("Card");
-        timer = GameManager.currentGameMode == GameManager.GameModeEnum.RackUpThePoints ? GameManager.timer : 0f;
-        pointsToReach = 0;
-        gameOver = false;
         Begin();
     }
 
-    public void Begin()
+    private void Begin()
     {
-        Debug.Log("Game Begin ");
+        Debug.Log("Game Begins");
+        timer = GameManager.currentGameMode == GameManager.GameModeEnum.RackUpThePoints ? GameManager.timer : 0f;
+        pointsToReach = 0;
+
+        points_score = 0;
+        penalties_score = 0;
+        UpdateScoresText();
+        gameOver = false;
+        PickCard();
+    }
+
+    private void PickCard()
+    {
+        Debug.Log("Picking card");
         Card card = cards_2Entities[UnityEngine.Random.Range(0, cards_2Entities.Length)];
         
         Array.ForEach(cardGameObjects, ent => ent.SetActive(ent.GetComponent<Card>() == card));
@@ -103,24 +113,32 @@ public class GameModel : MonoBehaviour {
     public void Guess(CardManager.EntityEnum entity)
     {
         if (gameOver)
-            SceneManager.LoadScene("Game");
+        {
+            Begin();
+            return;
+        }
         Debug.Log("your guess: " + entity);
         Debug.Log("correct entity: " + correctEntity);
 
         if (entity == correctEntity)
         {
             points_score++;
-            pointsScoreText.text = points_score.ToString();
         }
         else
         {
             penalties_score++;
-            penaltiesScoreText.text = penalties_score.ToString();
         }
+        UpdateScoresText();
         pointsToReach = points_score - penalties_score;
         CheckForGameOver();
         if (!gameOver)
-            Begin();
+            PickCard();
+    }
+
+    private void UpdateScoresText()
+    {
+        pointsScoreText.text = points_score.ToString();
+        penaltiesScoreText.text = penalties_score.ToString();
     }
 
     private void CheckForGameOver()
@@ -166,7 +184,8 @@ public class GameModel : MonoBehaviour {
             return TransformTime(0);
         int minutes = Mathf.FloorToInt(timer / 60F);
         int seconds = Mathf.FloorToInt(timer - minutes * 60);
-        string niceTime = string.Format("{0:0}:{1:00}", minutes, seconds);
+        int milliseconds = Mathf.FloorToInt(timer*10)- Mathf.FloorToInt(timer )*10;
+        string niceTime = string.Format("{0:0}:{1:00}.{2:0}", minutes, seconds, milliseconds);
 
         return niceTime;
     }

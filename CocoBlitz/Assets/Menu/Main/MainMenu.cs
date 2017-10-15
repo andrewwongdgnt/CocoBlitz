@@ -7,6 +7,7 @@ public class MainMenu : MonoBehaviour {
     
 	public void PlayGame(GameManager.GameModeEnum gameMode)
     {
+        GameManager.currentGameMode = gameMode;
         SceneManager.LoadScene("Game");
     }
 }
