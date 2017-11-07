@@ -23,15 +23,20 @@ public class GameModel : MonoBehaviour {
 
     private bool gameOver;
 
+    private Statistics statsGatherer;
+
+
     // Use this for initialization
     void Start () {
         cardGameObjects = GameObject.FindGameObjectsWithTag("Card");
+        statsGatherer = new Statistics();
         Begin();
     }
 
     private void Begin()
     {
         Debug.Log("Game Begins");
+        statsGatherer.Restart();
         timer = GameManager.currentGameMode == GameManager.GameModeEnum.RackUpThePoints ? GameManager.timer : 0f;
         pointsToReach = 0;
 
@@ -107,18 +112,20 @@ public class GameModel : MonoBehaviour {
         if (correctEntity == null)
             correctEntity = allEntities.Except(incorrectEntities).First();
 
-        
+
+        statsGatherer.AddPickedCard(Time.time, card, entityToColor, useCorrectColor);
     }
 
     public void Guess(CardManager.EntityEnum entity)
     {
         if (gameOver)
         {
+            Debug.Log(statsGatherer.GetStatsForPrint());
             Begin();
             return;
         }
-        Debug.Log("your guess: " + entity);
-        Debug.Log("correct entity: " + correctEntity);
+
+        statsGatherer.AddGuess(Time.time, correctEntity.Value, entity);
 
         if (entity == correctEntity)
         {
