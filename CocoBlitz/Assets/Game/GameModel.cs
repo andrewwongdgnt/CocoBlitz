@@ -12,6 +12,7 @@ public class GameModel : MonoBehaviour {
     public Text pointsScoreText;
     public Text penaltiesScoreText;
     public Text timerText;
+    public PauseMenu pauseMenu;
 
     private int points_score;
     private int penalties_score;
@@ -22,21 +23,25 @@ public class GameModel : MonoBehaviour {
     private int pointsToReach = 0;
 
     private bool gameOver;
+    private bool showingGameOverMenu;
 
-    private Statistics statsGatherer;
+    private Statistics stats;
+
+
 
 
     // Use this for initialization
     void Start () {
         cardGameObjects = GameObject.FindGameObjectsWithTag("Card");
-        statsGatherer = new Statistics();
+        stats = new Statistics();
         Begin();
     }
 
     private void Begin()
     {
         Debug.Log("Game Begins");
-        statsGatherer.Restart();
+        showingGameOverMenu = false;
+        stats.Restart();
         timer = GameManager.currentGameMode == GameManager.GameModeEnum.RackUpThePoints ? GameManager.timer : 0f;
         pointsToReach = 0;
 
@@ -44,10 +49,10 @@ public class GameModel : MonoBehaviour {
         penalties_score = 0;
         UpdateScoresText();
         gameOver = false;
-        PickCard();
+        GenerateCard();
     }
 
-    private void PickCard()
+    private void GenerateCard()
     {
         Debug.Log("Picking card");
         Card card = cards_2Entities[UnityEngine.Random.Range(0, cards_2Entities.Length)];
@@ -113,19 +118,18 @@ public class GameModel : MonoBehaviour {
             correctEntity = allEntities.Except(incorrectEntities).First();
 
 
-        statsGatherer.AddPickedCard(Time.time, card, entityToColor, useCorrectColor);
+        stats.AddPickedCard(Time.time, card, entityToColor, useCorrectColor);
     }
 
     public void Guess(CardManager.EntityEnum entity)
     {
         if (gameOver)
         {
-            Debug.Log(statsGatherer.GetStatsForPrint());
-            Begin();
+            
             return;
         }
 
-        statsGatherer.AddGuess(Time.time, correctEntity.Value, entity);
+        stats.AddGuess(Time.time, correctEntity.Value, entity);
 
         if (entity == correctEntity)
         {
@@ -139,7 +143,7 @@ public class GameModel : MonoBehaviour {
         pointsToReach = points_score - penalties_score;
         CheckForGameOver();
         if (!gameOver)
-            PickCard();
+            GenerateCard();
     }
 
     private void UpdateScoresText()
@@ -176,13 +180,28 @@ public class GameModel : MonoBehaviour {
         }
 
         CheckForGameOver();
-        if (!gameOver) { 
+        if (!gameOver)
+        {
             timerText.text = TransformTime(timer);
             timerText.color = new Color32(0, 0, 0, 255);
         }
-        else {
+        else
+        {
             timerText.color = new Color32(0, 255, 0, 255);
         }
+        if (gameOver && !showingGameOverMenu)
+        {
+            showingGameOverMenu = true;
+            ShowGameOverMenu();
+        }
+
+       
+    }
+
+    private void ShowGameOverMenu()
+    {
+
+        pauseMenu.GameOver(stats);
     }
 
     private string TransformTime(float timer)
@@ -196,4 +215,6 @@ public class GameModel : MonoBehaviour {
 
         return niceTime;
     }
+
+
 }
