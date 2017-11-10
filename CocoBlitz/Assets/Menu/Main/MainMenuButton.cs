@@ -8,7 +8,7 @@ public class MainMenuButton : MonoBehaviour {
     public MainMenu mainMenu;
     public void Play()
     {
-        mainMenu.PlayGame(gameMode);
+        mainMenu.SelectGameMode(gameMode);
     }
 
 }
