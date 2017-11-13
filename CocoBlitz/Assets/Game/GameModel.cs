@@ -9,48 +9,59 @@ using UnityEngine.SceneManagement;
 public class GameModel : MonoBehaviour {
 
     public Card[] cards_2Entities;
-    public Text pointsScoreText;
-    public Text penaltiesScoreText;
+    public Text playerScoreText;
+    public Text cpu1ScoreText;
+    public Text cpu2ScoreText;
+    public Text cpu3ScoreText;
     public Text timerText;
     public PauseMenu pauseMenu;
 
-    private int points_score;
-    private int penalties_score;
+    private Player player;
     private CardManager.EntityEnum? correctEntity = null;
     private GameObject[] cardGameObjects;
 
-    private float timer=0f;
-    private int pointsToReach = 0;
+    private float timer;
 
     private bool gameOver;
     private bool showingGameOverMenu;
 
-    private Statistics stats;
 
-
-
+    private List<Coroutine> cpuCoroutines = new List<Coroutine>();
 
     // Use this for initialization
     void Start () {
         cardGameObjects = GameObject.FindGameObjectsWithTag("Card");
-        stats = new Statistics();
+        player = new Player();
+        GameManager.cpuList.Add(Cpu.ANDREW);
+        GameManager.cpuList.Add(Cpu.KELSEY);       
+
         Begin();
+
+
     }
 
     private void Begin()
     {
         Debug.Log("Game Begins");
         showingGameOverMenu = false;
-        stats.Restart();
+        cpuCoroutines.Clear();
         timer = GameManager.currentGameMode == GameManager.GameModeEnum.RackUpThePoints ? GameManager.timer : 0f;
-        pointsToReach = 0;
-
-        points_score = 0;
-        penalties_score = 0;
+        player.Stats.Restart();
+        player.FinalScore = 0;
+        player.Points = 0;
+        player.Penalties = 0;
+        GameManager.cpuList.ForEach(cpu =>
+        {
+            cpu.Stats.Restart();
+            cpu.FinalScore = 0;
+            cpu.Points = 0;
+            cpu.Penalties = 0;
+        });
         UpdateScoresText();
         gameOver = false;
         GenerateCard();
     }
+    
 
     private void GenerateCard()
     {
@@ -117,46 +128,101 @@ public class GameModel : MonoBehaviour {
         if (correctEntity == null)
             correctEntity = allEntities.Except(incorrectEntities).First();
 
+        player.Guessed = false;
+        GameManager.cpuList.ForEach(cpu =>
+        {
+            cpu.Guessed = false;
+        });
 
-        stats.AddPickedCard(Time.time, card, entityToColor, useCorrectColor);
+        float time = Time.time;
+
+        player.Stats.AddPickedCard(time, card, entityToColor, useCorrectColor);
+        GameManager.cpuList.ForEach(cpu =>
+        {
+            cpu.Stats.AddPickedCard(time, card, entityToColor, useCorrectColor);
+        });
+
+        GameManager.cpuList.ForEach(cpu =>
+        {
+            cpuCoroutines.Add(StartCoroutine(CpuGuess(cpu, useCorrectColor)));
+        });
     }
 
-    public void Guess(CardManager.EntityEnum entity)
+    IEnumerator CpuGuess(Cpu cpu, bool useCorrectColor)
     {
-        if (gameOver)
-        {
-            
-            return;
-        }
+        float delayBeforeAnswer = UnityEngine.Random.Range(cpu.DelayLowerRangeBeforeAnswer, cpu.DelayUpperRangeBeforeAnswer);
 
-        stats.AddGuess(Time.time, correctEntity.Value, entity);
+        yield return new WaitForSeconds(delayBeforeAnswer);
 
-        if (entity == correctEntity)
+        CardManager.EntityEnum inCorrectEntity = correctEntity.Value == CardManager.EntityEnum.Banana ? CardManager.EntityEnum.Coco : CardManager.EntityEnum.Banana;
+
+        float randomPercent = UnityEngine.Random.Range(0, 100);
+        CardManager.EntityEnum entityToGuess;
+        if (useCorrectColor)
         {
-            points_score++;
+            if (cpu.ChanceOfCorrectForCorrectlyColored >= randomPercent)
+                entityToGuess = correctEntity.Value;
+            else
+                entityToGuess = inCorrectEntity;
         }
         else
         {
-            penalties_score++;
+            if (cpu.ChanceOfCorrectForIncorrectlyColored >= randomPercent)
+                entityToGuess = correctEntity.Value;
+            else
+                entityToGuess = inCorrectEntity;
         }
+        Guess(entityToGuess, cpu);
+    }
+
+    public void Guess(CardManager.EntityEnum entity, Participant _participant=null)
+    {
+        Participant participant = _participant == null ? player : _participant;
+        participant.Guessed = true;
+        participant.Stats.AddGuess(Time.time, correctEntity.Value, entity);
+
+        if (entity == correctEntity)
+        {
+            participant.Points++;
+            cpuCoroutines.ForEach(co => StopCoroutine(co));
+            cpuCoroutines.Clear();
+            if (participant != player && !player.Guessed)
+            {
+                player.Stats.AddMissed(correctEntity.Value);
+            }
+            GameManager.cpuList.ForEach(cpu => {
+                if (participant != cpu && !cpu.Guessed)
+                {
+                    cpu.Stats.AddMissed(correctEntity.Value);
+                }
+            });
+
+        }
+        else
+        {
+            participant.Penalties++;
+        }
+        participant.FinalScore = participant.Points - participant.Penalties;
         UpdateScoresText();
-        pointsToReach = points_score - penalties_score;
+
         CheckForGameOver();
-        if (!gameOver)
+        if (!gameOver && (entity == correctEntity || (player.Guessed && GameManager.cpuList.All(cpu => cpu.Guessed))))
             GenerateCard();
     }
 
     private void UpdateScoresText()
     {
-        pointsScoreText.text = points_score.ToString();
-        penaltiesScoreText.text = penalties_score.ToString();
+        playerScoreText.text = player.FinalScore.ToString();
+        cpu1ScoreText.text = GameManager.cpuList.Count > 0 ? GameManager.cpuList[0].FinalScore.ToString() : "-";
+        cpu2ScoreText.text = GameManager.cpuList.Count > 1 ? GameManager.cpuList[1].FinalScore.ToString() : "-";
+        cpu3ScoreText.text = GameManager.cpuList.Count > 2 ? GameManager.cpuList[2].FinalScore.ToString() : "-";
     }
 
     private void CheckForGameOver()
     {
         if (GameManager.currentGameMode == GameManager.GameModeEnum.FastestTime)
         {
-            if (pointsToReach >= GameManager.pointsToReach)
+            if (player.FinalScore >= GameManager.pointsToReach || GameManager.cpuList.Any(cpu => cpu.FinalScore>= GameManager.pointsToReach))
                 gameOver = true;
         }
         else if (GameManager.currentGameMode == GameManager.GameModeEnum.RackUpThePoints)
@@ -200,8 +266,10 @@ public class GameModel : MonoBehaviour {
 
     private void ShowGameOverMenu()
     {
-
-        pauseMenu.GameOver(stats);
+        List<Statistics> statsList = new List<Statistics>();
+        statsList.Add(player.Stats);
+        statsList.AddRange(GameManager.cpuList.Select(cpu => cpu.Stats));
+        pauseMenu.GameOver(statsList);
     }
 
     private string TransformTime(float timer)

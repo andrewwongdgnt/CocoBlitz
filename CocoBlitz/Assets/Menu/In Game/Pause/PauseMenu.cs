@@ -13,7 +13,7 @@ public class PauseMenu : MonoBehaviour
     private GameObject[] cardGameObjects;
     private GameObject[] inGameUIGameObjects;
     private GameObject[] pauseUIGameObjects;
-    private Statistics stats;
+    private List<Statistics> statsList;
 
     void Start()
     {
@@ -22,26 +22,20 @@ public class PauseMenu : MonoBehaviour
         Pause(false);
     }
 
-    public void GameOver(Statistics stats)
+    public void GameOver(List<Statistics> statsList)
     {
         resumeStats_txt.text = "Stats";
-        this.stats = stats;
+        this.statsList = statsList;
         ShowProperGameObjects(true);
     }
 
-    public void Stats()
-    {
-        if (stats != null)
-        {
-            Debug.Log(stats.GetStatsForPrint());
-        }
-    }
+
 
     public void Pause(bool pause)
     {
-        if (stats != null)
+        if (statsList != null)
         {
-            Debug.Log(stats.GetStatsForPrint());
+            statsList.ForEach(stats => Debug.Log(stats.GetStatsForPrint()));
         }
         else
         {

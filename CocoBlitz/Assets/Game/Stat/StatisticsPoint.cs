@@ -11,6 +11,8 @@ public class StatisticsPoint {
     public Dictionary<CardManager.EntityEnum, CardManager.ColorEnum> EntityToColor { get; private set; }
     public bool UseCorrectColor { get; private set; }
 
+    public bool Missed;
+
     public StatisticsPoint(float timeElapsed, CardManager.EntityEnum correctEntity, CardManager.EntityEnum guessedEntity, Card card, Dictionary<CardManager.EntityEnum, CardManager.ColorEnum> entityToColor, bool useCorrectColor)
     {
         TimeElapsed = timeElapsed;
@@ -19,6 +21,16 @@ public class StatisticsPoint {
         Card = card;
         EntityToColor = entityToColor;
         UseCorrectColor = useCorrectColor;
+        Missed = false;
+    }
+
+    public StatisticsPoint(CardManager.EntityEnum correctEntity, Card card, Dictionary<CardManager.EntityEnum, CardManager.ColorEnum> entityToColor, bool useCorrectColor)
+    {
+        CorrectEntity = correctEntity;
+        Card = card;
+        EntityToColor = entityToColor;
+        UseCorrectColor = useCorrectColor;
+        Missed = true;
     }
 
 }
