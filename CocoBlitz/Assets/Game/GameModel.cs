@@ -32,6 +32,7 @@ public class GameModel : MonoBehaviour {
     void Start () {
         cardGameObjects = GameObject.FindGameObjectsWithTag("Card");
         player = new Player();
+        GameManager.cpuList.Clear();
         GameManager.cpuList.Add(Cpu.ANDREW);
         GameManager.cpuList.Add(Cpu.KELSEY);       
 
@@ -177,6 +178,9 @@ public class GameModel : MonoBehaviour {
 
     public void Guess(CardManager.EntityEnum entity, Participant _participant=null)
     {
+        if (gameOver)
+            return;
+
         Participant participant = _participant == null ? player : _participant;
         participant.Guessed = true;
         participant.Stats.AddGuess(Time.time, correctEntity.Value, entity);
