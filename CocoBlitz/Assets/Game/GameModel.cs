@@ -15,6 +15,8 @@ public class GameModel : MonoBehaviour {
     public Text cpu3ScoreText;
     public Text timerText;
     public PauseMenu pauseMenu;
+    public GameObject roundSeperator;
+    public Text delayValue;
 
     private Player player;
     private CardManager.EntityEnum? correctEntity = null;
@@ -28,13 +30,13 @@ public class GameModel : MonoBehaviour {
 
     private List<Coroutine> cpuCoroutines = new List<Coroutine>();
 
+    private bool cardInDelay;
+
     // Use this for initialization
     void Start () {
         cardGameObjects = GameObject.FindGameObjectsWithTag("Card");
         player = new Player();
-        GameManager.cpuList.Clear();
-        GameManager.cpuList.Add(Cpu.ANDREW);
-        GameManager.cpuList.Add(Cpu.KELSEY);       
+       
 
         Begin();
 
@@ -60,13 +62,17 @@ public class GameModel : MonoBehaviour {
         });
         UpdateScoresText();
         gameOver = false;
-        GenerateCard();
+        cardInDelay = false;
+        roundSeperator.SetActive(false);
+        NewRound();
     }
     
 
-    private void GenerateCard()
+    private void NewRound()
     {
-        Debug.Log("Picking card");
+
+        //Generate Card
+        Debug.Log("Generating card");
         Card card = cards_2Entities[UnityEngine.Random.Range(0, cards_2Entities.Length)];
         
         Array.ForEach(cardGameObjects, ent => ent.SetActive(ent.GetComponent<Card>() == card));
@@ -129,11 +135,7 @@ public class GameModel : MonoBehaviour {
         if (correctEntity == null)
             correctEntity = allEntities.Except(incorrectEntities).First();
 
-        player.Guessed = false;
-        GameManager.cpuList.ForEach(cpu =>
-        {
-            cpu.Guessed = false;
-        });
+        //Set up stats
 
         float time = Time.time;
 
@@ -143,6 +145,13 @@ public class GameModel : MonoBehaviour {
             cpu.Stats.AddPickedCard(time, card, entityToColor, useCorrectColor);
         });
 
+        //Cpu starts guessing
+
+        player.Guessed = false;
+        GameManager.cpuList.ForEach(cpu =>
+        {
+            cpu.Guessed = false;
+        });
         GameManager.cpuList.ForEach(cpu =>
         {
             cpuCoroutines.Add(StartCoroutine(CpuGuess(cpu, useCorrectColor)));
@@ -178,7 +187,7 @@ public class GameModel : MonoBehaviour {
 
     public void Guess(CardManager.EntityEnum entity, Participant _participant=null)
     {
-        if (gameOver)
+        if (gameOver || cardInDelay)
             return;
 
         Participant participant = _participant == null ? player : _participant;
@@ -211,7 +220,30 @@ public class GameModel : MonoBehaviour {
 
         CheckForGameOver();
         if (!gameOver && (entity == correctEntity || (player.Guessed && GameManager.cpuList.All(cpu => cpu.Guessed))))
-            GenerateCard();
+        {
+            StartCoroutine(NewRoundWithDelay());
+            
+        }
+    }
+
+    IEnumerator NewRoundWithDelay()
+    {
+        cardInDelay = true;
+        float totalDelay = SettingsManager.GetCardDelay();
+
+        roundSeperator.SetActive(totalDelay>0.25f);
+
+        delayValue.text = "3";
+        yield return new WaitForSeconds(totalDelay / 3);
+        delayValue.text = "2";
+        yield return new WaitForSeconds(totalDelay / 3);
+        delayValue.text = "1";
+        yield return new WaitForSeconds(totalDelay / 3);
+
+        roundSeperator.SetActive(false);
+
+        NewRound();
+        cardInDelay = false;
     }
 
     private void UpdateScoresText()
@@ -240,19 +272,22 @@ public class GameModel : MonoBehaviour {
     void Update()
     {
 
-        if (GameManager.currentGameMode == GameManager.GameModeEnum.FastestTime)
+        if (!cardInDelay && !gameOver)
         {
-            timer += Time.deltaTime;
+            if (GameManager.currentGameMode == GameManager.GameModeEnum.FastestTime)
+            {
+                timer += Time.deltaTime;
+            }
+            else if (GameManager.currentGameMode == GameManager.GameModeEnum.RackUpThePoints)
+            {
+                timer -= Time.deltaTime;
+            }
         }
-        else if (GameManager.currentGameMode == GameManager.GameModeEnum.RackUpThePoints)
-        {
-            timer -= Time.deltaTime;
-        }
-
+        
+        timerText.text = TransformTime(timer);
         CheckForGameOver();
         if (!gameOver)
         {
-            timerText.text = TransformTime(timer);
             timerText.color = new Color32(0, 0, 0, 255);
         }
         else

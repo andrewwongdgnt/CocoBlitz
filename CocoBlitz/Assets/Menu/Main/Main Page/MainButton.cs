@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MainMenuButton : MonoBehaviour {
+public class MainButton : MonoBehaviour {
 
     public GameManager.GameModeEnum gameMode;
-    public MainMenu mainMenu;
+    public MainPage mainMenu;
     public void Play()
     {
         mainMenu.SelectGameMode(gameMode);
