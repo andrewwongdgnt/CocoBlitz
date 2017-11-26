@@ -35,7 +35,7 @@ public class MainPage : MonoBehaviour, Page {
         
     }
 
-    public void SelectGameMode(GameManager.GameModeEnum gameMode)
+    public void SelectGameMode(GameUtil.GameModeEnum gameMode)
     {
 
         gamePage.CurrentGameMode = gameMode;

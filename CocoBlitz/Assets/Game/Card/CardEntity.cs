@@ -6,7 +6,7 @@ public class CardEntity : MonoBehaviour {
 
 
 
-    public CardManager.EntityEnum entity;
+    public CardUtil.EntityEnum entity;
     public SpriteRenderer spriteRenderer;
 	// Use this for initialization
 	void Start () {

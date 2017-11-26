@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardManager  {
+public class CardUtil  {
 
     public enum EntityEnum { Coco, Banana, Chomp, Pillow, Shoe };
     public enum ColorEnum { Brown, Yellow, Green, Red, Blue };

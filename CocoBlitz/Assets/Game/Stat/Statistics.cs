@@ -12,7 +12,7 @@ public class Statistics {
 
     private float startTime = 0 ;
     private Card card;
-    private Dictionary<CardManager.EntityEnum, CardManager.ColorEnum> entityToColor;
+    private Dictionary<CardUtil.EntityEnum, CardUtil.ColorEnum> entityToColor;
     private bool useCorrectColor;
 
     public float AverageTimeElapsed { get; private set; }
@@ -63,7 +63,7 @@ public class Statistics {
     }
 
     //Must be called before AddGuess and AddMissed
-    public void AddPickedCard(float startTime, Card card, Dictionary<CardManager.EntityEnum, CardManager.ColorEnum> entityToColor, bool useCorrectColor)
+    public void AddPickedCard(float startTime, Card card, Dictionary<CardUtil.EntityEnum, CardUtil.ColorEnum> entityToColor, bool useCorrectColor)
     {
         this.startTime = startTime;
         this.card = card;
@@ -71,7 +71,7 @@ public class Statistics {
         this.useCorrectColor = useCorrectColor;
     }
     //Must be called after AddPickedCard
-    public void AddMissed(CardManager.EntityEnum correctEntity)
+    public void AddMissed(CardUtil.EntityEnum correctEntity)
     {
         statisticsList.Add(new StatisticsPoint(correctEntity, card, entityToColor, useCorrectColor));
 
@@ -87,7 +87,7 @@ public class Statistics {
     }
 
     //Must be called after AddPickedCard
-    public void AddGuess(float endTime, CardManager.EntityEnum correctEntity, CardManager.EntityEnum guessedEntity)
+    public void AddGuess(float endTime, CardUtil.EntityEnum correctEntity, CardUtil.EntityEnum guessedEntity)
     {
         float timeElapsed = endTime - startTime;
         statisticsList.Add(new StatisticsPoint(timeElapsed, correctEntity, guessedEntity, card, entityToColor, useCorrectColor));
@@ -169,7 +169,7 @@ public class Statistics {
             Array.ForEach(stat.Card.cardEntities, cardEntity =>
             {
 
-                CardManager.ColorEnum color = stat.EntityToColor[cardEntity.entity];
+                CardUtil.ColorEnum color = stat.EntityToColor[cardEntity.entity];
                 builder.Append(" - ").Append(color).Append(" ").Append(cardEntity.entity).Append("\n");
             });
 

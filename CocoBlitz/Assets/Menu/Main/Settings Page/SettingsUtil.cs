@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SettingsManager
+public class SettingsUtil
 {
     
     private readonly static string MUSIC_VOLUME_KEY = "MusicVolumeKey";

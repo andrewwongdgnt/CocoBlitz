@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MainButton : MonoBehaviour {
 
-    public GameManager.GameModeEnum gameMode;
+    public GameUtil.GameModeEnum gameMode;
     public MainPage mainMenu;
     public void Play()
     {

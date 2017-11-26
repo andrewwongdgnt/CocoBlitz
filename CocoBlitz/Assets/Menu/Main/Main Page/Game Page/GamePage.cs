@@ -8,23 +8,49 @@ public class GamePage : MonoBehaviour, Page {
 
     public Text instructions;
     public Dropdown gameOptions;
-    
-    public Dropdown cpu1Options;
-    public Dropdown cpu2Options;
-    public Dropdown cpu3Options;
 
-    public GameManager.GameModeEnum CurrentGameMode { get;  set; }
+    public CpuPortrait cpu1Portrait;
+    public CpuPortrait cpu2Portrait;
+    public CpuPortrait cpu3Portrait;
+
+    public GameUtil.GameModeEnum CurrentGameMode { get;  set; }
     private int pointsToReach;
     private float timer;
 
+    public Sprite kelseySprite;
+    public Sprite andrewSprite;
+    public Sprite kongoSprite;
 
-    List<string> cpuNames;
+    public CpuPicker cpuPicker;
+
+    List<Cpu> allCpus;
+
+    private int[] cpuIndexes = new int[3];
     // Use this for initialization
     void Start () {
-        cpuNames = new List<string>() { "None", "Kelsey", "Andrew", "Muffin" };
-        cpu1Options.AddOptions(cpuNames);
-        cpu2Options.AddOptions(cpuNames);
-        cpu3Options.AddOptions(cpuNames);
+        allCpus = new List<Cpu>() { null, Cpu.KELSEY, Cpu.ANDREW, Cpu.MONKEY, Cpu.PENGUIN };
+        allCpus.Add(Cpu.KONGO);
+        allCpus.Add(Cpu.PURPLE_MONKEY);
+        allCpus.Add(Cpu.MUFFIN);
+        allCpus.Add(Cpu.CHOMP);
+        allCpus.Add(Cpu.COCO);
+
+        Cpu.KELSEY.sprite = kelseySprite;
+        Cpu.ANDREW.sprite = andrewSprite;
+        Cpu.MONKEY.sprite = kongoSprite;
+        Cpu.PENGUIN.sprite = kongoSprite;
+        Cpu.KONGO.sprite = kongoSprite;
+        Cpu.PURPLE_MONKEY.sprite = kongoSprite;
+        Cpu.MUFFIN.sprite = kongoSprite;
+        Cpu.CHOMP.sprite = kongoSprite;
+        Cpu.COCO.sprite = kongoSprite;
+
+
+        cpu1Portrait.SetCpuDisplay("None", null);
+        cpu2Portrait.SetCpuDisplay("None", null);
+        cpu3Portrait.SetCpuDisplay("None", null);
+
+        cpuPicker.Close(true);
     }
     public void SetActive(bool activate)
     {
@@ -38,49 +64,60 @@ public class GamePage : MonoBehaviour, Page {
         UpdateGameParams(value);
     }
 
+    public void OpenCpuPicker(int cpuPortraitIndex)
+    {
+        cpuPicker.Open(this,cpuPortraitIndex, cpuIndexes[cpuPortraitIndex], allCpus);
+    }
+
+    public void UpdateCpuPortrait(int cpuPortraitIndex,int cpuIndex)
+    {
+        cpuIndexes[cpuPortraitIndex] = cpuIndex;
+
+        Cpu cpu = allCpus[cpuIndex];
+        string name = cpu != null ? cpu.name : "None";
+        Sprite sprite = cpu != null ? cpu.sprite : null;
+        switch (cpuPortraitIndex)
+        {
+            case 0:
+                cpu1Portrait.SetCpuDisplay(name, sprite);
+                break;
+            case 1:
+                cpu2Portrait.SetCpuDisplay(name, sprite);
+                break;
+            case 2:
+                cpu3Portrait.SetCpuDisplay(name, sprite);
+                break;
+        }
+    }
+
     public void PlayGame()
     {
-        GameManager.currentGameMode = CurrentGameMode;
-        GameManager.pointsToReach = pointsToReach;
-        GameManager.timer = timer;
+        GameUtil.currentGameMode = CurrentGameMode;
+        GameUtil.pointsToReach = pointsToReach;
+        GameUtil.timer = timer;
 
-        GameManager.cpuList.Clear();
-        if (cpu1Options.value > 0)
+        GameUtil.cpuList.Clear();
+        if (cpuIndexes[0] > 0)
         {
-            GameManager.cpuList.Add(GetCpu(cpu1Options.value));
+            GameUtil.cpuList.Add(allCpus[cpuIndexes[0]]);
         }
-        if (cpu2Options.value > 0)
+        if (cpuIndexes[1] > 0)
         {
-            GameManager.cpuList.Add(GetCpu(cpu2Options.value));
+            GameUtil.cpuList.Add(allCpus[cpuIndexes[1]]);
         }
-        if (cpu3Options.value > 0)
+        if (cpuIndexes[2] > 0)
         {
-            GameManager.cpuList.Add(GetCpu(cpu3Options.value));
+            GameUtil.cpuList.Add(allCpus[cpuIndexes[2]]);
         }
 
         SceneManager.LoadScene("Game");
     }
 
-
-
-    Cpu GetCpu(int index)
-    {
-        switch (index)
-        {
-            case 1:
-                return Cpu.KELSEY;
-            case 2:
-                return Cpu.ANDREW;
-            case 3:
-                return Cpu.MUFFIN;
-            default:
-                return null;
-        }
-    }
+    
 
     void UpdateGameParams( string value)
     {
-        if (CurrentGameMode == GameManager.GameModeEnum.FastestTime)
+        if (CurrentGameMode == GameUtil.GameModeEnum.FastestTime)
         {
             instructions.text = "Get " + value + " correct as fast as you can!";
             instructions.fontSize = 100;
@@ -91,6 +128,21 @@ public class GamePage : MonoBehaviour, Page {
             instructions.text = "Get as many correct as possible within " + value + " seconds!";
             instructions.fontSize = 85;
             timer = float.Parse(value);
+        }
+    }
+
+    private Sprite GetSpriteOfCpu(string name)
+    {
+        switch (name)
+        {
+            case Cpu.KELSEY_NAME:
+                return kelseySprite;
+            case Cpu.ANDREW_NAME:
+                return andrewSprite;
+            case Cpu.KONGO_NAME:
+                return kongoSprite;
+            default:
+                return null;
         }
     }
 }

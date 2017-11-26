@@ -13,9 +13,9 @@ public class SettingsPage : MonoBehaviour, Page {
     // Use this for initialization
     void Start ()
     {
-        cardDelay.value = SettingsManager.GetCardDelay()*4;
-        musicVolume.value = SettingsManager.GetMusicVolume();
-        sfxVolume.value = SettingsManager.GetSFXVolume();
+        cardDelay.value = SettingsUtil.GetCardDelay()*4;
+        musicVolume.value = SettingsUtil.GetMusicVolume();
+        sfxVolume.value = SettingsUtil.GetSFXVolume();
     }
 
     public void SetActive(bool activate)
@@ -36,16 +36,16 @@ public class SettingsPage : MonoBehaviour, Page {
 
      void MusicVolume(float value)
     {
-        SettingsManager.SetMusicVolume(value);
+        SettingsUtil.SetMusicVolume(value);
     }
 
      void SFXVolume(float value)
     {
-        SettingsManager.SetSFXVolume(value);
+        SettingsUtil.SetSFXVolume(value);
     }
 
     void CardDelay(float value)
     {
-        SettingsManager.SetCardDelay(value);
+        SettingsUtil.SetCardDelay(value);
     }
 }

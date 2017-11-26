@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EntityChoiceButton : MonoBehaviour {
 
-    public CardManager.EntityEnum entity;
+    public CardUtil.EntityEnum entity;
 
     public GameModel gameModel;
 

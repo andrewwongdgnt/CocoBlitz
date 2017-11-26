@@ -19,7 +19,7 @@ public class GameModel : MonoBehaviour {
     public Text delayValue;
 
     private Player player;
-    private CardManager.EntityEnum? correctEntity = null;
+    private CardUtil.EntityEnum? correctEntity = null;
     private GameObject[] cardGameObjects;
 
     private float timer;
@@ -48,17 +48,17 @@ public class GameModel : MonoBehaviour {
         Debug.Log("Game Begins");
         showingGameOverMenu = false;
         cpuCoroutines.Clear();
-        timer = GameManager.currentGameMode == GameManager.GameModeEnum.RackUpThePoints ? GameManager.timer : 0f;
+        timer = GameUtil.currentGameMode == GameUtil.GameModeEnum.RackUpThePoints ? GameUtil.timer : 0f;
         player.Stats.Restart();
-        player.FinalScore = 0;
-        player.Points = 0;
-        player.Penalties = 0;
-        GameManager.cpuList.ForEach(cpu =>
+        player.finalScore = 0;
+        player.points = 0;
+        player.penalties = 0;
+        GameUtil.cpuList.ForEach(cpu =>
         {
             cpu.Stats.Restart();
-            cpu.FinalScore = 0;
-            cpu.Points = 0;
-            cpu.Penalties = 0;
+            cpu.finalScore = 0;
+            cpu.points = 0;
+            cpu.penalties = 0;
         });
         UpdateScoresText();
         gameOver = false;
@@ -77,20 +77,20 @@ public class GameModel : MonoBehaviour {
         
         Array.ForEach(cardGameObjects, ent => ent.SetActive(ent.GetComponent<Card>() == card));
 
-        CardManager.EntityEnum[] allEntities = new CardManager.EntityEnum[CardManager.Entities_2Card.Count];
-        CardManager.Entities_2Card.CopyTo(allEntities);
+        CardUtil.EntityEnum[] allEntities = new CardUtil.EntityEnum[CardUtil.Entities_2Card.Count];
+        CardUtil.Entities_2Card.CopyTo(allEntities);
 
-        CardManager.EntityEnum[] currentEntities = card.cardEntities.Select(e => e.entity).ToArray();
-        CardManager.EntityEnum[] otherEntities = allEntities.Where(e => !currentEntities.Contains(e)).ToArray();
+        CardUtil.EntityEnum[] currentEntities = card.cardEntities.Select(e => e.entity).ToArray();
+        CardUtil.EntityEnum[] otherEntities = allEntities.Where(e => !currentEntities.Contains(e)).ToArray();
 
         bool useCorrectColor = false;
-        HashSet<CardManager.ColorEnum> colorsUsed = new HashSet<CardManager.ColorEnum>();
-        Dictionary<CardManager.EntityEnum, CardManager.ColorEnum> entityToColor = new Dictionary<CardManager.EntityEnum, CardManager.ColorEnum>();
+        HashSet<CardUtil.ColorEnum> colorsUsed = new HashSet<CardUtil.ColorEnum>();
+        Dictionary<CardUtil.EntityEnum, CardUtil.ColorEnum> entityToColor = new Dictionary<CardUtil.EntityEnum, CardUtil.ColorEnum>();
         Array.ForEach(card.cardEntities, cardEntity => {
 
             int index = useCorrectColor ? UnityEngine.Random.Range(0, otherEntities.Length) : UnityEngine.Random.Range(0, otherEntities.Length + 1);
             index--;
-            CardManager.ColorEnum color;
+            CardUtil.ColorEnum color;
             do
             {
                 if (index < otherEntities.Length)
@@ -101,25 +101,25 @@ public class GameModel : MonoBehaviour {
                 if (index >= otherEntities.Length)
                     useCorrectColor = true;
 
-                color = CardManager.EntityColorMap[index >= otherEntities.Length ? cardEntity.entity : otherEntities[index]];
+                color = CardUtil.EntityColorMap[index >= otherEntities.Length ? cardEntity.entity : otherEntities[index]];
 
             } while (colorsUsed.Contains(color));
             colorsUsed.Add(color);
             entityToColor[cardEntity.entity] = color;
             Debug.Log(cardEntity.entity + ": " + color);
 
-            cardEntity.spriteRenderer.color = CardManager.ColorColorMap[color];
+            cardEntity.spriteRenderer.color = CardUtil.ColorColorMap[color];
 
         });
 
         correctEntity = null;
 
-        List<CardManager.EntityEnum> incorrectEntities = new List<CardManager.EntityEnum>();
-        foreach (KeyValuePair<CardManager.EntityEnum, CardManager.ColorEnum> entry in entityToColor)
+        List<CardUtil.EntityEnum> incorrectEntities = new List<CardUtil.EntityEnum>();
+        foreach (KeyValuePair<CardUtil.EntityEnum, CardUtil.ColorEnum> entry in entityToColor)
         {
-            CardManager.EntityEnum entity = entry.Key;
-            CardManager.ColorEnum color = entry.Value;
-            CardManager.EntityEnum otherEntity = CardManager.ColorEntityMap[color];
+            CardUtil.EntityEnum entity = entry.Key;
+            CardUtil.ColorEnum color = entry.Value;
+            CardUtil.EntityEnum otherEntity = CardUtil.ColorEntityMap[color];
 
             if (entity == otherEntity)
             {
@@ -140,19 +140,19 @@ public class GameModel : MonoBehaviour {
         float time = Time.time;
 
         player.Stats.AddPickedCard(time, card, entityToColor, useCorrectColor);
-        GameManager.cpuList.ForEach(cpu =>
+        GameUtil.cpuList.ForEach(cpu =>
         {
             cpu.Stats.AddPickedCard(time, card, entityToColor, useCorrectColor);
         });
 
         //Cpu starts guessing
 
-        player.Guessed = false;
-        GameManager.cpuList.ForEach(cpu =>
+        player.guessed = false;
+        GameUtil.cpuList.ForEach(cpu =>
         {
-            cpu.Guessed = false;
+            cpu.guessed = false;
         });
-        GameManager.cpuList.ForEach(cpu =>
+        GameUtil.cpuList.ForEach(cpu =>
         {
             cpuCoroutines.Add(StartCoroutine(CpuGuess(cpu, useCorrectColor)));
         });
@@ -160,24 +160,36 @@ public class GameModel : MonoBehaviour {
 
     IEnumerator CpuGuess(Cpu cpu, bool useCorrectColor)
     {
-        float delayBeforeAnswer = UnityEngine.Random.Range(cpu.DelayLowerRangeBeforeAnswer, cpu.DelayUpperRangeBeforeAnswer);
+        float delayModifier = 0;
+        if (cpu.delayModiferDict != null)
+        {
+            cpu.delayModiferDict.TryGetValue(correctEntity.Value, out delayModifier);
+        }
+
+        float delayBeforeAnswer = UnityEngine.Random.Range(cpu.delayLowerRangeBeforeAnswer + delayModifier, cpu.delayUpperRangeBeforeAnswer + delayModifier);
 
         yield return new WaitForSeconds(delayBeforeAnswer);
 
-        CardManager.EntityEnum inCorrectEntity = correctEntity.Value == CardManager.EntityEnum.Banana ? CardManager.EntityEnum.Coco : CardManager.EntityEnum.Banana;
+        CardUtil.EntityEnum inCorrectEntity = correctEntity.Value == CardUtil.EntityEnum.Banana ? CardUtil.EntityEnum.Coco : CardUtil.EntityEnum.Banana;
+
+        float chanceOfCorrectModifier = 0;
+        if (cpu.chanceOfCorrectModiferDict != null)
+        {
+            cpu.chanceOfCorrectModiferDict.TryGetValue(correctEntity.Value, out chanceOfCorrectModifier);
+        }
 
         float randomPercent = UnityEngine.Random.Range(0, 100);
-        CardManager.EntityEnum entityToGuess;
+        CardUtil.EntityEnum entityToGuess;
         if (useCorrectColor)
         {
-            if (cpu.ChanceOfCorrectForCorrectlyColored >= randomPercent)
+            if (cpu.chanceOfCorrectForCorrectlyColored + chanceOfCorrectModifier >= randomPercent)
                 entityToGuess = correctEntity.Value;
             else
                 entityToGuess = inCorrectEntity;
         }
         else
         {
-            if (cpu.ChanceOfCorrectForIncorrectlyColored >= randomPercent)
+            if (cpu.chanceOfCorrectForIncorrectlyColored + chanceOfCorrectModifier >= randomPercent)
                 entityToGuess = correctEntity.Value;
             else
                 entityToGuess = inCorrectEntity;
@@ -185,26 +197,26 @@ public class GameModel : MonoBehaviour {
         Guess(entityToGuess, cpu);
     }
 
-    public void Guess(CardManager.EntityEnum entity, Participant _participant=null)
+    public void Guess(CardUtil.EntityEnum entity, Participant _participant=null)
     {
         if (gameOver || cardInDelay)
             return;
 
         Participant participant = _participant == null ? player : _participant;
-        participant.Guessed = true;
+        participant.guessed = true;
         participant.Stats.AddGuess(Time.time, correctEntity.Value, entity);
 
         if (entity == correctEntity)
         {
-            participant.Points++;
+            participant.points++;
             cpuCoroutines.ForEach(co => StopCoroutine(co));
             cpuCoroutines.Clear();
-            if (participant != player && !player.Guessed)
+            if (participant != player && !player.guessed)
             {
                 player.Stats.AddMissed(correctEntity.Value);
             }
-            GameManager.cpuList.ForEach(cpu => {
-                if (participant != cpu && !cpu.Guessed)
+            GameUtil.cpuList.ForEach(cpu => {
+                if (participant != cpu && !cpu.guessed)
                 {
                     cpu.Stats.AddMissed(correctEntity.Value);
                 }
@@ -213,13 +225,13 @@ public class GameModel : MonoBehaviour {
         }
         else
         {
-            participant.Penalties++;
+            participant.penalties++;
         }
-        participant.FinalScore = participant.Points - participant.Penalties;
+        participant.finalScore = participant.points - participant.penalties;
         UpdateScoresText();
 
         CheckForGameOver();
-        if (!gameOver && (entity == correctEntity || (player.Guessed && GameManager.cpuList.All(cpu => cpu.Guessed))))
+        if (!gameOver && (entity == correctEntity || (player.guessed && GameUtil.cpuList.All(cpu => cpu.guessed))))
         {
             StartCoroutine(NewRoundWithDelay());
             
@@ -229,7 +241,7 @@ public class GameModel : MonoBehaviour {
     IEnumerator NewRoundWithDelay()
     {
         cardInDelay = true;
-        float totalDelay = SettingsManager.GetCardDelay();
+        float totalDelay = SettingsUtil.GetCardDelay();
 
         roundSeperator.SetActive(totalDelay>0.25f);
 
@@ -248,20 +260,20 @@ public class GameModel : MonoBehaviour {
 
     private void UpdateScoresText()
     {
-        playerScoreText.text = player.FinalScore.ToString();
-        cpu1ScoreText.text = GameManager.cpuList.Count > 0 ? GameManager.cpuList[0].FinalScore.ToString() : "-";
-        cpu2ScoreText.text = GameManager.cpuList.Count > 1 ? GameManager.cpuList[1].FinalScore.ToString() : "-";
-        cpu3ScoreText.text = GameManager.cpuList.Count > 2 ? GameManager.cpuList[2].FinalScore.ToString() : "-";
+        playerScoreText.text = player.finalScore.ToString();
+        cpu1ScoreText.text = GameUtil.cpuList.Count > 0 ? GameUtil.cpuList[0].finalScore.ToString() : "-";
+        cpu2ScoreText.text = GameUtil.cpuList.Count > 1 ? GameUtil.cpuList[1].finalScore.ToString() : "-";
+        cpu3ScoreText.text = GameUtil.cpuList.Count > 2 ? GameUtil.cpuList[2].finalScore.ToString() : "-";
     }
 
     private void CheckForGameOver()
     {
-        if (GameManager.currentGameMode == GameManager.GameModeEnum.FastestTime)
+        if (GameUtil.currentGameMode == GameUtil.GameModeEnum.FastestTime)
         {
-            if (player.FinalScore >= GameManager.pointsToReach || GameManager.cpuList.Any(cpu => cpu.FinalScore>= GameManager.pointsToReach))
+            if (player.finalScore >= GameUtil.pointsToReach || GameUtil.cpuList.Any(cpu => cpu.finalScore>= GameUtil.pointsToReach))
                 gameOver = true;
         }
-        else if (GameManager.currentGameMode == GameManager.GameModeEnum.RackUpThePoints)
+        else if (GameUtil.currentGameMode == GameUtil.GameModeEnum.RackUpThePoints)
         {
             if (timer <= 0)
                 gameOver = true;
@@ -274,11 +286,11 @@ public class GameModel : MonoBehaviour {
 
         if (!cardInDelay && !gameOver)
         {
-            if (GameManager.currentGameMode == GameManager.GameModeEnum.FastestTime)
+            if (GameUtil.currentGameMode == GameUtil.GameModeEnum.FastestTime)
             {
                 timer += Time.deltaTime;
             }
-            else if (GameManager.currentGameMode == GameManager.GameModeEnum.RackUpThePoints)
+            else if (GameUtil.currentGameMode == GameUtil.GameModeEnum.RackUpThePoints)
             {
                 timer -= Time.deltaTime;
             }
@@ -307,7 +319,7 @@ public class GameModel : MonoBehaviour {
     {
         List<Statistics> statsList = new List<Statistics>();
         statsList.Add(player.Stats);
-        statsList.AddRange(GameManager.cpuList.Select(cpu => cpu.Stats));
+        statsList.AddRange(GameUtil.cpuList.Select(cpu => cpu.Stats));
         pauseMenu.GameOver(statsList);
     }
 
