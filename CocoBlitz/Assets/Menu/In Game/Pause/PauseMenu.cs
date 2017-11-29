@@ -22,6 +22,13 @@ public class PauseMenu : MonoBehaviour
         Pause(false);
     }
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape)){
+            Pause(true);
+        }
+    }
+
     public void GameOver(List<Statistics> statsList)
     {
         resumeStats_txt.text = "Stats";

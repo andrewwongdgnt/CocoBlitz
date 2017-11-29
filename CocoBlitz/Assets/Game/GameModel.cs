@@ -64,7 +64,8 @@ public class GameModel : MonoBehaviour {
         gameOver = false;
         cardInDelay = false;
         roundSeperator.SetActive(false);
-        NewRound();
+        Array.ForEach(cardGameObjects, ent => ent.SetActive(false));
+        StartCoroutine(NewRoundWithDelay());
     }
     
 
