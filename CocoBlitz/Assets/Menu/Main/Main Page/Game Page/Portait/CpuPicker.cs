@@ -70,9 +70,13 @@ public class CpuPicker : MonoBehaviour {
 
     public void Close(bool cancel)
     {
-        if (!cancel)
+        if (gamePage != null)
         {
-            gamePage.UpdateCpuPortrait(cpuPortraitIndex, cpuPickedIndex);
+            if (!cancel)
+            {
+                gamePage.UpdateCpuPortrait(cpuPortraitIndex, cpuPickedIndex);
+            }
+            gamePage.ShowNavArea(true);
         }
         gameObject.SetActive(false);
     }

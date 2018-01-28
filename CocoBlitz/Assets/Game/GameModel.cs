@@ -301,7 +301,7 @@ public class GameModel : MonoBehaviour {
         CheckForGameOver();
         if (!gameOver)
         {
-            timerText.color = new Color32(0, 0, 0, 255);
+            timerText.color = new Color32(150, 150, 150, 255);
         }
         else
         {

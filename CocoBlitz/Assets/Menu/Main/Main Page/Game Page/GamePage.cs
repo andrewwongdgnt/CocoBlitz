@@ -19,9 +19,16 @@ public class GamePage : MonoBehaviour, Page {
 
     public Sprite kelseySprite;
     public Sprite andrewSprite;
+    public Sprite monkeySprite;
+    public Sprite penguinSprite;
     public Sprite kongoSprite;
+    public Sprite purpleMonkeySprite;
+    public Sprite muffinSprite;
+    public Sprite chompSprite;
+    public Sprite cocoSprite;
 
     public CpuPicker cpuPicker;
+    public NavigationArea navArea;
 
     List<Cpu> allCpus;
 
@@ -37,13 +44,13 @@ public class GamePage : MonoBehaviour, Page {
 
         Cpu.KELSEY.sprite = kelseySprite;
         Cpu.ANDREW.sprite = andrewSprite;
-        Cpu.MONKEY.sprite = kongoSprite;
-        Cpu.PENGUIN.sprite = kongoSprite;
+        Cpu.MONKEY.sprite = monkeySprite;
+        Cpu.PENGUIN.sprite = penguinSprite;
         Cpu.KONGO.sprite = kongoSprite;
-        Cpu.PURPLE_MONKEY.sprite = kongoSprite;
-        Cpu.MUFFIN.sprite = kongoSprite;
-        Cpu.CHOMP.sprite = kongoSprite;
-        Cpu.COCO.sprite = kongoSprite;
+        Cpu.PURPLE_MONKEY.sprite = purpleMonkeySprite;
+        Cpu.MUFFIN.sprite = muffinSprite;
+        Cpu.CHOMP.sprite = chompSprite;
+        Cpu.COCO.sprite = cocoSprite;
 
 
         cpu1Portrait.SetCpuDisplay("None", null);
@@ -67,6 +74,7 @@ public class GamePage : MonoBehaviour, Page {
     public void OpenCpuPicker(int cpuPortraitIndex)
     {
         cpuPicker.Open(this,cpuPortraitIndex, cpuIndexes[cpuPortraitIndex], allCpus);
+        ShowNavArea(false);
     }
 
     public void UpdateCpuPortrait(int cpuPortraitIndex,int cpuIndex)
@@ -88,6 +96,11 @@ public class GamePage : MonoBehaviour, Page {
                 cpu3Portrait.SetCpuDisplay(name, sprite);
                 break;
         }
+    }
+
+    public void ShowNavArea(bool show)
+    {
+        navArea.gameObject.SetActive(show);
     }
 
     public void PlayGame()
@@ -128,21 +141,6 @@ public class GamePage : MonoBehaviour, Page {
             instructions.text = "Get as many correct as possible within " + value + " seconds!";
             instructions.fontSize = 85;
             timer = float.Parse(value);
-        }
-    }
-
-    private Sprite GetSpriteOfCpu(string name)
-    {
-        switch (name)
-        {
-            case Cpu.KELSEY_NAME:
-                return kelseySprite;
-            case Cpu.ANDREW_NAME:
-                return andrewSprite;
-            case Cpu.KONGO_NAME:
-                return kongoSprite;
-            default:
-                return null;
         }
     }
 }
