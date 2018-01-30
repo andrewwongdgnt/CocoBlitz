@@ -29,6 +29,7 @@ public class GamePage : MonoBehaviour, Page {
 
     public CpuPicker cpuPicker;
     public NavigationArea navArea;
+    public GameObject titleArea;
 
     List<Cpu> allCpus;
 
@@ -64,6 +65,7 @@ public class GamePage : MonoBehaviour, Page {
 
         gameObject.SetActive(activate);
         UpdateGameParams(gameOptions.options[gameOptions.value].text);
+        titleArea.SetActive(!activate);
     }
     public void DropDownChanged(int i)
     {
