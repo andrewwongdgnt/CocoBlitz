@@ -36,7 +36,7 @@ public class CpuPicker : MonoBehaviour {
         tempColor.a = portrait.sprite == null ? 0 : 1;
         portrait.color = tempColor;
         descriptionText.text = cpu != null ? cpu.description : "";
-        nameText.text = cpu != null ? cpu.name : "None";
+        nameText.text = cpu != null ? cpu.name : Cpu.NO_CPU;
     }
 
     public void NextCpu()

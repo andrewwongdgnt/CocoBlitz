@@ -5,6 +5,8 @@ using UnityEngine;
 public class Cpu : Participant
 {
 
+    public static readonly string NO_CPU = "No CPU";
+
     //TODO-AW Adjust these stats later
     public static readonly Cpu KELSEY = new Builder()
         .Name("Kelsey")

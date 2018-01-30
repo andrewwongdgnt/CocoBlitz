@@ -54,9 +54,9 @@ public class GamePage : MonoBehaviour, Page {
         Cpu.COCO.sprite = cocoSprite;
 
 
-        cpu1Portrait.SetCpuDisplay("None", null);
-        cpu2Portrait.SetCpuDisplay("None", null);
-        cpu3Portrait.SetCpuDisplay("None", null);
+        cpu1Portrait.SetCpuDisplay(Cpu.NO_CPU, null);
+        cpu2Portrait.SetCpuDisplay(Cpu.NO_CPU, null);
+        cpu3Portrait.SetCpuDisplay(Cpu.NO_CPU, null);
 
         cpuPicker.Close(true);
     }
@@ -84,7 +84,7 @@ public class GamePage : MonoBehaviour, Page {
         cpuIndexes[cpuPortraitIndex] = cpuIndex;
 
         Cpu cpu = allCpus[cpuIndex];
-        string name = cpu != null ? cpu.name : "None";
+        string name = cpu != null ? cpu.name : Cpu.NO_CPU;
         Sprite sprite = cpu != null ? cpu.sprite : null;
         switch (cpuPortraitIndex)
         {
