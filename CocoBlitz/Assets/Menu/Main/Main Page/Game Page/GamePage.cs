@@ -113,15 +113,15 @@ public class GamePage : MonoBehaviour, Page {
         GameUtil.cpuList.Clear();
         if (cpuIndexes[0] > 0)
         {
-            GameUtil.cpuList.Add(allCpus[cpuIndexes[0]]);
+            GameUtil.cpuList.Add(allCpus[cpuIndexes[0]].Clone());
         }
         if (cpuIndexes[1] > 0)
         {
-            GameUtil.cpuList.Add(allCpus[cpuIndexes[1]]);
+            GameUtil.cpuList.Add(allCpus[cpuIndexes[1]].Clone());
         }
         if (cpuIndexes[2] > 0)
         {
-            GameUtil.cpuList.Add(allCpus[cpuIndexes[2]]);
+            GameUtil.cpuList.Add(allCpus[cpuIndexes[2]].Clone());
         }
 
         SceneManager.LoadScene("Game");

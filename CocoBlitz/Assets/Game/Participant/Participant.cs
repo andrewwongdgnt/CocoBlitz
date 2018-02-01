@@ -20,4 +20,6 @@ public class Participant  {
         Stats = new Statistics(name);
     }
 
+    
+
 }

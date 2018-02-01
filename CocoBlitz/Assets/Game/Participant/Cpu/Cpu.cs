@@ -112,6 +112,18 @@ public class Cpu : Participant
 
     }
 
+    public Cpu Clone()
+    {
+        return new Builder()
+        .Name(name)
+        .Description(description)
+        .DelayLowerRangeBeforeAnswer(delayLowerRangeBeforeAnswer)
+        .DelayUpperRangeBeforeAnswer(delayUpperRangeBeforeAnswer)
+        .ChanceOfCorrectForCorrectlyColored(chanceOfCorrectForCorrectlyColored)
+        .ChanceOfCorrectForIncorrectlyColored(chanceOfCorrectForIncorrectlyColored)
+        .Build();
+    }
+
     public class Builder
     {
         private string name;
