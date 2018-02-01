@@ -121,6 +121,8 @@ public class Cpu : Participant
         .DelayUpperRangeBeforeAnswer(delayUpperRangeBeforeAnswer)
         .ChanceOfCorrectForCorrectlyColored(chanceOfCorrectForCorrectlyColored)
         .ChanceOfCorrectForIncorrectlyColored(chanceOfCorrectForIncorrectlyColored)
+        .DelayModiferDict(delayModiferDict)
+        .ChanceOfCorrectModiferDict(chanceOfCorrectModiferDict)
         .Build();
     }
 
