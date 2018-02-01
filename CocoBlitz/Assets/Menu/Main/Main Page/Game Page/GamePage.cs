@@ -7,8 +7,8 @@ using UnityEngine.UI;
 public class GamePage : MonoBehaviour, Page {
 
     public Text instructions;
-    public Dropdown gameOptions;
 
+    public Slider gameOption;
     public CpuPortrait cpu1Portrait;
     public CpuPortrait cpu2Portrait;
     public CpuPortrait cpu3Portrait;
@@ -64,13 +64,12 @@ public class GamePage : MonoBehaviour, Page {
     {
 
         gameObject.SetActive(activate);
-        UpdateGameParams(gameOptions.options[gameOptions.value].text);
+        UpdateGameParams(gameOption.value.ToString());
         titleArea.SetActive(!activate);
     }
-    public void DropDownChanged(int i)
+    public void GameOptionChanged(float value)
     {
-        string value = gameOptions.options[i].text;
-        UpdateGameParams(value);
+        UpdateGameParams(value.ToString());
     }
 
     public void OpenCpuPicker(int cpuPortraitIndex)
@@ -134,13 +133,13 @@ public class GamePage : MonoBehaviour, Page {
     {
         if (CurrentGameMode == GameUtil.GameModeEnum.FastestTime)
         {
-            instructions.text = "Get " + value + " correct as fast as you can!";
-            instructions.fontSize = 100;
+            instructions.text = "Get " + value + " correct\nas fast as you can!";
+            instructions.fontSize = 80;
             pointsToReach = int.Parse(value);
         }
         else
         {
-            instructions.text = "Get as many correct as possible within " + value + " seconds!";
+            instructions.text = "Get as many as you can in\n" + value + " seconds!";
             instructions.fontSize = 85;
             timer = float.Parse(value);
         }
