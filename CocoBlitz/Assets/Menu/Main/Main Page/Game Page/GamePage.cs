@@ -62,7 +62,17 @@ public class GamePage : MonoBehaviour, Page {
     }
     public void SetActive(bool activate)
     {
+        if (CurrentGameMode == GameUtil.GameModeEnum.Coco)
+        { 
+            int pointsToReach = GameSettingsUtil.GetCocoModePointsToReach();
+            gameOption.value = pointsToReach;
+        }
+        else
+        {
 
+            float timer = GameSettingsUtil.GetGoGoModeTimer();
+            gameOption.value = timer;
+        }
         gameObject.SetActive(activate);
         UpdateGameParams(gameOption.value.ToString());
         titleArea.SetActive(!activate);
@@ -131,17 +141,19 @@ public class GamePage : MonoBehaviour, Page {
 
     void UpdateGameParams( string value)
     {
-        if (CurrentGameMode == GameUtil.GameModeEnum.FastestTime)
+        if (CurrentGameMode == GameUtil.GameModeEnum.Coco)
         {
             instructions.text = "Get " + value + " correct\nas fast as you can!";
             instructions.fontSize = 80;
             pointsToReach = int.Parse(value);
+            GameSettingsUtil.SetCocoModePointsToReach(pointsToReach);
         }
         else
         {
             instructions.text = "Get as many as you can in\n" + value + " seconds!";
             instructions.fontSize = 85;
             timer = float.Parse(value);
+            GameSettingsUtil.SetGoGoModeTimer(timer);
         }
     }
 }

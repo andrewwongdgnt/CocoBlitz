@@ -48,7 +48,7 @@ public class GameModel : MonoBehaviour {
         Debug.Log("Game Begins");
         showingGameOverMenu = false;
         cpuCoroutines.Clear();
-        timer = GameUtil.currentGameMode == GameUtil.GameModeEnum.RackUpThePoints ? GameUtil.timer : 0f;
+        timer = GameUtil.currentGameMode == GameUtil.GameModeEnum.GoGo ? GameUtil.timer : 0f;
         player.Stats.Restart();
         player.finalScore = 0;
         player.points = 0;
@@ -269,12 +269,12 @@ public class GameModel : MonoBehaviour {
 
     private void CheckForGameOver()
     {
-        if (GameUtil.currentGameMode == GameUtil.GameModeEnum.FastestTime)
+        if (GameUtil.currentGameMode == GameUtil.GameModeEnum.Coco)
         {
             if (player.finalScore >= GameUtil.pointsToReach || GameUtil.cpuList.Any(cpu => cpu.finalScore>= GameUtil.pointsToReach))
                 gameOver = true;
         }
-        else if (GameUtil.currentGameMode == GameUtil.GameModeEnum.RackUpThePoints)
+        else if (GameUtil.currentGameMode == GameUtil.GameModeEnum.GoGo)
         {
             if (timer <= 0)
                 gameOver = true;
@@ -287,11 +287,11 @@ public class GameModel : MonoBehaviour {
 
         if (!cardInDelay && !gameOver)
         {
-            if (GameUtil.currentGameMode == GameUtil.GameModeEnum.FastestTime)
+            if (GameUtil.currentGameMode == GameUtil.GameModeEnum.Coco)
             {
                 timer += Time.deltaTime;
             }
-            else if (GameUtil.currentGameMode == GameUtil.GameModeEnum.RackUpThePoints)
+            else if (GameUtil.currentGameMode == GameUtil.GameModeEnum.GoGo)
             {
                 timer -= Time.deltaTime;
             }

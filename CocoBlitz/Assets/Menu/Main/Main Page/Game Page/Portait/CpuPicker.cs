@@ -30,13 +30,16 @@ public class CpuPicker : MonoBehaviour {
 
     private void SetCpuDisplay(Cpu cpu)
     {
-
+        bool available = cpu != null ? GameUtil.GetCpuAvailability(cpu) : false;
         portrait.sprite = cpu != null ? cpu.sprite : null;
         Color tempColor = portrait.color;
         tempColor.a = portrait.sprite == null ? 0 : 1;
+        tempColor.r = available ? 255 : 0;
+        tempColor.g = available ? 255 : 0;
+        tempColor.b = available ? 255 : 0;
         portrait.color = tempColor;
-        descriptionText.text = cpu != null ? cpu.description : "";
-        nameText.text = cpu != null ? cpu.name : Cpu.NO_CPU;
+        descriptionText.text = cpu != null ? (available ? cpu.description :cpu.unlockDescription) : "";
+        nameText.text = cpu != null ? (available ? cpu.name : "???") : Cpu.NO_CPU;
     }
 
     public void NextCpu()

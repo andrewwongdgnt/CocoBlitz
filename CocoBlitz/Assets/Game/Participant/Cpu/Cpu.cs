@@ -10,27 +10,30 @@ public class Cpu : Participant
     //TODO-AW Adjust these stats later
     public static readonly Cpu KELSEY = new Builder()
         .Name("Kelsey")
-        .Description("Kelsey desc")
+        .Description("Kelsey just likes playing games.  She's still going to try, but her main goal is just to have fun.")
         .DelayLowerRangeBeforeAnswer(1.9f)
         .DelayUpperRangeBeforeAnswer(2.9f)
         .ChanceOfCorrectForCorrectlyColored(90)
         .ChanceOfCorrectForIncorrectlyColored(85)
+        .IsStarter()
         .Build();
     public static readonly Cpu ANDREW = new Builder()
         .Name("Andrew")
-        .Description("Andrew desc")
+        .Description("Andrew is very competitive and so he can be a tough opponent to beat.  Are you up to the challenge?")
         .DelayLowerRangeBeforeAnswer(1.5f)
         .DelayUpperRangeBeforeAnswer(2.1F)
         .ChanceOfCorrectForCorrectlyColored(90)
         .ChanceOfCorrectForIncorrectlyColored(85)
+        .IsStarter()
         .Build();
     public static readonly Cpu MONKEY = new Builder()
         .Name("Monkey")
-        .Description("Monkey desc")
+        .Description("Don't let the Monkey's profile picture fool you.  He may look playful, but when it comes to CoCo Go then he's not monkeying around.")
         .DelayLowerRangeBeforeAnswer(1.5f)
         .DelayUpperRangeBeforeAnswer(2.1F)
         .ChanceOfCorrectForCorrectlyColored(90)
         .ChanceOfCorrectForIncorrectlyColored(85)
+        .IsStarter()
         .Build();
     public static readonly Cpu PENGUIN = new Builder()
         .Name("Penguin")
@@ -39,10 +42,12 @@ public class Cpu : Participant
         .DelayUpperRangeBeforeAnswer(2.1F)
         .ChanceOfCorrectForCorrectlyColored(90)
         .ChanceOfCorrectForIncorrectlyColored(85)
+        .IsStarter()
         .Build();
     public static readonly Cpu KONGO = new Builder()
         .Name("Kongo")
         .Description("Kongo is super smart so he almost never gets it wrong. So what if it takes a bit longer to figure it out? If you're going to do something then you might as well do it right.")
+        .UnlockDescription("Unlock this character by...?")
         .DelayLowerRangeBeforeAnswer(1.5f)
         .DelayUpperRangeBeforeAnswer(2.1F)
         .ChanceOfCorrectForCorrectlyColored(90)
@@ -51,6 +56,7 @@ public class Cpu : Participant
     public static readonly Cpu PURPLE_MONKEY = new Builder()
         .Name("Purple Monkey")
         .Description("Purple Monkey desc")
+        .UnlockDescription("Unlock this character by...?")
         .DelayLowerRangeBeforeAnswer(1.5f)
         .DelayUpperRangeBeforeAnswer(2.1F)
         .ChanceOfCorrectForCorrectlyColored(90)
@@ -59,6 +65,7 @@ public class Cpu : Participant
     public static readonly Cpu MUFFIN = new Builder()
         .Name("Muffin")
         .Description("Muffin desc")
+        .UnlockDescription("Unlock this character by...?")
         .DelayLowerRangeBeforeAnswer(.8f)
         .DelayUpperRangeBeforeAnswer(1.2F)
         .ChanceOfCorrectForCorrectlyColored(95)
@@ -67,6 +74,7 @@ public class Cpu : Participant
     public static readonly Cpu CHOMP = new Builder()
         .Name("Chomp")
         .Description("Chomp desc")
+        .UnlockDescription("Unlock this character by...?")
         .DelayLowerRangeBeforeAnswer(1.5f)
         .DelayUpperRangeBeforeAnswer(2.0F)
         .ChanceOfCorrectForCorrectlyColored(85)
@@ -77,6 +85,7 @@ public class Cpu : Participant
     public static readonly Cpu COCO = new Builder()
         .Name("Coco")
         .Description("Coco desc")
+        .UnlockDescription("Unlock this character by...?")
         .DelayLowerRangeBeforeAnswer(1.5f)
         .DelayUpperRangeBeforeAnswer(2.0F)
         .ChanceOfCorrectForCorrectlyColored(85)
@@ -98,18 +107,22 @@ public class Cpu : Participant
     public Sprite sprite { get; set; }
 
     public string description { get; private set; }
+    public string unlockDescription { get; private set; }
 
-    public Cpu(string name, string description, float delayLowerRangeBeforeAnswer,float  delayUpperRangeBeforeAnswer,  float chanceOfCorrectForCorrectlyColored, float chanceOfCorrectForIncorrectlyColored
-        , Dictionary<CardUtil.EntityEnum, float> delayModiferDict, Dictionary<CardUtil.EntityEnum, float> chanceOfCorrectModiferDict) : base(name)
+    public bool starter { get; private set; }
+
+    public Cpu(string name, string description, string unlockDescription, float delayLowerRangeBeforeAnswer,float  delayUpperRangeBeforeAnswer,  float chanceOfCorrectForCorrectlyColored, float chanceOfCorrectForIncorrectlyColored
+        , Dictionary<CardUtil.EntityEnum, float> delayModiferDict, Dictionary<CardUtil.EntityEnum, float> chanceOfCorrectModiferDict, bool starter) : base(name)
     {
         this.description = description;
+        this.unlockDescription = unlockDescription;
         this.delayLowerRangeBeforeAnswer = delayLowerRangeBeforeAnswer;
         this.delayUpperRangeBeforeAnswer = delayUpperRangeBeforeAnswer;
         this.chanceOfCorrectForCorrectlyColored = chanceOfCorrectForCorrectlyColored;
         this.chanceOfCorrectForIncorrectlyColored = chanceOfCorrectForIncorrectlyColored;
         this.delayModiferDict = delayModiferDict;
         this.chanceOfCorrectModiferDict = chanceOfCorrectModiferDict;
-
+        this.starter = starter;
     }
 
     public Cpu Clone()
@@ -139,6 +152,13 @@ public class Cpu : Participant
         public Builder Description(string description)
         {
             this.description = description;
+            return this;
+        }
+
+        private string unlockDescription;
+        public Builder UnlockDescription(string unlockDescription)
+        {
+            this.unlockDescription = unlockDescription;
             return this;
         }
 
@@ -184,19 +204,38 @@ public class Cpu : Participant
             return this;
         }
 
+        private bool starter;
+        public Builder IsStarter()
+        {
+            starter = true;
+            return this;
+        }
+
         public Cpu Build()
         {
             return new Cpu(name, 
                 description, 
+                unlockDescription,
                 delayLowerRangeBeforeAnswer, 
                 delayUpperRangeBeforeAnswer,
                 chanceOfCorrectForCorrectlyColored,
                 chanceOfCorrectForIncorrectlyColored,
                 delayModiferDict,
-                chanceOfCorrectModiferDict);
+                chanceOfCorrectModiferDict,
+                starter);
         }
     }
 
+    public override bool Equals(object obj)
+    {
+        Cpu cpu = obj as Cpu;
 
+        return cpu.name == name;
+    }
+
+    public override int GetHashCode()
+    {
+        return name.GetHashCode();
+    }
 
 }
