@@ -75,7 +75,8 @@ public class GameModel : MonoBehaviour {
         //Generate Card
         Debug.Log("Generating card");
         Card card = cards_2Entities[UnityEngine.Random.Range(0, cards_2Entities.Length)];
-        
+
+
         Array.ForEach(cardGameObjects, ent => ent.SetActive(ent.GetComponent<Card>() == card));
 
         CardUtil.EntityEnum[] allEntities = new CardUtil.EntityEnum[CardUtil.Entities_2Card.Count];
@@ -83,6 +84,11 @@ public class GameModel : MonoBehaviour {
 
         CardUtil.EntityEnum[] currentEntities = card.cardEntities.Select(e => e.entity).ToArray();
         CardUtil.EntityEnum[] otherEntities = allEntities.Where(e => !currentEntities.Contains(e)).ToArray();
+
+        if (currentEntities.Contains(CardUtil.EntityEnum.Chomp))
+        {
+            GameProgressionUtil.IncrementTotalCountOfWhenChompWasSeen();
+        }
 
         bool useCorrectColor = false;
         HashSet<CardUtil.ColorEnum> colorsUsed = new HashSet<CardUtil.ColorEnum>();
@@ -135,6 +141,7 @@ public class GameModel : MonoBehaviour {
 
         if (correctEntity == null)
             correctEntity = allEntities.Except(incorrectEntities).First();
+
 
         //Set up stats
 
@@ -205,13 +212,16 @@ public class GameModel : MonoBehaviour {
 
         Participant participant = _participant == null ? player : _participant;
         participant.guessed = true;
-        participant.Stats.AddGuess(Time.time, correctEntity.Value, entity);
+        float timeToGuess = participant.Stats.AddGuess(Time.time, correctEntity.Value, entity);
 
         if (entity == correctEntity)
         {
             participant.points++;
+
+            //Clear coroutine so other cpus will stop guessing
             cpuCoroutines.ForEach(co => StopCoroutine(co));
             cpuCoroutines.Clear();
+
             if (participant != player && !player.guessed)
             {
                 player.Stats.AddMissed(correctEntity.Value);
@@ -222,6 +232,18 @@ public class GameModel : MonoBehaviour {
                     cpu.Stats.AddMissed(correctEntity.Value);
                 }
             });
+
+            if (participant == player)
+            {
+                if (correctEntity == CardUtil.EntityEnum.Coco)
+                { 
+                    GameProgressionUtil.IncrementTotalCountOfWhenCocoWasCorrectlyPicked();
+                }
+                if (timeToGuess < 1f)
+                {
+                    GameProgressionUtil.IncrementTotalCountOfCorrectGuessUnderOneSecond();
+                }
+            }
 
         }
         else
@@ -311,6 +333,8 @@ public class GameModel : MonoBehaviour {
         {
             showingGameOverMenu = true;
             ShowGameOverMenu();
+            GameProgressionUtil.IncrementTotalGamesPlayed();
+            GameProgressionUtil.IncreaseTimeSpent(GameUtil.currentGameMode == GameUtil.GameModeEnum.GoGo ? GameUtil.timer : timer);
         }
 
        

@@ -87,7 +87,7 @@ public class Statistics {
     }
 
     //Must be called after AddPickedCard
-    public void AddGuess(float endTime, CardUtil.EntityEnum correctEntity, CardUtil.EntityEnum guessedEntity)
+    public float AddGuess(float endTime, CardUtil.EntityEnum correctEntity, CardUtil.EntityEnum guessedEntity)
     {
         float timeElapsed = endTime - startTime;
         statisticsList.Add(new StatisticsPoint(timeElapsed, correctEntity, guessedEntity, card, entityToColor, useCorrectColor));
@@ -124,6 +124,7 @@ public class Statistics {
                 AverageTimeElapsedForIncorrectOnesWithIncorrectlyColored = (AverageTimeElapsedForIncorrectOnesWithIncorrectlyColored * (TotalIncorrectWithIncorrectlyColored - 1) + timeElapsed) / TotalIncorrectWithIncorrectlyColored;
             }
         }
+        return timeElapsed;
     }
 
     public string GetStatsForPrint()

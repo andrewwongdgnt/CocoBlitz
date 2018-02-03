@@ -93,7 +93,7 @@ public class GamePage : MonoBehaviour, Page {
         cpuIndexes[cpuPortraitIndex] = cpuIndex;
 
         Cpu cpu = allCpus[cpuIndex];
-        if (cpu != null && !GameUtil.GetCpuAvailability(cpu))
+        if (cpu != null && !GameProgressionUtil.GetCpuAvailability(cpu))
             return;
 
         string name = cpu != null ? cpu.name : Cpu.NO_CPU;
@@ -126,15 +126,15 @@ public class GamePage : MonoBehaviour, Page {
         GameUtil.cpuList.Clear();
         if (cpuIndexes[0] > 0)
         {
-            GameUtil.cpuList.Add(allCpus[cpuIndexes[0]].Clone());
+            GameUtil.cpuList.Add(allCpus[cpuIndexes[0]].RebuildToPlay());
         }
         if (cpuIndexes[1] > 0)
         {
-            GameUtil.cpuList.Add(allCpus[cpuIndexes[1]].Clone());
+            GameUtil.cpuList.Add(allCpus[cpuIndexes[1]].RebuildToPlay());
         }
         if (cpuIndexes[2] > 0)
         {
-            GameUtil.cpuList.Add(allCpus[cpuIndexes[2]].Clone());
+            GameUtil.cpuList.Add(allCpus[cpuIndexes[2]].RebuildToPlay());
         }
 
         SceneManager.LoadScene("Game");

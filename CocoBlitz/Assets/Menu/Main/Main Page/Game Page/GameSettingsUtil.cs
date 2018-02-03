@@ -15,7 +15,7 @@ public class GameSettingsUtil  {
         return PlayerPrefs.HasKey(COCO_MODE_POINTS_TO_REACH_KEY) ? PlayerPrefs.GetInt(COCO_MODE_POINTS_TO_REACH_KEY) : 10;
     }
 
-    private readonly static string GO_GO_MODE_TIMER_KEY = "GoGoModePointsToReachKey";
+    private readonly static string GO_GO_MODE_TIMER_KEY = "GoGoModeTimerKey";
 
     public static void SetGoGoModeTimer(float value)
     {

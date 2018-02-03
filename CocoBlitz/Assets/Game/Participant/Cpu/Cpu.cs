@@ -125,11 +125,11 @@ public class Cpu : Participant
         this.starter = starter;
     }
 
-    public Cpu Clone()
+    public Cpu RebuildToPlay()
     {
         return new Builder()
         .Name(name)
-        .Description(description)
+        .Sprite(sprite)
         .DelayLowerRangeBeforeAnswer(delayLowerRangeBeforeAnswer)
         .DelayUpperRangeBeforeAnswer(delayUpperRangeBeforeAnswer)
         .ChanceOfCorrectForCorrectlyColored(chanceOfCorrectForCorrectlyColored)
@@ -211,18 +211,27 @@ public class Cpu : Participant
             return this;
         }
 
+        private Sprite sprite;
+        public Builder Sprite(Sprite sprite)
+        {
+            this.sprite = sprite;
+            return this;
+        }
+
         public Cpu Build()
         {
-            return new Cpu(name, 
-                description, 
+            Cpu cpu = new Cpu(name,
+                description,
                 unlockDescription,
-                delayLowerRangeBeforeAnswer, 
+                delayLowerRangeBeforeAnswer,
                 delayUpperRangeBeforeAnswer,
                 chanceOfCorrectForCorrectlyColored,
                 chanceOfCorrectForIncorrectlyColored,
                 delayModiferDict,
                 chanceOfCorrectModiferDict,
                 starter);
+            cpu.sprite = sprite;
+            return cpu;
         }
     }
 

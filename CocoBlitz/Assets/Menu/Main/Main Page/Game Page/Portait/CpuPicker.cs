@@ -32,7 +32,7 @@ public class CpuPicker : MonoBehaviour {
 
     private void SetCpuDisplay(Cpu cpu)
     {
-        bool available = cpu != null ? GameUtil.GetCpuAvailability(cpu) : false;
+        bool available = cpu != null ? GameProgressionUtil.GetCpuAvailability(cpu) : false;
         portrait.sprite = cpu != null ? cpu.sprite : null;
         Color tempColor = portrait.color;
         tempColor.a = portrait.sprite == null ? 0 : 1;
