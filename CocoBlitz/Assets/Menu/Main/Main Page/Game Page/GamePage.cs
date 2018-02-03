@@ -93,6 +93,9 @@ public class GamePage : MonoBehaviour, Page {
         cpuIndexes[cpuPortraitIndex] = cpuIndex;
 
         Cpu cpu = allCpus[cpuIndex];
+        if (cpu != null && !GameUtil.GetCpuAvailability(cpu))
+            return;
+
         string name = cpu != null ? cpu.name : Cpu.NO_CPU;
         Sprite sprite = cpu != null ? cpu.sprite : null;
         switch (cpuPortraitIndex)

@@ -9,12 +9,14 @@ public class CpuPicker : MonoBehaviour {
     public Image portrait;
     public Text descriptionText;
     public Text nameText;
+    public Button acceptBtn;
 
     private int cpuPortraitIndex;
     private int cpuPickedIndex;
     private List<Cpu> allCpus;
 
     private GamePage gamePage;
+
 
 
     public void Open(GamePage gamePage, int cpuPortraitIndex, int cpuPickedIndex, List<Cpu> allCpus)
@@ -40,6 +42,16 @@ public class CpuPicker : MonoBehaviour {
         portrait.color = tempColor;
         descriptionText.text = cpu != null ? (available ? cpu.description :cpu.unlockDescription) : "";
         nameText.text = cpu != null ? (available ? cpu.name : "???") : Cpu.NO_CPU;
+        bool interactable = cpu == null || available;
+        acceptBtn.interactable = interactable;
+        Color tempButtonColor = acceptBtn.image.color;
+        tempButtonColor.a = interactable ? 1 : 0.5f;
+        acceptBtn.image.color = tempButtonColor;
+
+        Text acceptBtnText = acceptBtn.GetComponentInChildren<Text>();
+        Color tempButtonTextColor = acceptBtnText.color;
+        tempButtonTextColor.a = interactable ? 1 : 0.5f;
+        acceptBtnText.color = tempButtonTextColor;
     }
 
     public void NextCpu()
