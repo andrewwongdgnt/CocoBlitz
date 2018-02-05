@@ -16,4 +16,13 @@ Cards are revealed one at a time where each one shows pictures of two items, wit
 
 ## Meet the cast
 
-Kelsey
+
+
+
+
+
+| <img src="/CocoBlitz/Assets/Menu/Main/Main%20Page/Game%20Page/Portait/Kelsey%20Portrait.png" width="300"> |  *Kelsey* | 
+|-----------|---|
+| sdfsfsdf  |   | 
+|           |   | 
+|           |   |   
