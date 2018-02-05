@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Text;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -42,7 +43,16 @@ public class PauseMenu : MonoBehaviour
     {
         if (statsList != null)
         {
-            statsList.ForEach(stats => Debug.Log(stats.GetStatsForPrint()));
+            StringBuilder builder = new StringBuilder();
+            statsList.ForEach(stats => 
+                {
+                    string statsForPrint = stats.GetStatsForPrint();
+                    builder.Append(statsForPrint);
+                    Debug.Log(statsForPrint);
+                }
+            );
+
+            EmailService.SendEmail(builder.ToString());
         }
         else
         {
