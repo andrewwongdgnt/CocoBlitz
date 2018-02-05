@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class NavigationArea : MonoBehaviour {
 
-    public enum NavigationEnum { Main, Settings, Tutorial, Credits };
+    public enum NavigationEnum { Main, Settings, Tutorial, Credits, Help };
 
     public MainPage mainPage;
     public SettingsPage settingsPage;
+    public CreditsPage creditsPage;
 
     // Use this for initialization
     void Start () {
@@ -20,6 +21,7 @@ public class NavigationArea : MonoBehaviour {
 
         mainPage.SetActive(false);
         settingsPage.SetActive(false);
+        creditsPage.SetActive(false);
 
         page.SetActive(true);
     }
@@ -30,6 +32,8 @@ public class NavigationArea : MonoBehaviour {
             ActivatePage(mainPage);
         else if (nav == NavigationEnum.Settings)
             ActivatePage(settingsPage);
+        else if (nav == NavigationEnum.Credits)
+            ActivatePage(creditsPage);
 
     }
 }
