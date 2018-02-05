@@ -1,4 +1,4 @@
-# CocoBlitz (Working name)
+# Coco Go!
 
 Based on the game [Ghost Blitz](https://boardgamegeek.com/boardgame/83195/ghost-blitz)
 
