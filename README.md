@@ -16,37 +16,11 @@ Cards are revealed one at a time where each one shows pictures of two items, wit
 
 ## Meet the cast
 
-<img src="/CocoBlitz/Assets/Menu/Main/Main%20Page/Game%20Page/Portait/Kelsey%20Portrait.png" width="200"> 
-
-**Kelsey**
+### Kelsey
 
 Kelsey just likes playing games.  She's still going to try, but her main goal is just to have fun.
 
-<img src="/CocoBlitz/Assets/Menu/Main/Main%20Page/Game%20Page/Portait/Andrew%20Portrait.png" width="200"> 
+<img src="/CocoBlitz/Assets/Menu/Main/Main%20Page/Game%20Page/Portait/Kelsey%20Portrait.png" width="200"> 
 
-**Andrew**
 
-Andrew is very competitive and so he can be a tough opponent to beat.  Are you up to the challenge?
-
-<img src="/CocoBlitz/Assets/Menu/Main/Main%20Page/Game%20Page/Portait/Monkey%20Portrait.png" width="200"> 
-
-**Monkey**
-
-Don't let the Monkey's profile picture fool you.  He may look playful, but when it comes to CoCo Go then he's not monkeying around.
-
-<img src="/CocoBlitz/Assets/Menu/Main/Main%20Page/Game%20Page/Portait/Penguin%20Portrait.png" width="200"> 
-
-**Penguin**
-
-Don't let the Monkey's profile picture fool you.  He may look playful, but when it comes to CoCo Go then he's not monkeying around.
-
-<img src="/CocoBlitz/Assets/Menu/Main/Main%20Page/Game%20Page/Portait/Kongo%20Portrait.png" width="200"> 
-
-**Kongo**
-
-Kongo is super smart so he almost never gets it wrong. So what if it takes a bit longer to figure it out? If you're going to do something then you might as well do it right.
-
-<img src="/CocoBlitz/Assets/Menu/Main/Main%20Page/Game%20Page/Portait/Purple%20Monkey%20Portrait.png" width="200"> 
-
-**Purple Monkey**
 
