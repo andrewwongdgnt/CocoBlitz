@@ -2,7 +2,7 @@
 
 Based on the game [Ghost Blitz](https://boardgamegeek.com/boardgame/83195/ghost-blitz)
 
-A game about color recognition and reflexes for all ages. In this game, you meet five characters or objects:
+Coco Go! is a game about color recognition and reflexes for all ages. In this game, you meet five characters or objects:
 - A brown giant monkey (Coco)
 - A green little alligator (Chomp)
 - A blue shoe
