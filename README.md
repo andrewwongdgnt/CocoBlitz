@@ -38,7 +38,8 @@ Don't let the Monkey's profile picture fool you.  He may look playful, but when 
 
 <img src="/CocoBlitz/Assets/Menu/Main/Main%20Page/Game%20Page/Portait/Penguin%20Portrait.png" width="200"> 
 
-...
+Penguin may be small, but what she lacks in size then she more than makes up for with enthusiasm.  Go Penguin!
+
 ### Kongo
 
 <img src="/CocoBlitz/Assets/Menu/Main/Main%20Page/Game%20Page/Portait/Kongo%20Portrait.png" width="200"> 
@@ -49,3 +50,4 @@ Kongo is super smart so he almost never gets it wrong. So what if it takes a bit
 
 <img src="/CocoBlitz/Assets/Menu/Main/Main%20Page/Game%20Page/Portait/Purple%20Monkey%20Portrait.png" width="200"> 
 
+Who cares if you get one wrong here and there?  Life's too short to always wait for the sure thing so when the purple monkey sees an opportunity then you'd better believe she's going to take it.
