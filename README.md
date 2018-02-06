@@ -38,8 +38,7 @@ Don't let the Monkey's profile picture fool you.  He may look playful, but when 
 
 <img src="/CocoBlitz/Assets/Menu/Main/Main%20Page/Game%20Page/Portait/Penguin%20Portrait.png" width="200"> 
 
-Don't let the Monkey's profile picture fool you.  He may look playful, but when it comes to CoCo Go then he's not monkeying around.
-
+...
 ### Kongo
 
 <img src="/CocoBlitz/Assets/Menu/Main/Main%20Page/Game%20Page/Portait/Kongo%20Portrait.png" width="200"> 
