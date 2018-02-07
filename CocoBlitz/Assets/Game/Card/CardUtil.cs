@@ -26,11 +26,11 @@ public class CardUtil  {
 
     public static Dictionary<ColorEnum, Color32> ColorColorMap = new Dictionary<ColorEnum, Color32>
         {
-            { ColorEnum.Brown, new Color32( 160, 109, 41, 255)},
-            { ColorEnum.Yellow, new Color32(255,250,40, 255) },
-            { ColorEnum.Green, new Color32(85,184,83, 255) },
-            { ColorEnum.Red, new Color32(222,0,0, 255) },
-            { ColorEnum.Blue, new Color32(15,167,217, 255) },
+            { ColorEnum.Brown, new Color32( 160, 109, 41, 255)}, //#A06D29FF
+            { ColorEnum.Yellow, new Color32(255,250,40, 255) }, //#FFFA28FF
+            { ColorEnum.Green, new Color32(85,184,83, 255) }, //#55B853FF
+            { ColorEnum.Red, new Color32(222,0,0, 255) }, //#DE0000FF
+            { ColorEnum.Blue, new Color32(15,167,217, 255) }, //#0FA7D9
         };
 
     public static HashSet<EntityEnum> Entities_2Card = new HashSet<EntityEnum>

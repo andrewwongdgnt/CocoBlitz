@@ -9,6 +9,7 @@ public class NavigationArea : MonoBehaviour {
     public MainPage mainPage;
     public SettingsPage settingsPage;
     public CreditsPage creditsPage;
+    public HelpPage helpPage;
 
     // Use this for initialization
     void Start () {
@@ -22,6 +23,7 @@ public class NavigationArea : MonoBehaviour {
         mainPage.SetActive(false);
         settingsPage.SetActive(false);
         creditsPage.SetActive(false);
+        helpPage.SetActive(false);
 
         page.SetActive(true);
     }
@@ -34,6 +36,8 @@ public class NavigationArea : MonoBehaviour {
             ActivatePage(settingsPage);
         else if (nav == NavigationEnum.Credits)
             ActivatePage(creditsPage);
+        else if (nav == NavigationEnum.Help)
+            ActivatePage(helpPage);
 
     }
 }

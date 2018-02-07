@@ -37,7 +37,7 @@ public class Cpu : Participant
         .Build();
     public static readonly Cpu PENGUIN = new Builder()
         .Name("Penguin")
-        .Description("Penguin desc")
+        .Description("Penguin may be small, but what she lacks in size then she more than makes up for with enthusiasm.  Go Penguin!")
         .DelayLowerRangeBeforeAnswer(1.5f)
         .DelayUpperRangeBeforeAnswer(2.1F)
         .ChanceOfCorrectForCorrectlyColored(90)
@@ -55,7 +55,7 @@ public class Cpu : Participant
         .Build();
     public static readonly Cpu PURPLE_MONKEY = new Builder()
         .Name("Purple Monkey")
-        .Description("Purple Monkey desc")
+        .Description("Who cares if you get one wrong here and there?  Life's too short to always wait for the sure thing so when the purple monkey sees an opportunity then you'd better believe she's going to take it.")
         .UnlockDescription("Unlock this character by...?")
         .DelayLowerRangeBeforeAnswer(1.5f)
         .DelayUpperRangeBeforeAnswer(2.1F)
