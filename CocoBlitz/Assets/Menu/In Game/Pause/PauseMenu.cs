@@ -14,12 +14,33 @@ public class PauseMenu : MonoBehaviour
     private GameObject[] cardGameObjects;
     private GameObject[] inGameUIGameObjects;
     private GameObject[] pauseUIGameObjects;
+    private GameObject[] scoreUIGameObjects;
     private List<Statistics> statsList;
+
+    public GameObject statsContainer;
+    public Text averageTimeElapsedText;
+    public Text averageTimeElapsedForCorrectOnesText;
+    public Text averageTimeElapsedForCorrectOnesWithCorrectlyColoredText;
+    public Text averageTimeElapsedForCorrectOnesWithIncorrectlyColoredText;
+    public Text averageTimeElapsedForIncorrectOnesText;
+    public Text averageTimeElapsedForIncorrectOnesWithCorrectlyColoredText;
+    public Text averageTimeElapsedForIncorrectOnesWithIncorrectlyColoredText;
+    public Text totalText;
+    public Text totalCorrectText;
+    public Text totalCorrectWithCorrectlyColoredText;
+    public Text totalCorrectWithIncorrectlyColoredText;
+    public Text totalIncorrectText;
+    public Text totalIncorrectWithCorrectlyColoredText;
+    public Text totalIncorrectWithIncorrectlyColoredText;
+    public Text totalMissedText;
+    public Text totalMissedWithCorrectlyColoredText;
+    public Text totalMissedWithIncorrectlyColoredText;
 
     void Start()
     {
         inGameUIGameObjects = GameObject.FindGameObjectsWithTag("In Game UI");
         pauseUIGameObjects = GameObject.FindGameObjectsWithTag("Pause UI");
+        scoreUIGameObjects = GameObject.FindGameObjectsWithTag("Score UI");
         Pause(false);
     }
 
@@ -51,8 +72,31 @@ public class PauseMenu : MonoBehaviour
                     Debug.Log(statsForPrint);
                 }
             );
+            //EmailService.SendEmail(builder.ToString());
+            ShowStatsContainer(true);
+            //Assume first element is player
+            Statistics playerStats = statsList[0];
 
-            EmailService.SendEmail(builder.ToString());
+            averageTimeElapsedText.text = playerStats.AverageTimeElapsed.ToString("0.00")+" s";
+            averageTimeElapsedForCorrectOnesText.text = playerStats.AverageTimeElapsedForCorrectOnes.ToString("0.00") + " s";
+            averageTimeElapsedForCorrectOnesWithCorrectlyColoredText.text = playerStats.AverageTimeElapsedForCorrectOnesWithCorrectlyColored.ToString("0.00") + " s";
+            averageTimeElapsedForCorrectOnesWithIncorrectlyColoredText.text = playerStats.AverageTimeElapsedForCorrectOnesWithIncorrectlyColored.ToString("0.00") + " s";
+            averageTimeElapsedForIncorrectOnesText.text = playerStats.AverageTimeElapsedForIncorrectOnes.ToString("0.00") + " s";
+            averageTimeElapsedForIncorrectOnesWithCorrectlyColoredText.text = playerStats.AverageTimeElapsedForIncorrectOnesWithCorrectlyColored.ToString("0.00") + " s";
+            averageTimeElapsedForIncorrectOnesWithIncorrectlyColoredText.text = playerStats.AverageTimeElapsedForIncorrectOnesWithIncorrectlyColored.ToString("0.00") + " s";
+            totalText.text = playerStats.Total.ToString();
+            totalCorrectText.text = playerStats.TotalCorrect.ToString();
+            totalCorrectWithCorrectlyColoredText.text = playerStats.TotalCorrectWithCorrectlyColored.ToString();
+            totalCorrectWithIncorrectlyColoredText.text = playerStats.TotalCorrectWithIncorrectlyColored.ToString();
+            totalIncorrectText.text = playerStats.TotalIncorrect.ToString();
+            totalIncorrectWithCorrectlyColoredText.text = playerStats.TotalIncorrectWithCorrectlyColored.ToString();
+            totalIncorrectWithIncorrectlyColoredText.text = playerStats.TotalIncorrectWithIncorrectlyColored.ToString();
+
+            //If no cpus, dont display misses
+            bool noCpus = statsList.Count <= 1;
+            totalMissedText.text = noCpus ? "-" : playerStats.TotalMissed.ToString();
+            totalMissedWithCorrectlyColoredText.text = noCpus ? "-" : playerStats.TotalMissedWithCorrectlyColored.ToString();
+            totalMissedWithIncorrectlyColoredText.text = noCpus ? "-" : playerStats.TotalMissedWithIncorrectlyColored.ToString();
         }
         else
         {
@@ -63,6 +107,20 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
+    private void ShowStatsContainer(bool show)
+    {
+
+        statsContainer.SetActive(show);
+        Array.ForEach(inGameUIGameObjects, ent => ent.SetActive(false));
+        Array.ForEach(pauseUIGameObjects, ent => ent.SetActive(!show));
+
+        if (cardGameObjects != null)
+            Array.ForEach(cardGameObjects, ent => ent.SetActive(false ));
+
+        Array.ForEach(scoreUIGameObjects, ent => ent.SetActive(!show));
+        
+    }
+
     private void ShowProperGameObjects(bool pause)
     {
         if (pause)
@@ -71,6 +129,9 @@ public class PauseMenu : MonoBehaviour
             Array.ForEach(cardGameObjects, ent => ent.SetActive(!pause));
         Array.ForEach(inGameUIGameObjects, ent => ent.SetActive(!pause));
         Array.ForEach(pauseUIGameObjects, ent => ent.SetActive(pause));
+        statsContainer.SetActive(false);
+        Array.ForEach(scoreUIGameObjects, ent => ent.SetActive(true));
+        
     }
 
     public void Restart()
@@ -81,6 +142,12 @@ public class PauseMenu : MonoBehaviour
     public void Quit()
     {
         SceneManager.LoadScene("Main");
+    }
+
+    public void BackFromStats()
+    {
+        ShowStatsContainer(false);
+        ShowProperGameObjects(true);
     }
 
 }

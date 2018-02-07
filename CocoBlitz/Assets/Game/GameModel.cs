@@ -20,7 +20,6 @@ public class GameModel : MonoBehaviour {
 
     private Player player;
     private CardUtil.EntityEnum? correctEntity = null;
-    private GameObject[] cardGameObjects;
 
     private float timer;
 
@@ -34,7 +33,6 @@ public class GameModel : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        cardGameObjects = GameObject.FindGameObjectsWithTag("Card");
         player = new Player();
        
 
@@ -64,7 +62,7 @@ public class GameModel : MonoBehaviour {
         gameOver = false;
         cardInDelay = false;
         roundSeperator.SetActive(false);
-        Array.ForEach(cardGameObjects, ent => ent.SetActive(false));
+        Array.ForEach(cards_2Entities, c => c.gameObject.SetActive(false));
         StartCoroutine(NewRoundWithDelay());
     }
     
@@ -76,8 +74,7 @@ public class GameModel : MonoBehaviour {
         Debug.Log("Generating card");
         Card card = cards_2Entities[UnityEngine.Random.Range(0, cards_2Entities.Length)];
 
-
-        Array.ForEach(cardGameObjects, ent => ent.SetActive(ent.GetComponent<Card>() == card));
+        Array.ForEach(cards_2Entities, c => c.gameObject.SetActive(c == card));
 
         CardUtil.EntityEnum[] allEntities = new CardUtil.EntityEnum[CardUtil.Entities_2Card.Count];
         CardUtil.Entities_2Card.CopyTo(allEntities);
