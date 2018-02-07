@@ -12,7 +12,7 @@ Coco Go! is a game about color recognition and reflexes for all ages. In this ga
 Cards are revealed one at a time where each one shows a picture of two items, either with one correctly colored or none. Try to pick the correct card! But which one?
 
 - If one item is correctly colored, such as a brown Coco and a red Chomp, then the correct item is Coco.
-- Otherwise, if both items are colored incorrectly, such as a red Chomp and blue banana, then the correct item is the one not represented physically or by color among the four details shown. With the example mentioned earlier, there is a red Chomp, so the red pillow and green Chomp are both represented. Similarly, there is a blue banana, so the blue shoe and the yellow banana are also represented.  The only item not represeted is the brown Coco, so that is the correct one!
+- Otherwise, if both items are colored incorrectly, such as a red Chomp and blue banana, then the correct item is the one not represented physically or by color among the four details shown. With the example mentioned earlier, there is a red Chomp, so the red pillow and green Chomp are both represented. Similarly, there is a blue banana, so the blue shoe and the yellow banana are also represented.  The only item not represented is the brown Coco, so that is the correct one!
 
 ## Meet the cast
 
