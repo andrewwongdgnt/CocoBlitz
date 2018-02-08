@@ -18,6 +18,7 @@ public class PauseMenu : MonoBehaviour
     private List<Statistics> statsList;
 
     public GameObject statsContainer;
+    public GameObject mainStatsContainer;
     public Text averageTimeElapsedText;
     public Text averageTimeElapsedForCorrectOnesText;
     public Text averageTimeElapsedForCorrectOnesWithCorrectlyColoredText;
@@ -36,11 +37,20 @@ public class PauseMenu : MonoBehaviour
     public Text totalMissedWithCorrectlyColoredText;
     public Text totalMissedWithIncorrectlyColoredText;
 
+    public GameObject statsPointContainer;
+    public Text timeElapsedText;
+    public Text correctEntityText;
+    public Text guessedEntityText;
+    public Text messageText;
+
+    private int statsIndex;
+    private Card card;
     void Start()
     {
         inGameUIGameObjects = GameObject.FindGameObjectsWithTag("In Game UI");
         pauseUIGameObjects = GameObject.FindGameObjectsWithTag("Pause UI");
         scoreUIGameObjects = GameObject.FindGameObjectsWithTag("Score UI");
+        statsIndex = 0;
         Pause(false);
     }
 
@@ -73,30 +83,9 @@ public class PauseMenu : MonoBehaviour
                 }
             );
             //EmailService.SendEmail(builder.ToString());
+           // statsIndex = 0;
             ShowStatsContainer(true);
-            //Assume first element is player
-            Statistics playerStats = statsList[0];
-
-            averageTimeElapsedText.text = playerStats.AverageTimeElapsed.ToString("0.00")+" s";
-            averageTimeElapsedForCorrectOnesText.text = playerStats.AverageTimeElapsedForCorrectOnes.ToString("0.00") + " s";
-            averageTimeElapsedForCorrectOnesWithCorrectlyColoredText.text = playerStats.AverageTimeElapsedForCorrectOnesWithCorrectlyColored.ToString("0.00") + " s";
-            averageTimeElapsedForCorrectOnesWithIncorrectlyColoredText.text = playerStats.AverageTimeElapsedForCorrectOnesWithIncorrectlyColored.ToString("0.00") + " s";
-            averageTimeElapsedForIncorrectOnesText.text = playerStats.AverageTimeElapsedForIncorrectOnes.ToString("0.00") + " s";
-            averageTimeElapsedForIncorrectOnesWithCorrectlyColoredText.text = playerStats.AverageTimeElapsedForIncorrectOnesWithCorrectlyColored.ToString("0.00") + " s";
-            averageTimeElapsedForIncorrectOnesWithIncorrectlyColoredText.text = playerStats.AverageTimeElapsedForIncorrectOnesWithIncorrectlyColored.ToString("0.00") + " s";
-            totalText.text = playerStats.Total.ToString();
-            totalCorrectText.text = playerStats.TotalCorrect.ToString();
-            totalCorrectWithCorrectlyColoredText.text = playerStats.TotalCorrectWithCorrectlyColored.ToString();
-            totalCorrectWithIncorrectlyColoredText.text = playerStats.TotalCorrectWithIncorrectlyColored.ToString();
-            totalIncorrectText.text = playerStats.TotalIncorrect.ToString();
-            totalIncorrectWithCorrectlyColoredText.text = playerStats.TotalIncorrectWithCorrectlyColored.ToString();
-            totalIncorrectWithIncorrectlyColoredText.text = playerStats.TotalIncorrectWithIncorrectlyColored.ToString();
-
-            //If no cpus, dont display misses
-            bool noCpus = statsList.Count <= 1;
-            totalMissedText.text = noCpus ? "-" : playerStats.TotalMissed.ToString();
-            totalMissedWithCorrectlyColoredText.text = noCpus ? "-" : playerStats.TotalMissedWithCorrectlyColored.ToString();
-            totalMissedWithIncorrectlyColoredText.text = noCpus ? "-" : playerStats.TotalMissedWithIncorrectlyColored.ToString();
+            
         }
         else
         {
@@ -115,10 +104,61 @@ public class PauseMenu : MonoBehaviour
         Array.ForEach(pauseUIGameObjects, ent => ent.SetActive(!show));
 
         if (cardGameObjects != null)
-            Array.ForEach(cardGameObjects, ent => ent.SetActive(false ));
+            Array.ForEach(cardGameObjects, ent => ent.SetActive(false));
 
         Array.ForEach(scoreUIGameObjects, ent => ent.SetActive(!show));
-        
+
+
+        if (card != null) { 
+            DestroyImmediate(card.gameObject);
+            card = null;
+        }
+
+        //Assume first element is player
+        Statistics playerStats = statsList[0];
+
+        if (show)
+        {
+            if (statsIndex == 0)
+            {
+                mainStatsContainer.SetActive(true);
+                statsPointContainer.SetActive(false);
+                averageTimeElapsedText.text = playerStats.AverageTimeElapsed.ToString("0.00") + " s";
+                averageTimeElapsedForCorrectOnesText.text = playerStats.AverageTimeElapsedForCorrectOnes.ToString("0.00") + " s";
+                averageTimeElapsedForCorrectOnesWithCorrectlyColoredText.text = playerStats.AverageTimeElapsedForCorrectOnesWithCorrectlyColored.ToString("0.00") + " s";
+                averageTimeElapsedForCorrectOnesWithIncorrectlyColoredText.text = playerStats.AverageTimeElapsedForCorrectOnesWithIncorrectlyColored.ToString("0.00") + " s";
+                averageTimeElapsedForIncorrectOnesText.text = playerStats.AverageTimeElapsedForIncorrectOnes.ToString("0.00") + " s";
+                averageTimeElapsedForIncorrectOnesWithCorrectlyColoredText.text = playerStats.AverageTimeElapsedForIncorrectOnesWithCorrectlyColored.ToString("0.00") + " s";
+                averageTimeElapsedForIncorrectOnesWithIncorrectlyColoredText.text = playerStats.AverageTimeElapsedForIncorrectOnesWithIncorrectlyColored.ToString("0.00") + " s";
+                totalText.text = playerStats.Total.ToString();
+                totalCorrectText.text = playerStats.TotalCorrect.ToString();
+                totalCorrectWithCorrectlyColoredText.text = playerStats.TotalCorrectWithCorrectlyColored.ToString();
+                totalCorrectWithIncorrectlyColoredText.text = playerStats.TotalCorrectWithIncorrectlyColored.ToString();
+                totalIncorrectText.text = playerStats.TotalIncorrect.ToString();
+                totalIncorrectWithCorrectlyColoredText.text = playerStats.TotalIncorrectWithCorrectlyColored.ToString();
+                totalIncorrectWithIncorrectlyColoredText.text = playerStats.TotalIncorrectWithIncorrectlyColored.ToString();
+
+                //If no cpus, dont display misses
+                bool noCpus = statsList.Count <= 1;
+                totalMissedText.text = noCpus ? "-" : playerStats.TotalMissed.ToString();
+                totalMissedWithCorrectlyColoredText.text = noCpus ? "-" : playerStats.TotalMissedWithCorrectlyColored.ToString();
+                totalMissedWithIncorrectlyColoredText.text = noCpus ? "-" : playerStats.TotalMissedWithIncorrectlyColored.ToString();
+            }
+            else
+            {
+                mainStatsContainer.SetActive(false);
+                statsPointContainer.SetActive(true);
+                StatisticsPoint statsPoint = playerStats.StatisticsList[statsIndex - 1];
+                card = Instantiate(statsPoint.Card);
+                card.gameObject.SetActive(true);
+
+                timeElapsedText.text = statsPoint.TimeElapsed.ToString("0.00") + " s";
+                correctEntityText.text = statsPoint.CorrectEntity.ToString();
+                guessedEntityText.text = statsPoint.GuessedEntity.ToString();
+                messageText.text = statsPoint.CorrectEntity == statsPoint.GuessedEntity ? "You Guessed Correctly!" : "You Guessed Incorrectly.";
+
+            }
+        }
     }
 
     private void ShowProperGameObjects(bool pause)
@@ -132,6 +172,7 @@ public class PauseMenu : MonoBehaviour
         statsContainer.SetActive(false);
         Array.ForEach(scoreUIGameObjects, ent => ent.SetActive(true));
         
+
     }
 
     public void Restart()
@@ -148,6 +189,37 @@ public class PauseMenu : MonoBehaviour
     {
         ShowStatsContainer(false);
         ShowProperGameObjects(true);
+    }
+
+    public void NextStats()
+    {
+        if (statsList != null) {
+
+            Statistics playerStats = statsList[0];
+
+            if (playerStats.StatisticsList.Count > statsIndex)
+            {
+                statsIndex++;
+                ShowStatsContainer(true);
+            }
+       }
+    }
+
+
+
+    public void PrevStats()
+    {
+        if (statsList != null)
+        {
+
+            Statistics playerStats = statsList[0];
+
+            if (statsIndex > 0)
+            {
+                statsIndex--;
+                ShowStatsContainer(true);
+            }
+        }
     }
 
 }

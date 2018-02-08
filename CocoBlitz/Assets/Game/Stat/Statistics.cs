@@ -8,7 +8,7 @@ public class Statistics {
 
     private string name;
 
-    private List<StatisticsPoint> statisticsList =  new List<StatisticsPoint>();
+    public List<StatisticsPoint> StatisticsList { get; private set; }
 
     private float startTime = 0 ;
     private Card card;
@@ -36,11 +36,12 @@ public class Statistics {
     public Statistics(string name)
     {
         this.name = name;
+        StatisticsList = new List<StatisticsPoint>();
     }
 
     public void Restart()
     {
-        statisticsList = new List<StatisticsPoint>();
+        StatisticsList = new List<StatisticsPoint>();
         startTime = 0;
 
         AverageTimeElapsed = 0;
@@ -73,7 +74,7 @@ public class Statistics {
     //Must be called after AddPickedCard
     public void AddMissed(CardUtil.EntityEnum correctEntity)
     {
-        statisticsList.Add(new StatisticsPoint(correctEntity, card, entityToColor, useCorrectColor));
+        StatisticsList.Add(new StatisticsPoint(correctEntity, card, entityToColor, useCorrectColor));
 
         TotalMissed++;
         if (useCorrectColor)
@@ -90,7 +91,7 @@ public class Statistics {
     public float AddGuess(float endTime, CardUtil.EntityEnum correctEntity, CardUtil.EntityEnum guessedEntity)
     {
         float timeElapsed = endTime - startTime;
-        statisticsList.Add(new StatisticsPoint(timeElapsed, correctEntity, guessedEntity, card, entityToColor, useCorrectColor));
+        StatisticsList.Add(new StatisticsPoint(timeElapsed, correctEntity, guessedEntity, card, entityToColor, useCorrectColor));
 
         Total++;
         AverageTimeElapsed = (AverageTimeElapsed * (Total - 1) + timeElapsed) / Total;
@@ -153,7 +154,7 @@ public class Statistics {
         builder.Append("=============================================\n");
 
         //stats per guess
-        statisticsList.ForEach(stat =>
+        StatisticsList.ForEach(stat =>
         {
 
             builder.Append("=============================================\n");
