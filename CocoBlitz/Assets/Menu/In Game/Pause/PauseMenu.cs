@@ -152,10 +152,18 @@ public class PauseMenu : MonoBehaviour
                 card = Instantiate(statsPoint.Card);
                 card.gameObject.SetActive(true);
 
-                timeElapsedText.text = statsPoint.TimeElapsed.ToString("0.00") + " s";
+                Array.ForEach(card.cardEntities, cardEntity =>
+                {
+
+                    CardUtil.ColorEnum color = statsPoint.EntityToColor[cardEntity.entity];
+                    cardEntity.spriteRenderer.color = CardUtil.ColorColorMap[color];
+                });
+                
+
+                timeElapsedText.text = statsPoint.Missed ? "-" : statsPoint.TimeElapsed.ToString("0.00") + " s";
                 correctEntityText.text = statsPoint.CorrectEntity.ToString();
-                guessedEntityText.text = statsPoint.GuessedEntity.ToString();
-                messageText.text = statsPoint.CorrectEntity == statsPoint.GuessedEntity ? "You Guessed Correctly!" : "You Guessed Incorrectly.";
+                guessedEntityText.text = statsPoint.Missed ? "Missed": statsPoint.GuessedEntity.ToString();
+                messageText.text = "Card " + statsIndex;
 
             }
         }
