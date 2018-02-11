@@ -190,6 +190,7 @@ public class PauseMenu : MonoBehaviour
 
     public void Quit()
     {
+        GameUtil.fromGame = true;
         SceneManager.LoadScene("Main");
     }
 

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -53,10 +54,11 @@ public class GamePage : MonoBehaviour, Page {
         Cpu.CHOMP.sprite = chompSprite;
         Cpu.COCO.sprite = cocoSprite;
 
+        List<int> cpusInPlay = GameSettingsUtil.GetCpusInPlayList();
 
-        cpu1Portrait.SetCpuDisplay(Cpu.NO_CPU, null);
-        cpu2Portrait.SetCpuDisplay(Cpu.NO_CPU, null);
-        cpu3Portrait.SetCpuDisplay(Cpu.NO_CPU, null);
+        SetCpu(0, cpusInPlay[0]);
+        SetCpu(1, cpusInPlay[1]);
+        SetCpu(2, cpusInPlay[2]);
 
         cpuPicker.Close(true);
     }
@@ -87,12 +89,22 @@ public class GamePage : MonoBehaviour, Page {
         cpuPicker.Open(this,cpuPortraitIndex, cpuIndexes[cpuPortraitIndex], allCpus);
         ShowNavArea(false);
     }
+    
 
-    public void UpdateCpuPortrait(int cpuPortraitIndex,int cpuIndex)
+    public void SetCpu(int cpuPortraitIndex,int cpuIndex)
     {
-        cpuIndexes[cpuPortraitIndex] = cpuIndex;
 
         Cpu cpu = allCpus[cpuIndex];
+
+        //Check if cpu is actually available
+        if (cpu!=null && cpuIndex!=0 && !GameProgressionUtil.GetCpuAvailability(cpu))
+        {
+            SetCpu(cpuPortraitIndex, 0);
+        }
+
+        cpuIndexes[cpuPortraitIndex] = cpuIndex;
+
+
         if (cpu != null && !GameProgressionUtil.GetCpuAvailability(cpu))
             return;
 
@@ -110,6 +122,8 @@ public class GamePage : MonoBehaviour, Page {
                 cpu3Portrait.SetCpuDisplay(name, sprite);
                 break;
         }
+
+        GameSettingsUtil.SetCpuInPlay(cpuPortraitIndex, cpuIndex);
     }
 
     public void ShowNavArea(bool show)

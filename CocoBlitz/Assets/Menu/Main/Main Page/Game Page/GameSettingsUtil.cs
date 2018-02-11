@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+using System;
 
 public class GameSettingsUtil  {
 
@@ -26,4 +28,53 @@ public class GameSettingsUtil  {
         return PlayerPrefs.HasKey(GO_GO_MODE_TIMER_KEY) ? PlayerPrefs.GetFloat(GO_GO_MODE_TIMER_KEY) : 10f;
     }
 
+
+    private readonly static string CPU_IN_PLAY_KEY = "CpuInPlayKey";
+
+    private readonly static int MAX_CPU_IN_PLAY_COUNT = 3;
+    private readonly static int TOTAL_CPUS_IN_EXISTENCE = 10;
+
+    public static void SetCpuInPlay(int cpuIndex, int cpuPickedIndex)
+    {
+        int resolvedCpuPickedIndex = ResolveCpuIndex(cpuPickedIndex);       
+
+        List<int> cpusInPlay = GetCpusInPlayList();
+        cpusInPlay[cpuIndex] = resolvedCpuPickedIndex;
+        string commaSeperatedListOfCpusInPlay =  string.Join(",", cpusInPlay.Select(e=> e.ToString()).ToArray());
+
+        PlayerPrefs.SetString(CPU_IN_PLAY_KEY, commaSeperatedListOfCpusInPlay);
+    }
+    public static List<int> GetCpusInPlayList()
+    {
+        string commaSeperatedListOfCpusInPlay = PlayerPrefs.GetString(CPU_IN_PLAY_KEY);
+        List<int> cpusInPlay = commaSeperatedListOfCpusInPlay.Split(',').Select(e => {
+
+            int value = 0;
+            Int32.TryParse(e, out value);
+
+            return ResolveCpuIndex(value);
+        }).ToList();
+        for (int i = 0; i< MAX_CPU_IN_PLAY_COUNT; i++)
+        {
+            if (cpusInPlay.Count <= i)
+            {
+                cpusInPlay.Add(0);
+            }
+        }
+
+       return cpusInPlay;
+    }
+
+    private static int ResolveCpuIndex(int cpuIndex)
+    {
+        if (cpuIndex < 0)
+        {
+            return 0;
+        }
+        else if (cpuIndex >= TOTAL_CPUS_IN_EXISTENCE)
+        {
+            return TOTAL_CPUS_IN_EXISTENCE - 1;
+        }
+        return cpuIndex;
+    }
 }

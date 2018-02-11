@@ -12,5 +12,7 @@ public class GameUtil  {
 
     public static List<Cpu> cpuList = new List<Cpu>();
 
+    public static bool fromGame = false;
+
 
 }

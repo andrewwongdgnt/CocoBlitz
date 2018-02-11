@@ -14,6 +14,11 @@ public class NavigationArea : MonoBehaviour {
     // Use this for initialization
     void Start () {
         ActivatePage(mainPage);
+        if (GameUtil.fromGame)
+        {
+            GameUtil.fromGame = false;
+            mainPage.SelectGameMode(GameUtil.currentGameMode);
+        }
     }
 
 
