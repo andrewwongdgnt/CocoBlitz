@@ -77,4 +77,20 @@ public class GameSettingsUtil  {
         }
         return cpuIndex;
     }
+
+
+
+    private readonly static string GAME_TYPE_KEY = "GameTypeKey";
+    public readonly static string GAME_TYPE_SINGLE_PLAYER = "GameTypeSinglePlayer";
+    public readonly static string GAME_TYPE_TWO_PLAYERS = "GameTypeTwoPlayers";
+
+    public static void SetGameTypeKey(string value)
+    {
+        PlayerPrefs.SetString(GAME_TYPE_KEY, value);
+    }
+    public static string GetGameTypeKey()
+    {
+        string gameTypeString = PlayerPrefs.HasKey(GAME_TYPE_KEY) ? PlayerPrefs.GetString(GAME_TYPE_KEY) : GAME_TYPE_SINGLE_PLAYER;
+        return gameTypeString == GAME_TYPE_SINGLE_PLAYER || gameTypeString == GAME_TYPE_TWO_PLAYERS ? gameTypeString : GAME_TYPE_SINGLE_PLAYER;
+    }
 }
