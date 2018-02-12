@@ -31,8 +31,8 @@ public class GameSettingsUtil  {
 
     private readonly static string CPU_IN_PLAY_KEY = "CpuInPlayKey";
 
-    private readonly static int MAX_CPU_IN_PLAY_COUNT = 3;
-    private readonly static int TOTAL_CPUS_IN_EXISTENCE = 10;
+    public readonly static int MAX_CPU_IN_PLAY_COUNT = 3;
+    public readonly static int TOTAL_CPUS_IN_EXISTENCE = 10;
 
     public static void SetCpuInPlay(int cpuIndex, int cpuPickedIndex)
     {

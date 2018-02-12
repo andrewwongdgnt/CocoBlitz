@@ -18,7 +18,7 @@ public class GameModel : MonoBehaviour {
     public GameObject roundSeperator;
     public Text delayValue;
 
-    private Player player;
+    private Player player1;
     private CardUtil.EntityEnum? correctEntity = null;
 
     private float timer;
@@ -33,12 +33,9 @@ public class GameModel : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        player = new Player();
-       
+        player1 = Player.PLAYER_1;
 
         Begin();
-
-
     }
 
     private void Begin()
@@ -47,10 +44,10 @@ public class GameModel : MonoBehaviour {
         showingGameOverMenu = false;
         cpuCoroutines.Clear();
         timer = GameUtil.currentGameMode == GameUtil.GameModeEnum.GoGo ? GameUtil.timer : 0f;
-        player.Stats.Restart();
-        player.finalScore = 0;
-        player.points = 0;
-        player.penalties = 0;
+        player1.Stats.Restart();
+        player1.finalScore = 0;
+        player1.points = 0;
+        player1.penalties = 0;
         GameUtil.cpuList.ForEach(cpu =>
         {
             cpu.Stats.Restart();
@@ -144,7 +141,7 @@ public class GameModel : MonoBehaviour {
 
         float time = Time.time;
 
-        player.Stats.AddPickedCard(time, card, entityToColor, useCorrectColor);
+        player1.Stats.AddPickedCard(time, card, entityToColor, useCorrectColor);
         GameUtil.cpuList.ForEach(cpu =>
         {
             cpu.Stats.AddPickedCard(time, card, entityToColor, useCorrectColor);
@@ -152,7 +149,7 @@ public class GameModel : MonoBehaviour {
 
         //Cpu starts guessing
 
-        player.guessed = false;
+        player1.guessed = false;
         GameUtil.cpuList.ForEach(cpu =>
         {
             cpu.guessed = false;
@@ -207,7 +204,7 @@ public class GameModel : MonoBehaviour {
         if (gameOver || cardInDelay)
             return;
 
-        Participant participant = _participant == null ? player : _participant;
+        Participant participant = _participant == null ? player1 : _participant;
         participant.guessed = true;
         float timeToGuess = participant.Stats.AddGuess(Time.time, correctEntity.Value, entity);
 
@@ -219,9 +216,9 @@ public class GameModel : MonoBehaviour {
             cpuCoroutines.ForEach(co => StopCoroutine(co));
             cpuCoroutines.Clear();
 
-            if (participant != player && !player.guessed)
+            if (participant != player1 && !player1.guessed)
             {
-                player.Stats.AddMissed(correctEntity.Value);
+                player1.Stats.AddMissed(correctEntity.Value);
             }
             GameUtil.cpuList.ForEach(cpu => {
                 if (participant != cpu && !cpu.guessed)
@@ -230,7 +227,7 @@ public class GameModel : MonoBehaviour {
                 }
             });
 
-            if (participant == player)
+            if (participant == player1)
             {
                 if (correctEntity == CardUtil.EntityEnum.Coco)
                 { 
@@ -251,7 +248,7 @@ public class GameModel : MonoBehaviour {
         UpdateScoresText();
 
         CheckForGameOver();
-        if (!gameOver && (entity == correctEntity || (player.guessed && GameUtil.cpuList.All(cpu => cpu.guessed))))
+        if (!gameOver && (entity == correctEntity || (player1.guessed && GameUtil.cpuList.All(cpu => cpu.guessed))))
         {
             StartCoroutine(NewRoundWithDelay());
             
@@ -280,7 +277,7 @@ public class GameModel : MonoBehaviour {
 
     private void UpdateScoresText()
     {
-        playerScoreText.text = player.finalScore.ToString();
+        playerScoreText.text = player1.finalScore.ToString();
         cpu1ScoreText.text = GameUtil.cpuList.Count > 0 ? GameUtil.cpuList[0].finalScore.ToString() : "-";
         cpu2ScoreText.text = GameUtil.cpuList.Count > 1 ? GameUtil.cpuList[1].finalScore.ToString() : "-";
         cpu3ScoreText.text = GameUtil.cpuList.Count > 2 ? GameUtil.cpuList[2].finalScore.ToString() : "-";
@@ -290,7 +287,7 @@ public class GameModel : MonoBehaviour {
     {
         if (GameUtil.currentGameMode == GameUtil.GameModeEnum.Coco)
         {
-            if (player.finalScore >= GameUtil.pointsToReach || GameUtil.cpuList.Any(cpu => cpu.finalScore>= GameUtil.pointsToReach))
+            if (player1.finalScore >= GameUtil.pointsToReach || GameUtil.cpuList.Any(cpu => cpu.finalScore>= GameUtil.pointsToReach))
                 gameOver = true;
         }
         else if (GameUtil.currentGameMode == GameUtil.GameModeEnum.GoGo)
@@ -340,7 +337,7 @@ public class GameModel : MonoBehaviour {
     private void ShowGameOverMenu()
     {
         List<Statistics> statsList = new List<Statistics>();
-        statsList.Add(player.Stats);
+        statsList.Add(player1.Stats);
         statsList.AddRange(GameUtil.cpuList.Select(cpu => cpu.Stats));
         pauseMenu.GameOver(statsList);
     }

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class CpuPortrait : MonoBehaviour
 {
+    public Button button;
     public Image portrait;
     public Text nameText;
 
@@ -15,6 +16,7 @@ public class CpuPortrait : MonoBehaviour
         Color tempColor = portrait.color;
         tempColor.a = sprite == null ? 0 : 1;
         portrait.color = tempColor;
+        button.interactable = true;
     }
     
 }

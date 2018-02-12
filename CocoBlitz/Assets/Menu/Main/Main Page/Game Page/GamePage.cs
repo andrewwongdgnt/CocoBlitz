@@ -28,28 +28,19 @@ public class GamePage : MonoBehaviour, Page {
     public Sprite chompSprite;
     public Sprite cocoSprite;
 
+    public Sprite player2Sprite;
+
     public CpuPicker cpuPicker;
     public NavigationArea navArea;
     public GameObject titleArea;
-
-    public Button cpu1Button;
-    public Image cpu1PortaitImage;
-    public Text cpu1NameText;
-
-    public Button cpu2Button;
-    public Image cpu2PortaitImage;
-    public Text cpu2NameText;
-
-    public Button cpu3Button;
-    public Image cpu3PortaitImage;
-    public Text cpu3NameText;
+    
 
     public Toggle singlePlayerToggle;
     public Toggle twoPlayersToggle;
 
     List<Cpu> allCpus;
 
-    private int[] cpuIndexes = new int[3];
+    private int[] cpuIndexes = new int[GameSettingsUtil.MAX_CPU_IN_PLAY_COUNT];
     // Use this for initialization
     void Start () {
         allCpus = new List<Cpu>() { null, Cpu.KELSEY, Cpu.ANDREW, Cpu.MONKEY, Cpu.PENGUIN };
@@ -155,10 +146,10 @@ public class GamePage : MonoBehaviour, Page {
         GameUtil.timer = timer;
 
         GameUtil.cpuList.Clear();
-        if (cpuIndexes[0] > 0)
+        if (GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_SINGLE_PLAYER && cpuIndexes[0] > 0)
         {
             GameUtil.cpuList.Add(allCpus[cpuIndexes[0]].RebuildToPlay());
-        }
+        } 
         if (cpuIndexes[1] > 0)
         {
             GameUtil.cpuList.Add(allCpus[cpuIndexes[1]].RebuildToPlay());
@@ -193,19 +184,32 @@ public class GamePage : MonoBehaviour, Page {
 
     public void SetGameTypeAsSinglePlayer(bool value)
     {
-        UpdateCpuPortaitAppearance(cpu1Button, cpu1PortaitImage, cpu1NameText, 0, value);
-        UpdateCpuPortaitAppearance(cpu2Button, cpu2PortaitImage, cpu2NameText, 1, value);
-        UpdateCpuPortaitAppearance(cpu3Button, cpu3PortaitImage, cpu3NameText, 2, value);
+        if (!value)
+        {
+            UpdateCpu1PortaitToPlayer2(cpu1Portrait);
+        }
+        else
+        {
+            List<int> cpusInPlay = GameSettingsUtil.GetCpusInPlayList();
+            SetCpu(0, cpusInPlay[0]);
+        }
+       // UpdateCpuPortaitAppearance(cpu2Portrait, 1, value);
+       // UpdateCpuPortaitAppearance(cpu3Portrait, 2, value);
         GameSettingsUtil.SetGameTypeKey(value ? GameSettingsUtil.GAME_TYPE_SINGLE_PLAYER : GameSettingsUtil.GAME_TYPE_TWO_PLAYERS);
     }
 
-    private void UpdateCpuPortaitAppearance(Button cpuButton, Image cpuPortaitImage, Text cpuNameText, int cpuIndex, bool value)
+    private void UpdateCpu1PortaitToPlayer2(CpuPortrait cpuPortrait)
     {
 
-        cpuButton.interactable = value;
-        byte alpha = (byte)(cpuIndexes[cpuIndex] == 0 ? 0 : 255);
-        cpuPortaitImage.color = value ? new Color32(255, 255, 225, alpha) : new Color32(0, 0, 0, alpha);
-        cpuNameText.color = value ? new Color32(255, 255, 225, 255) : new Color32(0, 0, 0, 255);
+
+        cpuPortrait.button.interactable = false;
+        cpuPortrait.portrait.sprite = player2Sprite;
+        Color tempColor = cpuPortrait.portrait.color;
+        tempColor.a = 1;
+        cpuPortrait.portrait.color = tempColor;
+        cpuPortrait.nameText.text = Player.PLAYER_2.name;
+
+
     }
 
 }
