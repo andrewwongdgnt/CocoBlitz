@@ -10,9 +10,13 @@ public class GameModel : MonoBehaviour {
 
     public Card[] cards_2Entities;
     public Text playerScoreText;
+    public Text playerNameText;
     public Text cpu1ScoreText;
+    public Text cpu1NameText;
     public Text cpu2ScoreText;
+    public Text cpu2NameText;
     public Text cpu3ScoreText;
+    public Text cpu3NameText;
     public Text timerText;
     public PauseMenu pauseMenu;
     public GameObject roundSeperator;
@@ -34,22 +38,21 @@ public class GameModel : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        player1 = (Player)Player.PLAYER_1.RebuildToPlay();
-        player2 = (Player)Player.PLAYER_2.RebuildToPlay();
-
-        Begin();
-    }
-
-    private void Begin()
-    {
+       
         Debug.Log("Game Begins");
         showingGameOverMenu = false;
         cpuCoroutines.Clear();
         timer = GameUtil.currentGameMode == GameUtil.GameModeEnum.GoGo ? GameUtil.timer : 0f;
+
+        player1 = (Player)Player.PLAYER_1.RebuildToPlay();
         player1.Stats.Restart();
         player1.finalScore = 0;
         player1.points = 0;
         player1.penalties = 0;
+        if (GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_SINGLE_PLAYER)
+            player1.SetNewName(Player.SINGLE_PLAYER_NAME);
+
+        player2 = (Player)Player.PLAYER_2.RebuildToPlay();
         if (GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_TWO_PLAYERS)
         {
             player2.Stats.Restart();
@@ -64,7 +67,7 @@ public class GameModel : MonoBehaviour {
             cpu.points = 0;
             cpu.penalties = 0;
         });
-        UpdateScoresText();
+        UpdateScoresAndNameText();
         gameOver = false;
         cardInDelay = false;
         roundSeperator.SetActive(false);
@@ -276,7 +279,7 @@ public class GameModel : MonoBehaviour {
         }
         
         participant.finalScore = participant.points - participant.penalties;
-        UpdateScoresText();
+        UpdateScoresAndNameText();
 
         CheckForGameOver();
         bool player2Guessed = GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_TWO_PLAYERS && player2.guessed;
@@ -306,9 +309,10 @@ public class GameModel : MonoBehaviour {
         cardInDelay = false;
     }
 
-    private void UpdateScoresText()
+    private void UpdateScoresAndNameText()
     {
         playerScoreText.text = player1.finalScore.ToString();
+        playerNameText.text = player1.name;
 
         string cpu1Score = GameUtil.cpuList.Count > 0 ? GameUtil.cpuList[0].finalScore.ToString() : "-";
         string cpu2Score = GameUtil.cpuList.Count > 1 ? GameUtil.cpuList[1].finalScore.ToString() : "-";
@@ -317,14 +321,20 @@ public class GameModel : MonoBehaviour {
         if (GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_TWO_PLAYERS)
         {
             cpu1ScoreText.text = player2.finalScore.ToString();
+            cpu1NameText.text = player2.name;
             cpu2ScoreText.text = cpu1Score;
+            cpu2NameText.text = GameUtil.cpuList.Count > 0 ? GameUtil.cpuList[0].name : "";
             cpu3ScoreText.text = cpu2Score;
+            cpu3NameText.text = GameUtil.cpuList.Count > 1 ? GameUtil.cpuList[1].name : "";
         }
         else
         {
             cpu1ScoreText.text =  cpu1Score;
+            cpu1NameText.text = GameUtil.cpuList.Count > 0 ? GameUtil.cpuList[0].name : "";
             cpu2ScoreText.text = cpu2Score;
+            cpu2NameText.text = GameUtil.cpuList.Count > 1 ? GameUtil.cpuList[1].name : "";
             cpu3ScoreText.text = cpu3Score;
+            cpu3NameText.text = GameUtil.cpuList.Count > 2 ? GameUtil.cpuList[2].name : "";
         }
     }
 

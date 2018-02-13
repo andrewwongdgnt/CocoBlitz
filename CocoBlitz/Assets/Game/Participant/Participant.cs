@@ -9,7 +9,7 @@ public abstract class Participant  {
     public int penalties { get; set; }
     public int finalScore { get; set; }
 
-    public string name { get; private set; }
+    public string name { get; protected set; }
     public bool guessed { get; set; }
 
     public Statistics Stats { get; private set; }
