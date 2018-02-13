@@ -207,32 +207,52 @@ public class PauseMenu : MonoBehaviour
         ShowProperGameObjects(true);
     }
 
-    public void NextStats()
+    public void StepStats(int step)
     {
         if (statsList != null) {
 
             Statistics playerStats = statsList[0];
 
-            if (playerStats.StatisticsList.Count > statsIndex)
+            if (step > 0)
             {
-                statsIndex++;
-                ShowStatsContainer(true);
+                if (playerStats.StatisticsList.Count >= statsIndex + step)
+                {
+                    statsIndex += step;
+                    ShowStatsContainer(true);
+                }
+                else
+                {
+                    EndStats(true);
+                }
+            }
+            else
+            {
+
+                if (0 <= statsIndex + step)
+                {
+                    statsIndex += step;
+                    ShowStatsContainer(true);
+                }
+                else
+                {
+                    EndStats(false);
+                }
             }
        }
     }
 
-
-
-    public void PrevStats()
+    //last or first
+    public void EndStats(bool last)
     {
         if (statsList != null)
         {
-
             Statistics playerStats = statsList[0];
+            int calculatedStatsIndex = last ? playerStats.StatisticsList.Count : 0;
 
-            if (statsIndex > 0)
+            //If there is a change in the statsIndex
+            if (calculatedStatsIndex - statsIndex != 0)
             {
-                statsIndex--;
+                statsIndex = calculatedStatsIndex;
                 ShowStatsContainer(true);
             }
         }
