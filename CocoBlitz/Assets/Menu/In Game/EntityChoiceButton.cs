@@ -12,4 +12,8 @@ public class EntityChoiceButton : MonoBehaviour {
     {
         gameModel.Guess(entity);
     }
+    public void GuessForPlayer2()
+    {
+        gameModel.GuessForPlayer2(entity);
+    }
 }

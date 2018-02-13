@@ -19,6 +19,7 @@ public class GameModel : MonoBehaviour {
     public Text delayValue;
 
     private Player player1;
+    private Player player2;
     private CardUtil.EntityEnum? correctEntity = null;
 
     private float timer;
@@ -33,7 +34,8 @@ public class GameModel : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        player1 = Player.PLAYER_1;
+        player1 = (Player)Player.PLAYER_1.RebuildToPlay();
+        player2 = (Player)Player.PLAYER_2.RebuildToPlay();
 
         Begin();
     }
@@ -48,6 +50,13 @@ public class GameModel : MonoBehaviour {
         player1.finalScore = 0;
         player1.points = 0;
         player1.penalties = 0;
+        if (GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_TWO_PLAYERS)
+        {
+            player2.Stats.Restart();
+            player2.finalScore = 0;
+            player2.points = 0;
+            player2.penalties = 0;
+        }
         GameUtil.cpuList.ForEach(cpu =>
         {
             cpu.Stats.Restart();
@@ -142,18 +151,23 @@ public class GameModel : MonoBehaviour {
         float time = Time.time;
 
         player1.Stats.AddPickedCard(time, card, entityToColor, useCorrectColor);
+        player1.guessed = false;
+        if (GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_TWO_PLAYERS)
+        {
+            player2.Stats.AddPickedCard(time, card, entityToColor, useCorrectColor);
+            player2.guessed = false;
+        }
+
         GameUtil.cpuList.ForEach(cpu =>
         {
             cpu.Stats.AddPickedCard(time, card, entityToColor, useCorrectColor);
         });
-
-        //Cpu starts guessing
-
-        player1.guessed = false;
         GameUtil.cpuList.ForEach(cpu =>
         {
             cpu.guessed = false;
         });
+
+        //Cpu starts guessing
         GameUtil.cpuList.ForEach(cpu =>
         {
             cpuCoroutines.Add(StartCoroutine(CpuGuess(cpu, useCorrectColor)));
@@ -199,12 +213,20 @@ public class GameModel : MonoBehaviour {
         Guess(entityToGuess, cpu);
     }
 
+    public void GuessForPlayer2(CardUtil.EntityEnum entity)
+    {
+        Guess(entity, player2);
+    }
+
     public void Guess(CardUtil.EntityEnum entity, Participant _participant=null)
     {
         if (gameOver || cardInDelay)
             return;
 
         Participant participant = _participant == null ? player1 : _participant;
+        if (participant.guessed)
+            return;
+
         participant.guessed = true;
         float timeToGuess = participant.Stats.AddGuess(Time.time, correctEntity.Value, entity);
 
@@ -220,6 +242,10 @@ public class GameModel : MonoBehaviour {
             {
                 player1.Stats.AddMissed(correctEntity.Value);
             }
+            if (GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_TWO_PLAYERS && participant != player2 && player2.guessed)
+            {
+                player2.Stats.AddMissed(correctEntity.Value);
+            }
             GameUtil.cpuList.ForEach(cpu => {
                 if (participant != cpu && !cpu.guessed)
                 {
@@ -227,7 +253,7 @@ public class GameModel : MonoBehaviour {
                 }
             });
 
-            if (participant == player1)
+            if (participant == player1 || (GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_TWO_PLAYERS && participant == player2))
             {
                 if (correctEntity == CardUtil.EntityEnum.Coco)
                 { 
@@ -240,18 +266,23 @@ public class GameModel : MonoBehaviour {
             }
 
         }
-        else
+        else if (SettingsUtil.IsPenaltiesAllowed())
         {
             participant.penalties++;
+            if (participant.points - participant.penalties<0 && !SettingsUtil.IsNegativeScoresAllowed())
+            {
+                participant.penalties--;
+            }
         }
+        
         participant.finalScore = participant.points - participant.penalties;
         UpdateScoresText();
 
         CheckForGameOver();
-        if (!gameOver && (entity == correctEntity || (player1.guessed && GameUtil.cpuList.All(cpu => cpu.guessed))))
+        bool player2Guessed = GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_TWO_PLAYERS && player2.guessed;
+        if (!gameOver && (entity == correctEntity || ((GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_SINGLE_PLAYER || player2Guessed) && player1.guessed && GameUtil.cpuList.All(cpu => cpu.guessed))))
         {
-            StartCoroutine(NewRoundWithDelay());
-            
+            StartCoroutine(NewRoundWithDelay());            
         }
     }
 
@@ -278,16 +309,32 @@ public class GameModel : MonoBehaviour {
     private void UpdateScoresText()
     {
         playerScoreText.text = player1.finalScore.ToString();
-        cpu1ScoreText.text = GameUtil.cpuList.Count > 0 ? GameUtil.cpuList[0].finalScore.ToString() : "-";
-        cpu2ScoreText.text = GameUtil.cpuList.Count > 1 ? GameUtil.cpuList[1].finalScore.ToString() : "-";
-        cpu3ScoreText.text = GameUtil.cpuList.Count > 2 ? GameUtil.cpuList[2].finalScore.ToString() : "-";
+
+        string cpu1Score = GameUtil.cpuList.Count > 0 ? GameUtil.cpuList[0].finalScore.ToString() : "-";
+        string cpu2Score = GameUtil.cpuList.Count > 1 ? GameUtil.cpuList[1].finalScore.ToString() : "-";
+        string cpu3Score = GameUtil.cpuList.Count > 2 ? GameUtil.cpuList[2].finalScore.ToString() : "-";
+
+        if (GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_TWO_PLAYERS)
+        {
+            cpu1ScoreText.text = player2.finalScore.ToString();
+            cpu2ScoreText.text = cpu1Score;
+            cpu3ScoreText.text = cpu2Score;
+        }
+        else
+        {
+            cpu1ScoreText.text =  cpu1Score;
+            cpu2ScoreText.text = cpu2Score;
+            cpu3ScoreText.text = cpu3Score;
+        }
     }
 
     private void CheckForGameOver()
     {
         if (GameUtil.currentGameMode == GameUtil.GameModeEnum.Coco)
         {
-            if (player1.finalScore >= GameUtil.pointsToReach || GameUtil.cpuList.Any(cpu => cpu.finalScore>= GameUtil.pointsToReach))
+            if (player1.finalScore >= GameUtil.pointsToReach 
+                || (GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_TWO_PLAYERS && player2.finalScore >= GameUtil.pointsToReach)
+                || GameUtil.cpuList.Any(cpu => cpu.finalScore>= GameUtil.pointsToReach))
                 gameOver = true;
         }
         else if (GameUtil.currentGameMode == GameUtil.GameModeEnum.GoGo)
@@ -317,7 +364,7 @@ public class GameModel : MonoBehaviour {
         CheckForGameOver();
         if (!gameOver)
         {
-            timerText.color = new Color32(150, 150, 150, 255);
+            timerText.color = new Color32(255, 255, 255, 255);
         }
         else
         {
@@ -338,6 +385,10 @@ public class GameModel : MonoBehaviour {
     {
         List<Statistics> statsList = new List<Statistics>();
         statsList.Add(player1.Stats);
+        if (GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_TWO_PLAYERS)
+        {
+            statsList.Add(player2.Stats);
+        }
         statsList.AddRange(GameUtil.cpuList.Select(cpu => cpu.Stats));
         pauseMenu.GameOver(statsList);
     }

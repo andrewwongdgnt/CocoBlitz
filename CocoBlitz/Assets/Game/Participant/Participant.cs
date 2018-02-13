@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Participant  {
+public abstract class Participant  {
 
 
     public int points { get; set; }
@@ -20,6 +20,8 @@ public class Participant  {
         Stats = new Statistics(name);
     }
 
-    
+    public abstract Participant RebuildToPlay();
+
+
 
 }

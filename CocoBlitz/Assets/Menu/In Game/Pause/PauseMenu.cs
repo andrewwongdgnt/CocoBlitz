@@ -43,10 +43,17 @@ public class PauseMenu : MonoBehaviour
     public Text guessedEntityText;
     public Text messageText;
 
+    public GameObject singlePlayerGroup;
+    public GameObject twoPlayersGroup;
+
     private int statsIndex;
     private Card card;
     void Start()
     {
+
+        singlePlayerGroup.SetActive(GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_SINGLE_PLAYER);
+        twoPlayersGroup.SetActive(GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_TWO_PLAYERS);
+
         inGameUIGameObjects = GameObject.FindGameObjectsWithTag("In Game UI");
         pauseUIGameObjects = GameObject.FindGameObjectsWithTag("Pause UI");
         scoreUIGameObjects = GameObject.FindGameObjectsWithTag("Score UI");

@@ -125,7 +125,7 @@ public class Cpu : Participant
         this.starter = starter;
     }
 
-    public Cpu RebuildToPlay()
+    public override Participant RebuildToPlay()
     {
         return new Builder()
         .Name(name)

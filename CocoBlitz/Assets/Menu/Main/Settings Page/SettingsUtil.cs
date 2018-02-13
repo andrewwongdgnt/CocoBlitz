@@ -37,4 +37,26 @@ public class SettingsUtil
         return PlayerPrefs.HasKey(CARD_DELAY_KEY) ? PlayerPrefs.GetFloat(CARD_DELAY_KEY) : 1.5f;
     }
 
+    private readonly static string PENALTIES_ALLOWED_KEY = "PenaltiesAllowedKey";
+
+    public static void SetPenaltiesAllowed(bool value)
+    {
+        PlayerPrefs.SetInt(PENALTIES_ALLOWED_KEY, value ? 1 :0);
+    }
+    public static bool IsPenaltiesAllowed()
+    {
+        return PlayerPrefs.HasKey(PENALTIES_ALLOWED_KEY) ? PlayerPrefs.GetInt(PENALTIES_ALLOWED_KEY)==1 : true;
+    }
+
+    private readonly static string NEGATIVE_SCORES_ALLOWED_KEY = "NegativeScoresAllowedKey";
+
+    public static void SetNegativeScoresAllowed(bool value)
+    {
+        PlayerPrefs.SetInt(NEGATIVE_SCORES_ALLOWED_KEY, value ? 1 : 0);
+    }
+    public static bool IsNegativeScoresAllowed()
+    {
+        return PlayerPrefs.HasKey(NEGATIVE_SCORES_ALLOWED_KEY) ? PlayerPrefs.GetInt(NEGATIVE_SCORES_ALLOWED_KEY) == 1 : true;
+    }
+
 }

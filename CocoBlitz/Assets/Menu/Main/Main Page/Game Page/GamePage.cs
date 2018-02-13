@@ -148,15 +148,15 @@ public class GamePage : MonoBehaviour, Page {
         GameUtil.cpuList.Clear();
         if (GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_SINGLE_PLAYER && cpuIndexes[0] > 0)
         {
-            GameUtil.cpuList.Add(allCpus[cpuIndexes[0]].RebuildToPlay());
+            GameUtil.cpuList.Add((Cpu)allCpus[cpuIndexes[0]].RebuildToPlay());
         } 
         if (cpuIndexes[1] > 0)
         {
-            GameUtil.cpuList.Add(allCpus[cpuIndexes[1]].RebuildToPlay());
+            GameUtil.cpuList.Add((Cpu)allCpus[cpuIndexes[1]].RebuildToPlay());
         }
         if (cpuIndexes[2] > 0)
         {
-            GameUtil.cpuList.Add(allCpus[cpuIndexes[2]].RebuildToPlay());
+            GameUtil.cpuList.Add((Cpu)allCpus[cpuIndexes[2]].RebuildToPlay());
         }
 
         SceneManager.LoadScene("Game");

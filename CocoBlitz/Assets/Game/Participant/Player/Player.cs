@@ -10,5 +10,10 @@ public class Player : Participant {
 
     }
 
+    public override Participant RebuildToPlay()
+    {
+        return new Player(name);
+    }
+
 
 }
