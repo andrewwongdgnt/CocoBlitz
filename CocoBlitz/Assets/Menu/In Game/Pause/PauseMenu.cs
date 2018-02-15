@@ -11,11 +11,13 @@ public class PauseMenu : MonoBehaviour
 
     public Text resumeStats_txt;
 
-    private GameObject[] cardGameObjects;
-    private GameObject[] inGameUIGameObjects;
-    private GameObject[] pauseUIGameObjects;
-    private GameObject[] scoreUIGameObjects;
+
+    public GameObject cardContainer;
+    public GameObject inGameUiContainer;
+    public GameObject pauseUiContainer;
+    public GameObject scoreUiContainer;
     private List<Statistics> statsList;
+
 
     public GameObject statsContainer;
     public GameObject mainStatsContainer;
@@ -53,10 +55,7 @@ public class PauseMenu : MonoBehaviour
 
         singlePlayerGroup.SetActive(GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_SINGLE_PLAYER);
         twoPlayersGroup.SetActive(GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_TWO_PLAYERS);
-
-        inGameUIGameObjects = GameObject.FindGameObjectsWithTag("In Game UI");
-        pauseUIGameObjects = GameObject.FindGameObjectsWithTag("Pause UI");
-        scoreUIGameObjects = GameObject.FindGameObjectsWithTag("Score UI");
+        
         statsIndex = 0;
         Pause(false);
     }
@@ -107,13 +106,11 @@ public class PauseMenu : MonoBehaviour
     {
 
         statsContainer.SetActive(show);
-        Array.ForEach(inGameUIGameObjects, ent => ent.SetActive(false));
-        Array.ForEach(pauseUIGameObjects, ent => ent.SetActive(!show));
-
-        if (cardGameObjects != null)
-            Array.ForEach(cardGameObjects, ent => ent.SetActive(false));
-
-        Array.ForEach(scoreUIGameObjects, ent => ent.SetActive(!show));
+        inGameUiContainer.SetActive(false);
+        pauseUiContainer.SetActive(!show);
+        cardContainer.SetActive(false);
+        scoreUiContainer.SetActive(!show);
+        
 
 
         if (card != null) { 
@@ -130,13 +127,13 @@ public class PauseMenu : MonoBehaviour
             {
                 mainStatsContainer.SetActive(true);
                 statsPointContainer.SetActive(false);
-                averageTimeElapsedText.text = playerStats.AverageTimeElapsed.ToString("0.00") + " s";
-                averageTimeElapsedForCorrectOnesText.text = playerStats.AverageTimeElapsedForCorrectOnes.ToString("0.00") + " s";
-                averageTimeElapsedForCorrectOnesWithCorrectlyColoredText.text = playerStats.AverageTimeElapsedForCorrectOnesWithCorrectlyColored.ToString("0.00") + " s";
-                averageTimeElapsedForCorrectOnesWithIncorrectlyColoredText.text = playerStats.AverageTimeElapsedForCorrectOnesWithIncorrectlyColored.ToString("0.00") + " s";
-                averageTimeElapsedForIncorrectOnesText.text = playerStats.AverageTimeElapsedForIncorrectOnes.ToString("0.00") + " s";
-                averageTimeElapsedForIncorrectOnesWithCorrectlyColoredText.text = playerStats.AverageTimeElapsedForIncorrectOnesWithCorrectlyColored.ToString("0.00") + " s";
-                averageTimeElapsedForIncorrectOnesWithIncorrectlyColoredText.text = playerStats.AverageTimeElapsedForIncorrectOnesWithIncorrectlyColored.ToString("0.00") + " s";
+                averageTimeElapsedText.text = playerStats.Total == 0 ? "-" : playerStats.AverageTimeElapsed.ToString("0.00") + " s";
+                averageTimeElapsedForCorrectOnesText.text = playerStats.TotalCorrect == 0 ? "-" : playerStats.AverageTimeElapsedForCorrectOnes.ToString("0.00") + " s";
+                averageTimeElapsedForCorrectOnesWithCorrectlyColoredText.text = playerStats.TotalCorrectWithCorrectlyColored == 0 ? "-" : playerStats.AverageTimeElapsedForCorrectOnesWithCorrectlyColored.ToString("0.00") + " s";
+                averageTimeElapsedForCorrectOnesWithIncorrectlyColoredText.text = playerStats.TotalCorrectWithIncorrectlyColored == 0 ? "-" : playerStats.AverageTimeElapsedForCorrectOnesWithIncorrectlyColored.ToString("0.00") + " s";
+                averageTimeElapsedForIncorrectOnesText.text = playerStats.TotalIncorrect==0 ? "-" : playerStats.AverageTimeElapsedForIncorrectOnes.ToString("0.00") + " s";
+                averageTimeElapsedForIncorrectOnesWithCorrectlyColoredText.text = playerStats.TotalIncorrectWithCorrectlyColored==0 ? "-" : playerStats.AverageTimeElapsedForIncorrectOnesWithCorrectlyColored.ToString("0.00") + " s";
+                averageTimeElapsedForIncorrectOnesWithIncorrectlyColoredText.text = playerStats.TotalIncorrectWithIncorrectlyColored == 0 ? "-" : playerStats.AverageTimeElapsedForIncorrectOnesWithIncorrectlyColored.ToString("0.00") + " s";
                 totalText.text = playerStats.Total.ToString();
                 totalCorrectText.text = playerStats.TotalCorrect.ToString();
                 totalCorrectWithCorrectlyColoredText.text = playerStats.TotalCorrectWithCorrectlyColored.ToString();
@@ -178,14 +175,13 @@ public class PauseMenu : MonoBehaviour
 
     private void ShowProperGameObjects(bool pause)
     {
-        if (pause)
-            cardGameObjects = GameObject.FindGameObjectsWithTag("Card");
-        if (cardGameObjects != null)
-            Array.ForEach(cardGameObjects, ent => ent.SetActive(!pause));
-        Array.ForEach(inGameUIGameObjects, ent => ent.SetActive(!pause));
-        Array.ForEach(pauseUIGameObjects, ent => ent.SetActive(pause));
+
+
+        cardContainer.SetActive(!pause);
+        inGameUiContainer.SetActive(!pause);
+        pauseUiContainer.SetActive(pause);
+        scoreUiContainer.SetActive(true);
         statsContainer.SetActive(false);
-        Array.ForEach(scoreUIGameObjects, ent => ent.SetActive(true));
         
 
     }

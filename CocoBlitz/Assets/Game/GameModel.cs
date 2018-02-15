@@ -382,10 +382,12 @@ public class GameModel : MonoBehaviour {
         }
         if (gameOver && !showingGameOverMenu)
         {
-            showingGameOverMenu = true;
-            ShowGameOverMenu();
             GameProgressionUtil.IncrementTotalGamesPlayed();
             GameProgressionUtil.IncreaseTimeSpent(GameUtil.currentGameMode == GameUtil.GameModeEnum.GoGo ? GameUtil.timer : timer);
+            showingGameOverMenu = true;
+            ShowGameOverMenu();
+
+
         }
 
        

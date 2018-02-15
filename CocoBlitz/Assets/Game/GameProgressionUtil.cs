@@ -63,7 +63,8 @@ public class GameProgressionUtil {
 
         if (rep.totalGamesPlayed >= KONGO_UNLOCK_VALUE)
         {
-            UnlockCpu(Cpu.KONGO); 
+            UnlockCpu(Cpu.KONGO);
+            Debug.Log(Cpu.KONGO.name + " unlocked");
         }
     }
 
@@ -77,6 +78,7 @@ public class GameProgressionUtil {
         if (rep.totalTimeSpentPlaying >= PURPLE_MONKEY_UNLOCK_VALUE)
         {
             UnlockCpu(Cpu.PURPLE_MONKEY);
+            Debug.Log(Cpu.PURPLE_MONKEY.name + " unlocked");
         }
     }
 
@@ -91,6 +93,7 @@ public class GameProgressionUtil {
         if (rep.totalCountOfWhenCocoWasCorrectlyPicked>= COCO_UNLOCK_VALUE)
         {
             UnlockCpu(Cpu.COCO);
+            Debug.Log(Cpu.COCO.name + " unlocked");
         }
     }
     
@@ -104,6 +107,7 @@ public class GameProgressionUtil {
         if (rep.totalCountOfWhenChompWasSeen >= CHOMP_UNLOCK_VALUE)
         {
             UnlockCpu(Cpu.CHOMP);
+            Debug.Log(Cpu.CHOMP.name + " unlocked");
         }
     }
     //Unlock Muffin: Guess correctly under 1 second 25 times
@@ -116,6 +120,7 @@ public class GameProgressionUtil {
         if (rep.totalCountOfCorrectGuessUnderOneSecond >= MUFFIN_UNLOCK_VALUE)
         {
             UnlockCpu(Cpu.MUFFIN);
+            Debug.Log(Cpu.MUFFIN.name + " unlocked");
         }
     }
 
