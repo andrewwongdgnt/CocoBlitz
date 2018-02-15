@@ -55,7 +55,7 @@ public class Cpu : Participant
         .Build();
     public static readonly Cpu PURPLE_MONKEY = new Builder()
         .Name("Purple Monkey")
-        .Description("Who cares if you get one wrong here and there?  Life's too short to always wait for the sure thing so when the purple monkey sees an opportunity then you'd better believe she's going to take it.")
+        .Description("Who cares if you get one wrong here and there?  Life's too short to always wait for the sure thing so when the Purple Monkey sees an opportunity then you'd better believe she's going to take it.")
         .UnlockDescription("Unlock this character by...?")
         .DelayLowerRangeBeforeAnswer(1.5f)
         .DelayUpperRangeBeforeAnswer(2.1F)
@@ -64,7 +64,7 @@ public class Cpu : Participant
         .Build();
     public static readonly Cpu MUFFIN = new Builder()
         .Name("Muffin")
-        .Description("Muffin desc")
+        .Description("Coco is Muffin's best friend and so whenever he's the correct answer then she always wants to guess him first.")
         .UnlockDescription("Unlock this character by...?")
         .DelayLowerRangeBeforeAnswer(.8f)
         .DelayUpperRangeBeforeAnswer(1.2F)
@@ -84,7 +84,7 @@ public class Cpu : Participant
         .Build();
     public static readonly Cpu COCO = new Builder()
         .Name("Coco")
-        .Description("Coco desc")
+        .Description("Coco's got the brains, the brawn and even the whole game named after him. You didn't think he'd just sit around and watch everyone else play, did you?")
         .UnlockDescription("Unlock this character by...?")
         .DelayLowerRangeBeforeAnswer(1.5f)
         .DelayUpperRangeBeforeAnswer(2.0F)
