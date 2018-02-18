@@ -19,6 +19,7 @@ public class PauseMenu : MonoBehaviour
     private List<Statistics> statsList;
 
 
+    public UCWManager ucwManager;
     public GameObject statsContainer;
     public GameObject mainStatsContainer;
     public Text averageTimeElapsedText;
@@ -55,7 +56,6 @@ public class PauseMenu : MonoBehaviour
 
         singlePlayerGroup.SetActive(GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_SINGLE_PLAYER);
         twoPlayersGroup.SetActive(GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_TWO_PLAYERS);
-        
         statsIndex = 0;
         Pause(false);
     }
@@ -71,7 +71,7 @@ public class PauseMenu : MonoBehaviour
     {
         resumeStats_txt.text = "Stats";
         this.statsList = statsList;
-        ShowProperGameObjects(true);
+        ShowPauseContainer(true);
     }
 
 
@@ -98,7 +98,7 @@ public class PauseMenu : MonoBehaviour
 
             resumeStats_txt.text = "Resume";
             Time.timeScale = pause ? 0f : 1f;
-            ShowProperGameObjects(pause);
+            ShowPauseContainer(pause);
         }
     }
 
@@ -173,7 +173,7 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
-    private void ShowProperGameObjects(bool pause)
+    private void ShowPauseContainer(bool pause)
     {
 
 
@@ -200,7 +200,7 @@ public class PauseMenu : MonoBehaviour
     public void BackFromStats()
     {
         ShowStatsContainer(false);
-        ShowProperGameObjects(true);
+        ShowPauseContainer(true);
     }
 
     public void StepStats(int step)

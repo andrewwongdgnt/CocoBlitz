@@ -22,6 +22,8 @@ public class GameModel : MonoBehaviour {
     public GameObject roundSeperator;
     public Text delayValue;
 
+    public UCWManager ucwManager;
+
     private Player player1;
     private Player player2;
     private CardUtil.EntityEnum? correctEntity = null;
@@ -36,10 +38,24 @@ public class GameModel : MonoBehaviour {
 
     private bool cardInDelay;
 
+    private bool kongoInitialAvailability;
+    private bool purpleMonkeyInitialAvailability;
+    private bool muffinInitialAvailability;
+    private bool chompInitialAvailability;
+    private bool cocoInitialAvailability;
+
     // Use this for initialization
     void Start () {
        
         Debug.Log("Game Begins");
+
+        ucwManager.Hide();
+        kongoInitialAvailability = GameProgressionUtil.GetCpuAvailability(Cpu.KONGO);
+        purpleMonkeyInitialAvailability = GameProgressionUtil.GetCpuAvailability(Cpu.PURPLE_MONKEY);
+        muffinInitialAvailability = GameProgressionUtil.GetCpuAvailability(Cpu.MUFFIN);
+        chompInitialAvailability = GameProgressionUtil.GetCpuAvailability(Cpu.CHOMP);
+        cocoInitialAvailability = GameProgressionUtil.GetCpuAvailability(Cpu.COCO);
+
         showingGameOverMenu = false;
         cpuCoroutines.Clear();
         timer = GameUtil.currentGameMode == GameUtil.GameModeEnum.GoGo ? GameUtil.timer : 0f;
@@ -387,10 +403,31 @@ public class GameModel : MonoBehaviour {
             showingGameOverMenu = true;
             ShowGameOverMenu();
 
+            //Start unlocking
+            AttemptCpuUnlock(kongoInitialAvailability, Cpu.KONGO);
+            AttemptCpuUnlock(purpleMonkeyInitialAvailability, Cpu.PURPLE_MONKEY);
+            AttemptCpuUnlock(muffinInitialAvailability, Cpu.MUFFIN);
+            AttemptCpuUnlock(chompInitialAvailability, Cpu.CHOMP);
+            AttemptCpuUnlock(cocoInitialAvailability, Cpu.COCO);
+            ucwManager.BeginUnlockPhase();
+
 
         }
 
        
+    }
+
+    private void AttemptCpuUnlock(bool initialAvailability, Cpu cpu)
+    {    
+
+        if (initialAvailability)
+        {
+            return;
+        }
+        if (GameProgressionUtil.GetCpuAvailability(cpu))
+        {
+            ucwManager.AddCpuToUnlock(cpu);
+        }
     }
 
     private void ShowGameOverMenu()

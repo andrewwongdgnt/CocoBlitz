@@ -10,6 +10,7 @@ public class Cpu : Participant
     //TODO-AW Adjust these stats later
     public static readonly Cpu KELSEY = new Builder()
         .Name("Kelsey")
+        .Sprite(Resources.Load<Sprite>("Portraits/Kelsey Portrait"))
         .Description("Kelsey just likes playing games.  She's still going to try, but her main goal is just to have fun.")
         .DelayLowerRangeBeforeAnswer(1.9f)
         .DelayUpperRangeBeforeAnswer(2.9f)
@@ -19,6 +20,7 @@ public class Cpu : Participant
         .Build();
     public static readonly Cpu ANDREW = new Builder()
         .Name("Andrew")
+        .Sprite(Resources.Load<Sprite>("Portraits/Andrew Portrait"))
         .Description("Andrew is very competitive and so he can be a tough opponent to beat.  Are you up to the challenge?")
         .DelayLowerRangeBeforeAnswer(1.5f)
         .DelayUpperRangeBeforeAnswer(2.1F)
@@ -28,6 +30,7 @@ public class Cpu : Participant
         .Build();
     public static readonly Cpu MONKEY = new Builder()
         .Name("Monkey")
+        .Sprite(Resources.Load<Sprite>("Portraits/Monkey Portrait"))
         .Description("Don't let the Monkey's profile picture fool you.  He may look playful, but when it comes to CoCo Go then he's not monkeying around.")
         .DelayLowerRangeBeforeAnswer(1.5f)
         .DelayUpperRangeBeforeAnswer(2.1F)
@@ -37,6 +40,7 @@ public class Cpu : Participant
         .Build();
     public static readonly Cpu PENGUIN = new Builder()
         .Name("Penguin")
+        .Sprite(Resources.Load<Sprite>("Portraits/Penguin Portrait"))
         .Description("Penguin may be small, but what she lacks in size then she more than makes up for with enthusiasm.  Go Penguin!")
         .DelayLowerRangeBeforeAnswer(1.5f)
         .DelayUpperRangeBeforeAnswer(2.1F)
@@ -46,6 +50,7 @@ public class Cpu : Participant
         .Build();
     public static readonly Cpu KONGO = new Builder()
         .Name("Kongo")
+        .Sprite(Resources.Load<Sprite>("Portraits/Kongo Portrait"))
         .Description("Kongo is super smart so he almost never gets it wrong. So what if it takes a bit longer to figure it out? If you're going to do something then you might as well do it right.")
         .UnlockDescription("Unlock this character by...?")
         .DelayLowerRangeBeforeAnswer(1.5f)
@@ -55,6 +60,7 @@ public class Cpu : Participant
         .Build();
     public static readonly Cpu PURPLE_MONKEY = new Builder()
         .Name("Purple Monkey")
+        .Sprite(Resources.Load<Sprite>("Portraits/Purple Monkey Portrait"))
         .Description("Who cares if you get one wrong here and there?  Life's too short to always wait for the sure thing so when the Purple Monkey sees an opportunity then you'd better believe she's going to take it.")
         .UnlockDescription("Unlock this character by...?")
         .DelayLowerRangeBeforeAnswer(1.5f)
@@ -64,6 +70,7 @@ public class Cpu : Participant
         .Build();
     public static readonly Cpu MUFFIN = new Builder()
         .Name("Muffin")
+        .Sprite(Resources.Load<Sprite>("Portraits/Muffin Portrait"))
         .Description("Coco is Muffin's best friend and so whenever he's the correct answer then she always wants to guess him first.")
         .UnlockDescription("Unlock this character by...?")
         .DelayLowerRangeBeforeAnswer(.8f)
@@ -73,6 +80,7 @@ public class Cpu : Participant
         .Build();
     public static readonly Cpu CHOMP = new Builder()
         .Name("Chomp")
+        .Sprite(Resources.Load<Sprite>("Portraits/Chomp Portrait"))
         .Description("Chomp desc")
         .UnlockDescription("Unlock this character by...?")
         .DelayLowerRangeBeforeAnswer(1.5f)
@@ -84,6 +92,7 @@ public class Cpu : Participant
         .Build();
     public static readonly Cpu COCO = new Builder()
         .Name("Coco")
+        .Sprite(Resources.Load<Sprite>("Portraits/Coco Portrait"))
         .Description("Coco's got the brains, the brawn and even the whole game named after him. You didn't think he'd just sit around and watch everyone else play, did you?")
         .UnlockDescription("Unlock this character by...?")
         .DelayLowerRangeBeforeAnswer(1.5f)
@@ -141,6 +150,7 @@ public class Cpu : Participant
 
     public class Builder
     {
+     
         private string name;
         public Builder Name(string name)
         {

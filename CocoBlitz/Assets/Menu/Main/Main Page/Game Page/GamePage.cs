@@ -18,16 +18,6 @@ public class GamePage : MonoBehaviour, Page {
     private int pointsToReach;
     private float timer;
 
-    public Sprite kelseySprite;
-    public Sprite andrewSprite;
-    public Sprite monkeySprite;
-    public Sprite penguinSprite;
-    public Sprite kongoSprite;
-    public Sprite purpleMonkeySprite;
-    public Sprite muffinSprite;
-    public Sprite chompSprite;
-    public Sprite cocoSprite;
-
     public Sprite player2Sprite;
 
     public CpuPicker cpuPicker;
@@ -49,16 +39,6 @@ public class GamePage : MonoBehaviour, Page {
         allCpus.Add(Cpu.MUFFIN);
         allCpus.Add(Cpu.CHOMP);
         allCpus.Add(Cpu.COCO);
-
-        Cpu.KELSEY.sprite = kelseySprite;
-        Cpu.ANDREW.sprite = andrewSprite;
-        Cpu.MONKEY.sprite = monkeySprite;
-        Cpu.PENGUIN.sprite = penguinSprite;
-        Cpu.KONGO.sprite = kongoSprite;
-        Cpu.PURPLE_MONKEY.sprite = purpleMonkeySprite;
-        Cpu.MUFFIN.sprite = muffinSprite;
-        Cpu.CHOMP.sprite = chompSprite;
-        Cpu.COCO.sprite = cocoSprite;
 
         List<int> cpusInPlay = GameSettingsUtil.GetCpusInPlayList();
 
