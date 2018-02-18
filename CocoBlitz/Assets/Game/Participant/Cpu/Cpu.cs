@@ -71,7 +71,7 @@ public class Cpu : Participant
     public static readonly Cpu MUFFIN = new Builder()
         .Name("Muffin")
         .Sprite(Resources.Load<Sprite>("Portraits/Muffin Portrait"))
-        .Description("Coco is Muffin's best friend and so whenever he's the correct answer then she always wants to guess him first.")
+        .Description("Muffin is Coco's best friend and they love to hang out together. But lately, Coco seems to always wander off and get lost. Luckily, Muffin is very good at finding Coco.")
         .UnlockDescription("Unlock this character by...?")
         .DelayLowerRangeBeforeAnswer(.8f)
         .DelayUpperRangeBeforeAnswer(1.2F)
