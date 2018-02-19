@@ -261,7 +261,7 @@ public class GameModel : MonoBehaviour {
             {
                 player1.Stats.AddMissed(correctEntity.Value);
             }
-            if (GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_TWO_PLAYERS && participant != player2 && player2.guessed)
+            if (GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_TWO_PLAYERS && participant != player2 && !player2.guessed)
             {
                 player2.Stats.AddMissed(correctEntity.Value);
             }
@@ -363,10 +363,9 @@ public class GameModel : MonoBehaviour {
                 || GameUtil.cpuList.Any(cpu => cpu.finalScore>= GameUtil.pointsToReach))
                 gameOver = true;
         }
-        else if (GameUtil.currentGameMode == GameUtil.GameModeEnum.GoGo)
+        else if (GameUtil.currentGameMode == GameUtil.GameModeEnum.GoGo && timer <= 0)
         {
-            if (timer <= 0)
-                gameOver = true;
+            gameOver = true;
         }
     }
 

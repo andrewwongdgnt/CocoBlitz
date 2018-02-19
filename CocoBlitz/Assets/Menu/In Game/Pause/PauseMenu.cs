@@ -49,6 +49,9 @@ public class PauseMenu : MonoBehaviour
     public GameObject singlePlayerGroup;
     public GameObject twoPlayersGroup;
 
+    public Toggle player1StatsToggle;
+    public GameObject playerStatsToggleContainer;
+
     private int statsIndex;
     private Card card;
     void Start()
@@ -102,6 +105,12 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
+    //Value doesn't matter
+    public void PlayerStatsToggleHandler(bool value)
+    {
+        StepStats(0);
+    }
+
     private void ShowStatsContainer(bool show)
     {
 
@@ -118,8 +127,10 @@ public class PauseMenu : MonoBehaviour
             card = null;
         }
 
-        //Assume first element is player
-        Statistics playerStats = statsList[0];
+        playerStatsToggleContainer.SetActive(GameSettingsUtil.GetGameTypeKey() != GameSettingsUtil.GAME_TYPE_SINGLE_PLAYER);
+        
+
+        Statistics playerStats = GetPlayerStats();
 
         if (show)
         {
@@ -142,16 +153,17 @@ public class PauseMenu : MonoBehaviour
                 totalIncorrectWithCorrectlyColoredText.text = playerStats.TotalIncorrectWithCorrectlyColored.ToString();
                 totalIncorrectWithIncorrectlyColoredText.text = playerStats.TotalIncorrectWithIncorrectlyColored.ToString();
 
-                //If no cpus, dont display misses
-                bool noCpus = statsList.Count <= 1;
-                totalMissedText.text = noCpus ? "-" : playerStats.TotalMissed.ToString();
-                totalMissedWithCorrectlyColoredText.text = noCpus ? "-" : playerStats.TotalMissedWithCorrectlyColored.ToString();
-                totalMissedWithIncorrectlyColoredText.text = noCpus ? "-" : playerStats.TotalMissedWithIncorrectlyColored.ToString();
+                //If just one player, dont display misses
+                bool onePlayer = statsList.Count <= 1;
+                totalMissedText.text = onePlayer ? "-" : playerStats.TotalMissed.ToString();
+                totalMissedWithCorrectlyColoredText.text = onePlayer ? "-" : playerStats.TotalMissedWithCorrectlyColored.ToString();
+                totalMissedWithIncorrectlyColoredText.text = onePlayer ? "-" : playerStats.TotalMissedWithIncorrectlyColored.ToString();
             }
             else
             {
                 mainStatsContainer.SetActive(false);
                 statsPointContainer.SetActive(true);
+                
                 StatisticsPoint statsPoint = playerStats.StatisticsList[statsIndex - 1];
                 card = Instantiate(statsPoint.Card);
                 card.gameObject.SetActive(true);
@@ -171,6 +183,13 @@ public class PauseMenu : MonoBehaviour
 
             }
         }
+    }
+
+    private Statistics GetPlayerStats()
+    {
+        bool forPlayer2 = !player1StatsToggle.isOn;
+        //Assume first element is player1 and second element is player 2 IF game type is for 2 players.
+        return GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_TWO_PLAYERS && forPlayer2 ? statsList[1] : statsList[0];
     }
 
     private void ShowPauseContainer(bool pause)
@@ -207,9 +226,9 @@ public class PauseMenu : MonoBehaviour
     {
         if (statsList != null) {
 
-            Statistics playerStats = statsList[0];
+            Statistics playerStats = GetPlayerStats();
 
-            if (step > 0)
+            if (step >= 0)
             {
                 if (playerStats.StatisticsList.Count >= statsIndex + step)
                 {
@@ -242,7 +261,7 @@ public class PauseMenu : MonoBehaviour
     {
         if (statsList != null)
         {
-            Statistics playerStats = statsList[0];
+            Statistics playerStats = GetPlayerStats();
             int calculatedStatsIndex = last ? playerStats.StatisticsList.Count : 0;
 
             //If there is a change in the statsIndex
