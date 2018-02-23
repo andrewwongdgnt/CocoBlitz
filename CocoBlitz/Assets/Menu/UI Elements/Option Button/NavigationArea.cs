@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class NavigationArea : MonoBehaviour {
 
-    public enum NavigationEnum { Main, Settings, Tutorial, Credits, Help };
+    public enum NavigationEnum { Main, Settings, Progression, Credits, Help };
 
     public MainPage mainPage;
     public SettingsPage settingsPage;
+    public ProgressionPage progressionPage;
     public CreditsPage creditsPage;
     public HelpPage helpPage;
 
@@ -27,6 +28,7 @@ public class NavigationArea : MonoBehaviour {
 
         mainPage.SetActive(false);
         settingsPage.SetActive(false);
+        progressionPage.SetActive(false);
         creditsPage.SetActive(false);
         helpPage.SetActive(false);
 
@@ -39,6 +41,8 @@ public class NavigationArea : MonoBehaviour {
             ActivatePage(mainPage);
         else if (nav == NavigationEnum.Settings)
             ActivatePage(settingsPage);
+        else if (nav == NavigationEnum.Progression)
+            ActivatePage(progressionPage);
         else if (nav == NavigationEnum.Credits)
             ActivatePage(creditsPage);
         else if (nav == NavigationEnum.Help)

@@ -12,12 +12,7 @@ public class MainPage : MonoBehaviour, Page {
     public GamePage gamePage;
     public GameObject mainGroup;
 
-    
-    void Start()
-    {
-        
-
-    }
+   
 
     public void SetActive(bool activate)
     {
