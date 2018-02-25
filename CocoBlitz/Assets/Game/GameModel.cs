@@ -42,10 +42,10 @@ public class GameModel : MonoBehaviour {
     {
         public float initialValue;
         public Func<GameProgressionRepresentation, float> lambda;
-        public RewardAndBarrier.Container[] rewardAndBarriers;
+        public RewardAndBarrier[] rewardAndBarriers;
         public string reasonString;
 
-        public GameProgressionLogicContainer(float initialValue, Func<GameProgressionRepresentation, float> lambda, RewardAndBarrier.Container[] rewardAndBarriers, string reasonString)
+        public GameProgressionLogicContainer(float initialValue, Func<GameProgressionRepresentation, float> lambda, RewardAndBarrier[] rewardAndBarriers, string reasonString)
         {
             this.initialValue = initialValue;
             this.lambda = lambda;
@@ -105,22 +105,25 @@ public class GameModel : MonoBehaviour {
 
     private void BuildGameProgressionLogicList()
     {
+        BuildGameProgressionLogicList(rep => rep.totalGamesPlayed
+        , RewardAndBarrier.TOTAL_GAMES_PLAYED_PROGRESSION
+        , "For playing {0} games");
 
-        gameProgressionLogicContainerList.Add(new GameProgressionLogicContainer(
-            GameProgressionUtil.GetGameProgressionField(rep => rep.totalGamesPlayed)
-            , rep => rep.totalGamesPlayed
-            , RewardAndBarrier.TOTAL_GAMES_PLAYED_PROGRESSION.RewardAndBarriers
-            , "For playing {0} games"));
-        gameProgressionLogicContainerList.Add(new GameProgressionLogicContainer(
-            GameProgressionUtil.GetGameProgressionField(rep => rep.totalTwoPlayersGamesPlayed)
-            , rep => rep.totalTwoPlayersGamesPlayed
-            , RewardAndBarrier.TOTAL_GAMES_PLAYED_PROGRESSION.RewardAndBarriers
-            , "For playing {0} two players games"));
+        BuildGameProgressionLogicList(rep => rep.totalTwoPlayersGamesPlayed
+        , RewardAndBarrier.TOTAL_GAMES_PLAYED_PROGRESSION
+        , "For playing {0} two player games");       
     }
 
+    private void BuildGameProgressionLogicList(Func<GameProgressionRepresentation, float> getRepField, RewardAndBarrier[] rb, string reasonString)
+    {
+        gameProgressionLogicContainerList.Add(new GameProgressionLogicContainer(
+            GameProgressionUtil.GetGameProgressionField(getRepField)
+            , getRepField
+            , rb
+            , reasonString));
+    }
     private void NewRound()
     {
-
         //Generate Card
         Debug.Log("Generating card");
         Card card = cards_2Entities[UnityEngine.Random.Range(0, cards_2Entities.Length)];
@@ -450,7 +453,7 @@ public class GameModel : MonoBehaviour {
 
             gameProgressionLogicContainerList.ForEach(l =>
             {
-                RewardAndBarrier.Container[] list  =  GameProgressionUtil.GetCorrectRewards(l.rewardAndBarriers, l.initialValue, GameProgressionUtil.GetGameProgressionField(l.lambda) );
+                RewardAndBarrier[] list  =  GameProgressionUtil.GetCorrectRewards(l.rewardAndBarriers, l.initialValue, GameProgressionUtil.GetGameProgressionField(l.lambda) );
                 AttemptRewardUnlock(list, l.reasonString);
             });
             
@@ -461,7 +464,7 @@ public class GameModel : MonoBehaviour {
        
     }
 
-    private void AttemptRewardUnlock(RewardAndBarrier.Container[] list, string reasonString)
+    private void AttemptRewardUnlock(RewardAndBarrier[] list, string reasonString)
     {
 
         Array.ForEach(list, rb =>

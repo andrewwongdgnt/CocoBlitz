@@ -8,20 +8,20 @@ public class BananaRewardWindowManager : MonoBehaviour {
     private class BananRewardInfo
     {
         public string reasonString;
-        public RewardAndBarrier.Container rb;
+        public RewardAndBarrier rb;
 
-        public BananRewardInfo(RewardAndBarrier.Container rb, string reasonString)
+        public BananRewardInfo(RewardAndBarrier rb, string reasonString)
         {
             this.rb = rb;
             this.reasonString = reasonString;
         }
     }
 
-    private Stack<BananRewardInfo> bananRewardInfoStack = new Stack<BananRewardInfo>();
+    private Stack<BananRewardInfo> bananaRewardInfoStack = new Stack<BananRewardInfo>();
     public BananaRewardWindow bananaRewardWindow;
 	// Use this for initialization
 	void Start () {
-        bananRewardInfoStack.Clear();
+        bananaRewardInfoStack.Clear();
 
     }
 	
@@ -34,10 +34,15 @@ public class BananaRewardWindowManager : MonoBehaviour {
     {
         AttemptUnlock();
     }
-
-    public void AddRewardToUnlock(RewardAndBarrier.Container rb, string reasonString)
+    public void UnlockAll()
     {
-        bananRewardInfoStack.Push(new BananRewardInfo(rb, string.Format(reasonString, rb.Barrier)));
+        bananaRewardInfoStack.Clear();
+        bananaRewardWindow.Hide();
+    }
+
+    public void AddRewardToUnlock(RewardAndBarrier rb, string reasonString)
+    {
+        bananaRewardInfoStack.Push(new BananRewardInfo(rb, string.Format(reasonString, rb.Barrier)));
     }
 
     public void BeginUnlockPhase()
@@ -59,10 +64,10 @@ public class BananaRewardWindowManager : MonoBehaviour {
 
     private void AttemptUnlock()
     {
-        if (bananRewardInfoStack.Count > 0)
+        if (bananaRewardInfoStack.Count > 0)
         {
-            bananaRewardWindow.Show();
-            BananRewardInfo bananRewardInfo = bananRewardInfoStack.Pop();
+            bananaRewardWindow.Show(bananaRewardInfoStack.Count);
+            BananRewardInfo bananRewardInfo = bananaRewardInfoStack.Pop();
 
             bananaRewardWindow.SetReason(bananRewardInfo.reasonString);
             bananaRewardWindow.SetReward("x"+bananRewardInfo.rb.Reward);

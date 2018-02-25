@@ -64,15 +64,15 @@ public class GameProgressionUtil {
     private readonly static string GAME_PROGRESSION_KEY = "GameProgressionKey";
 
 
-    public static RewardAndBarrier.Container[] GetCorrectRewards(RewardAndBarrier.Container[] rewardAndBarriers, float initValue, float finalBarrier)
+    public static RewardAndBarrier[] GetCorrectRewards(RewardAndBarrier[] rewardAndBarriers, float initValue, float finalBarrier)
     {
         return Array.FindAll(rewardAndBarriers, c => c.Barrier >= initValue && c.Barrier <= finalBarrier);
     }
 
    
-    public static RewardAndBarrier.Container GetNextRewardBarrier(RewardAndBarrier.Container[] rewardAndBarriers, float currentValue)
+    public static RewardAndBarrier GetNextRewardBarrier(RewardAndBarrier[] rewardAndBarriers, float currentValue)
     {
-        RewardAndBarrier.Container rb = rewardAndBarriers[0];
+        RewardAndBarrier rb = rewardAndBarriers[0];
         for (int i=0; i< rewardAndBarriers.Length; i++)
         {
             rb = rewardAndBarriers[i];

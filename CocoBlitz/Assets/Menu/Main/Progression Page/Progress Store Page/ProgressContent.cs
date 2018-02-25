@@ -10,7 +10,7 @@ public class ProgressContent : MonoBehaviour {
 	void Start () {
         
         float currentTotalGamesPlayed = GameProgressionUtil.GetGameProgressionField(rep => rep.totalGamesPlayed);
-        RewardAndBarrier.Container nextRB = GameProgressionUtil.GetNextRewardBarrier(RewardAndBarrier.TOTAL_GAMES_PLAYED_PROGRESSION.RewardAndBarriers, currentTotalGamesPlayed);
+        RewardAndBarrier nextRB = GameProgressionUtil.GetNextRewardBarrier(RewardAndBarrier.TOTAL_GAMES_PLAYED_PROGRESSION, currentTotalGamesPlayed);
         gamesPlayedProgressBar.SetValue(currentTotalGamesPlayed, nextRB.Barrier);
         gamesPlayedProgressBar.SetNextReward(nextRB.Reward);
 

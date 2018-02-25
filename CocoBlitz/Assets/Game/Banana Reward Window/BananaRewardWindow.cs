@@ -8,7 +8,10 @@ public class BananaRewardWindow : MonoBehaviour {
     public BananaRewardWindowManager manager;
     public Text reasonText;
     public Text rewardText;
+    public Text okToAllText;
     public Animator anim;
+
+    private int countLeft;
 
     // Use this for initialization
     void Start () {
@@ -16,13 +19,27 @@ public class BananaRewardWindow : MonoBehaviour {
 
     public void Unlock()
     {
+        countLeft--;
+        UpdateOkToAllBtnText();
         manager.Unlock();
     }
-
-    public void Show()
+    public void UnlockAll()
     {
+        manager.UnlockAll();
+    }
+
+    public void Show(int countLeft)
+    {
+        this.countLeft = countLeft;
+        UpdateOkToAllBtnText();
         gameObject.SetActive(true);
         anim.SetTrigger("Show");
+    }
+
+    private void UpdateOkToAllBtnText()
+    {
+
+        okToAllText.text = string.Format("Ok to all ({0})", countLeft);
     }
 
     public void Hide()
