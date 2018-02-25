@@ -8,7 +8,11 @@ public class ProgressContent : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        gamesPlayedProgressBar.SetValue(9,10);
+        
+        float currentTotalGamesPlayed = GameProgressionUtil.GetGameProgressionField(rep => rep.totalGamesPlayed);
+        RewardAndBarrier.Container nextRB = GameProgressionUtil.GetNextRewardBarrier(RewardAndBarrier.TOTAL_GAMES_PLAYED_PROGRESSION.RewardAndBarriers, currentTotalGamesPlayed);
+        gamesPlayedProgressBar.SetValue(currentTotalGamesPlayed, nextRB.Barrier);
+        gamesPlayedProgressBar.SetNextReward(nextRB.Reward);
 
     }
 	

@@ -69,6 +69,21 @@ public class GameProgressionUtil {
         return Array.FindAll(rewardAndBarriers, c => c.Barrier >= initValue && c.Barrier <= finalBarrier);
     }
 
+   
+    public static RewardAndBarrier.Container GetNextRewardBarrier(RewardAndBarrier.Container[] rewardAndBarriers, float currentValue)
+    {
+        RewardAndBarrier.Container rb = rewardAndBarriers[0];
+        for (int i=0; i< rewardAndBarriers.Length; i++)
+        {
+            rb = rewardAndBarriers[i];
+            if (currentValue<rb.Barrier)
+            {
+                break;
+            }
+        }
+        return rb;
+    }
+
     public static float GetGameProgressionField(Func<GameProgressionRepresentation, float> getRepField)
     {
         GameProgressionRepresentation rep = GetGameProgressionRepresentation();

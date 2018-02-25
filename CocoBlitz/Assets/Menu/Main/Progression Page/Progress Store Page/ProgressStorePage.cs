@@ -7,12 +7,13 @@ using UnityEngine.UI;
 public class ProgressStorePage : MonoBehaviour, Page
 {
     public Text instructions;
+    public Text bananaCount;
     public ProgressContent progressContent;
     public GameObject titleArea;
     // Use this for initialization
     void Start()
     {
-
+        bananaCount.text = "x"+GameProgressionUtil.GetBananas().ToString();
     }
 
 

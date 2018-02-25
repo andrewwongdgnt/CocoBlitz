@@ -5,19 +5,22 @@ using UnityEngine.UI;
 
 public class ProgressBar : MonoBehaviour {
 
-    public string labelString;
-    public Text label;
     public Text requirement;
+    public Text nextReward;
     public Slider slider;
     private void Start()
     {
-        label.text = labelString;
         slider.enabled = false;
     }
 
-    public void SetValue(int current, int max)
+    public void SetValue(float current, float max)
     {
         requirement.text = current + "/" + max;
-        slider.value = (float) current/max;
+        slider.value =  current/max;
+    }
+    public void SetNextReward(float value)
+    {
+
+        nextReward.text = "x" + value;
     }
 }
