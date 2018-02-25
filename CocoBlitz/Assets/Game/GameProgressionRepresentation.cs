@@ -6,14 +6,25 @@ using UnityEngine;
 [Serializable]
 public class GameProgressionRepresentation {
 
-    public int totalGamesPlayed;
+    //everything is a float to make it easier for calculating rewards and barriers
+    public float totalGamesPlayed;
+
+    public float totalSinglePlayerGamesPlayed;
+
+    public float totalTwoPlayersGamesPlayed;
+
+    public float totalGamesWithCpuPlayed;
+
+    public float totalCorrectGuesses;
 
     //Player has to see to the end of the game for this to count
     public float totalTimeSpentPlaying;
 
-    public int totalCountOfWhenCocoWasCorrectlyPicked;
+    public float totalCountOfWhenCocoWasCorrectlyPicked;
 
-    public int totalCountOfWhenChompWasSeen;
+    public float totalCountOfWhenChompWasSeen;
 
-    public int totalCountOfCorrectGuessUnderOneSecond;
+    public float totalCountOfCorrectGuessUnderTwoSecond;
+
+    public float totalCountOfCorrectGuessUnderOneSecond;
 }

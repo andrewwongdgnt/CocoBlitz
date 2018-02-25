@@ -22,7 +22,7 @@ public class GameModel : MonoBehaviour {
     public GameObject roundSeperator;
     public Text delayValue;
 
-    public UCWManager ucwManager;
+    public BananaRewardWindowManager bananaRewardWindowManager;
 
     private Player player1;
     private Player player2;
@@ -38,24 +38,36 @@ public class GameModel : MonoBehaviour {
 
     private bool cardInDelay;
 
-    private bool kongoInitialAvailability;
-    private bool purpleMonkeyInitialAvailability;
-    private bool muffinInitialAvailability;
-    private bool chompInitialAvailability;
-    private bool cocoInitialAvailability;
+    private class GameProgressionLogicContainer
+    {
+        public float initialValue;
+        public Func<GameProgressionRepresentation, float> lambda;
+        public RewardAndBarrier.Container[] rewardAndBarriers;
+        public string reasonString;
+
+        public GameProgressionLogicContainer(float initialValue, Func<GameProgressionRepresentation, float> lambda, RewardAndBarrier.Container[] rewardAndBarriers, string reasonString)
+        {
+            this.initialValue = initialValue;
+            this.lambda = lambda;
+            this.rewardAndBarriers = rewardAndBarriers;
+            this.reasonString = reasonString;
+        }
+    }
+
+    List<GameProgressionLogicContainer> gameProgressionLogicContainerList = new List<GameProgressionLogicContainer>();
+
+    private float totalGamesPlayedInitial;
 
     // Use this for initialization
     void Start () {
        
         Debug.Log("Game Begins");
 
-        ucwManager.Hide();
-        kongoInitialAvailability = GameProgressionUtil.GetCpuAvailability(Cpu.KONGO);
-        purpleMonkeyInitialAvailability = GameProgressionUtil.GetCpuAvailability(Cpu.PURPLE_MONKEY);
-        muffinInitialAvailability = GameProgressionUtil.GetCpuAvailability(Cpu.MUFFIN);
-        chompInitialAvailability = GameProgressionUtil.GetCpuAvailability(Cpu.CHOMP);
-        cocoInitialAvailability = GameProgressionUtil.GetCpuAvailability(Cpu.COCO);
+        bananaRewardWindowManager.Hide();
 
+        BuildGameProgressionLogicList();
+        
+   
         showingGameOverMenu = false;
         cpuCoroutines.Clear();
         timer = GameUtil.currentGameMode == GameUtil.GameModeEnum.GoGo ? GameUtil.timer : 0f;
@@ -90,7 +102,21 @@ public class GameModel : MonoBehaviour {
         Array.ForEach(cards_2Entities, c => c.gameObject.SetActive(false));
         StartCoroutine(NewRoundWithDelay());
     }
-    
+
+    private void BuildGameProgressionLogicList()
+    {
+
+        gameProgressionLogicContainerList.Add(new GameProgressionLogicContainer(
+            GameProgressionUtil.GetGameProgressionField(rep => rep.totalGamesPlayed)
+            , rep => rep.totalGamesPlayed
+            , RewardAndBarrier.TOTAL_GAMES_PLAYED_PROGRESSION.RewardAndBarriers
+            , "For playing {0} games"));
+        gameProgressionLogicContainerList.Add(new GameProgressionLogicContainer(
+            GameProgressionUtil.GetGameProgressionField(rep => rep.totalTwoPlayersGamesPlayed)
+            , rep => rep.totalTwoPlayersGamesPlayed
+            , RewardAndBarrier.TOTAL_GAMES_PLAYED_PROGRESSION.RewardAndBarriers
+            , "For playing {0} two players games"));
+    }
 
     private void NewRound()
     {
@@ -109,7 +135,7 @@ public class GameModel : MonoBehaviour {
 
         if (currentEntities.Contains(CardUtil.EntityEnum.Chomp))
         {
-            GameProgressionUtil.IncrementTotalCountOfWhenChompWasSeen();
+            GameProgressionUtil.UpdateGameProgression(rep => rep.totalCountOfWhenChompWasSeen++);
         }
 
         bool useCorrectColor = false;
@@ -274,13 +300,18 @@ public class GameModel : MonoBehaviour {
 
             if (participant == player1 || (GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_TWO_PLAYERS && participant == player2))
             {
+                GameProgressionUtil.UpdateGameProgression(rep => rep.totalCorrectGuesses++);
                 if (correctEntity == CardUtil.EntityEnum.Coco)
-                { 
-                    GameProgressionUtil.IncrementTotalCountOfWhenCocoWasCorrectlyPicked();
+                {
+                    GameProgressionUtil.UpdateGameProgression(rep => rep.totalCountOfWhenCocoWasCorrectlyPicked++);
+                }
+                if (timeToGuess < 2f)
+                {
+                    GameProgressionUtil.UpdateGameProgression(rep => rep.totalCountOfCorrectGuessUnderOneSecond++);
                 }
                 if (timeToGuess < 1f)
                 {
-                    GameProgressionUtil.IncrementTotalCountOfCorrectGuessUnderOneSecond();
+                    GameProgressionUtil.UpdateGameProgression(rep => rep.totalCountOfCorrectGuessUnderTwoSecond++);
                 }
             }
 
@@ -397,36 +428,47 @@ public class GameModel : MonoBehaviour {
         }
         if (gameOver && !showingGameOverMenu)
         {
-            GameProgressionUtil.IncrementTotalGamesPlayed();
-            GameProgressionUtil.IncreaseTimeSpent(GameUtil.currentGameMode == GameUtil.GameModeEnum.GoGo ? GameUtil.timer : timer);
+
+            GameProgressionUtil.UpdateGameProgression(rep => rep.totalGamesPlayed++);
+            GameProgressionUtil.UpdateGameProgression(rep => rep.totalTimeSpentPlaying+= GameUtil.currentGameMode == GameUtil.GameModeEnum.GoGo ? GameUtil.timer : timer);
+            if (GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_TWO_PLAYERS)
+            {
+                GameProgressionUtil.UpdateGameProgression(rep => rep.totalTwoPlayersGamesPlayed++);
+            }
+            if (GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_SINGLE_PLAYER)
+            {
+                GameProgressionUtil.UpdateGameProgression(rep => rep.totalSinglePlayerGamesPlayed++);
+            }
+            if (GameUtil.cpuList.Count > 0)
+            {
+                GameProgressionUtil.UpdateGameProgression(rep => rep.totalGamesWithCpuPlayed++);
+            }
+
+
             showingGameOverMenu = true;
             ShowGameOverMenu();
 
-            //Start unlocking
-            AttemptCpuUnlock(kongoInitialAvailability, Cpu.KONGO);
-            AttemptCpuUnlock(purpleMonkeyInitialAvailability, Cpu.PURPLE_MONKEY);
-            AttemptCpuUnlock(muffinInitialAvailability, Cpu.MUFFIN);
-            AttemptCpuUnlock(chompInitialAvailability, Cpu.CHOMP);
-            AttemptCpuUnlock(cocoInitialAvailability, Cpu.COCO);
-            ucwManager.BeginUnlockPhase();
-
+            gameProgressionLogicContainerList.ForEach(l =>
+            {
+                RewardAndBarrier.Container[] list  =  GameProgressionUtil.GetCorrectRewards(l.rewardAndBarriers, l.initialValue, GameProgressionUtil.GetGameProgressionField(l.lambda) );
+                AttemptRewardUnlock(list, l.reasonString);
+            });
+            
+            bananaRewardWindowManager.BeginUnlockPhase();
 
         }
 
        
     }
 
-    private void AttemptCpuUnlock(bool initialAvailability, Cpu cpu)
-    {    
+    private void AttemptRewardUnlock(RewardAndBarrier.Container[] list, string reasonString)
+    {
 
-        if (initialAvailability)
+        Array.ForEach(list, rb =>
         {
-            return;
-        }
-        if (GameProgressionUtil.GetCpuAvailability(cpu))
-        {
-            ucwManager.AddCpuToUnlock(cpu);
-        }
+            GameProgressionUtil.ChangeBananaCountBy(rb.Reward);
+            bananaRewardWindowManager.AddRewardToUnlock(rb, reasonString);
+        });
     }
 
     private void ShowGameOverMenu()

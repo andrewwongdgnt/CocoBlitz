@@ -14,7 +14,7 @@ public class GameSettingsUtil  {
     }
     public static int GetCocoModePointsToReach()
     {
-        return PlayerPrefs.HasKey(COCO_MODE_POINTS_TO_REACH_KEY) ? PlayerPrefs.GetInt(COCO_MODE_POINTS_TO_REACH_KEY) : 10;
+        return PlayerPrefs.GetInt(COCO_MODE_POINTS_TO_REACH_KEY,10);
     }
 
     private readonly static string GO_GO_MODE_TIMER_KEY = "GoGoModeTimerKey";
@@ -25,7 +25,7 @@ public class GameSettingsUtil  {
     }
     public static float GetGoGoModeTimer()
     {
-        return PlayerPrefs.HasKey(GO_GO_MODE_TIMER_KEY) ? PlayerPrefs.GetFloat(GO_GO_MODE_TIMER_KEY) : 10f;
+        return PlayerPrefs.GetFloat(GO_GO_MODE_TIMER_KEY,10);
     }
 
 
@@ -90,7 +90,7 @@ public class GameSettingsUtil  {
     }
     public static string GetGameTypeKey()
     {
-        string gameTypeString = PlayerPrefs.HasKey(GAME_TYPE_KEY) ? PlayerPrefs.GetString(GAME_TYPE_KEY) : GAME_TYPE_SINGLE_PLAYER;
+        string gameTypeString = PlayerPrefs.GetString(GAME_TYPE_KEY, GAME_TYPE_SINGLE_PLAYER);
         return gameTypeString == GAME_TYPE_SINGLE_PLAYER || gameTypeString == GAME_TYPE_TWO_PLAYERS ? gameTypeString : GAME_TYPE_SINGLE_PLAYER;
     }
 }

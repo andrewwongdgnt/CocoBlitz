@@ -19,7 +19,7 @@ public class PauseMenu : MonoBehaviour
     private List<Statistics> statsList;
 
 
-    public UCWManager ucwManager;
+    public BananaRewardWindowManager bananaRewardWindowManager;
     public GameObject statsContainer;
     public GameObject mainStatsContainer;
     public Text averageTimeElapsedText;

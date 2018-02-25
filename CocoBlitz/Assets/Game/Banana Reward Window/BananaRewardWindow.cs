@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UCW : MonoBehaviour {
+public class BananaRewardWindow : MonoBehaviour {
 
-    public UCWManager manager;
-    public Image characterImage;
-    public Text characterNameText;
+    public BananaRewardWindowManager manager;
+    public Text reasonText;
+    public Text rewardText;
     public Animator anim;
 
     // Use this for initialization
@@ -31,16 +31,17 @@ public class UCW : MonoBehaviour {
         gameObject.SetActive(false);
         manager.Hide();
     }
-
-    public void SetCharacterSprite(Sprite sprite)
-    {
-        characterImage.sprite = sprite;
-    }
-
-    public void SetCharacterName(string name)
-    {
-        characterNameText.text = name;
-    }
     
+
+    public void SetReason(string reason)
+    {
+        reasonText.text = reason;
+    }
+
+    public void SetReward(string reward)
+    {
+        rewardText.text = reward;
+    }
+
 
 }
