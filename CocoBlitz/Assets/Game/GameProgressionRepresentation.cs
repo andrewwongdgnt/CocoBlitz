@@ -7,24 +7,37 @@ using UnityEngine;
 public class GameProgressionRepresentation {
 
     //everything is a float to make it easier for calculating rewards and barriers
-    public float totalGamesPlayed;
-
     public float totalSinglePlayerGamesPlayed;
 
-    public float totalTwoPlayersGamesPlayed;
-
-    public float totalGamesWithCpuPlayed;
-
-    public float totalCorrectGuesses;
+    public float totalTwoPlayerGamesPlayed;
 
     //Player has to see to the end of the game for this to count
     public float totalTimeSpentPlaying;
 
-    public float totalCountOfWhenCocoWasCorrectlyPicked;
+    public float totalCpusDefeated;
 
-    public float totalCountOfWhenChompWasSeen;
+    public float totalCorrectCorrectlyColoredGuesses;
 
-    public float totalCountOfCorrectGuessUnderTwoSecond;
+    public float totalCorrectIncorrectlyColoredGuesses;
 
-    public float totalCountOfCorrectGuessUnderOneSecond;
+    public float totalCorrectGuessesUnderOneSecond;
+
+    public float totalTimesYellowBananaWasSeen;
+
+    public float totalTimesCocoWasPicked;
+
+    public float totalTimesChompWasPicked;
+    
+
+    //Secrets. First achievement is unknown.  Then after that, it is known.
+    public float totalCorrectGuessesUnderHalfASecond;
+
+    public float totalGamesWithAndrewAndKelsey;
+
+    public float totalGamesWithCocoAndMuffin;
+
+    public float totalGamesWithMonkeyAndPenguin;
+
+    public float totalCorrectGuessesStreak;
+
 }

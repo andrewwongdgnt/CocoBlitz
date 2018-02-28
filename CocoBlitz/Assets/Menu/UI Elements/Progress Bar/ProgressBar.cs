@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ProgressBar : MonoBehaviour {
+public class ProgressBar : MonoBehaviour
+{
 
     public Text requirement;
     public Text nextReward;
+    public Text label;
     public Slider slider;
     private void Start()
     {
@@ -16,11 +18,16 @@ public class ProgressBar : MonoBehaviour {
     public void SetValue(float current, float max)
     {
         requirement.text = current + "/" + max;
-        slider.value =  current/max;
+        slider.value = current / max;
     }
     public void SetNextReward(float value)
     {
 
         nextReward.text = "x" + value;
+    }
+    public void SetLabelValue(bool isSecret)
+    {
+        if (isSecret)
+            label.text = "???";
     }
 }
