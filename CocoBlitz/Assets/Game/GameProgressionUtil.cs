@@ -24,6 +24,48 @@ public class GameProgressionUtil {
         return PlayerPrefs.GetInt(BANANA_COUNT_KEY, 0);
     }
 
+
+    public enum BuyableCpuEnum { Kongo, PurpleMonkey, Coco, Muffin, Chomp };
+
+    public static Dictionary<BuyableCpuEnum, int> CPU_COST_MAP = new Dictionary<BuyableCpuEnum, int>()
+    {
+        { BuyableCpuEnum.Kongo, 100},
+        { BuyableCpuEnum.PurpleMonkey, 100},
+        { BuyableCpuEnum.Coco, 100},
+        { BuyableCpuEnum.Muffin, 100},
+        { BuyableCpuEnum.Chomp, 100},
+    };
+
+
+    public static Dictionary<BuyableCpuEnum, Cpu> CPU_MAP = new Dictionary<BuyableCpuEnum, Cpu>()
+    {
+        { BuyableCpuEnum.Kongo, Cpu.KONGO},
+        { BuyableCpuEnum.PurpleMonkey, Cpu.PURPLE_MONKEY},
+        { BuyableCpuEnum.Coco, Cpu.COCO},
+        { BuyableCpuEnum.Muffin, Cpu.MUFFIN},
+        { BuyableCpuEnum.Chomp, Cpu.CHOMP},
+    };
+
+    public enum BuyStatus { NOT_ENOUGH_BANANAS, ALREADY_BOUGHT, SUCCESSFUL };
+    public static BuyStatus BuyCpu(BuyableCpuEnum cpuToBuy)
+    {
+        //check if cpu already unlocked
+        if (GetCpuAvailability(CPU_MAP[cpuToBuy]))
+        {
+            return BuyStatus.ALREADY_BOUGHT;
+        }
+
+        bool boughtSuccessful = ChangeBananaCountBy(-CPU_COST_MAP[cpuToBuy]);
+        if (boughtSuccessful)
+        {
+            UnlockCpu(CPU_MAP[cpuToBuy]);
+            return BuyStatus.SUCCESSFUL;
+        } else
+        {
+            return BuyStatus.NOT_ENOUGH_BANANAS;
+        }
+    }
+
     private readonly static string CPU_AVAILABILITY_KEY = "CpuAvailabilityKey";
 
     public static void UnlockCpu(Cpu cpu)
@@ -72,16 +114,16 @@ public class GameProgressionUtil {
    
     public static RewardAndBarrier GetNextRewardBarrier(RewardAndBarrier[] rewardAndBarriers, float currentValue)
     {
-        RewardAndBarrier rb = rewardAndBarriers[0];
+        
         for (int i=0; i< rewardAndBarriers.Length; i++)
         {
-            rb = rewardAndBarriers[i];
-            if (currentValue<rb.Barrier)
+            if (currentValue< rewardAndBarriers[i].Barrier)
             {
-                break;
+                return rewardAndBarriers[i];
+                
             }
         }
-        return rb;
+        return new RewardAndBarrier(rewardAndBarriers[rewardAndBarriers.Length - 1].Barrier, 0);
     }
 
     public static float GetGameProgressionField(Func<GameProgressionRepresentation, float> getRepField)

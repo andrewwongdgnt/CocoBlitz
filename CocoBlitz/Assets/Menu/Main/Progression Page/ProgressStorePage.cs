@@ -9,11 +9,18 @@ public class ProgressStorePage : MonoBehaviour, Page
     public Text instructions;
     public Text bananaCount;
     public ProgressContent progressContent;
+    public StoreContent storeContent;
     public GameObject titleArea;
     // Use this for initialization
     void Start()
     {
-        bananaCount.text = "x"+GameProgressionUtil.GetBananas().ToString();
+        UpdateBananaCount();
+    }
+
+    public void UpdateBananaCount()
+    {
+
+        bananaCount.text = "x" + GameProgressionUtil.GetBananas().ToString();
     }
 
 
@@ -37,5 +44,6 @@ public class ProgressStorePage : MonoBehaviour, Page
         }
 
         progressContent.gameObject.SetActive(progressionPageEnum == ProgressionPage.ProgressionPageEnum.BananaProgress);
+        storeContent.gameObject.SetActive(progressionPageEnum == ProgressionPage.ProgressionPageEnum.CocoStore );
     }
 }
