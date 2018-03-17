@@ -23,6 +23,9 @@ public class GameModel : MonoBehaviour
     public GameObject roundSeperator;
     public Text delayValue;
 
+    public Button[] player1Buttons;
+    public Button[] player2Buttons;
+
     public BananaRewardWindowManager bananaRewardWindowManager;
 
     private Player player1;
@@ -205,6 +208,12 @@ public class GameModel : MonoBehaviour
             correctEntity = allEntities.Except(incorrectEntities).First();
 
 
+        //Enable all buttons
+        
+        SetButtonsEnabled(player1Buttons, true);        
+        SetButtonsEnabled(player2Buttons, true);
+        
+
         //Set up stats
 
         float time = Time.time;
@@ -358,6 +367,17 @@ public class GameModel : MonoBehaviour
             {
                 correctStreak = 0;
             }
+
+        }
+
+
+        if (participant == player1)
+        {
+            SetButtonsEnabled(player1Buttons, entity == correctEntity);
+        }
+        if (participant == player2)
+        {
+            SetButtonsEnabled(player2Buttons, entity == correctEntity);
         }
 
         participant.finalScore = participant.points - participant.penalties;
@@ -369,6 +389,15 @@ public class GameModel : MonoBehaviour
         {
             StartCoroutine(NewRoundWithDelay());
         }
+    }
+
+    private void SetButtonsEnabled(Button[] buttons, bool enabled)
+    {
+
+        Array.ForEach(buttons, btn =>
+        {
+            btn.interactable = enabled;
+        });
     }
 
     IEnumerator NewRoundWithDelay()
