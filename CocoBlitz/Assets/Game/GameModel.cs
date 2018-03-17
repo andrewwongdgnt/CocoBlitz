@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 public class GameModel : MonoBehaviour
 {
-
+    public GameSoundManager gameSoundManager;
     public Card[] cards_2Entities;
     public Text playerScoreText;
     public Text playerNameText;
@@ -351,6 +351,8 @@ public class GameModel : MonoBehaviour
                 }
             }
 
+            gameSoundManager.PlayCorrectGuess();
+
         }
         else
         {
@@ -367,6 +369,7 @@ public class GameModel : MonoBehaviour
             {
                 correctStreak = 0;
             }
+            gameSoundManager.PlayIncorrectGuess();
 
         }
 
