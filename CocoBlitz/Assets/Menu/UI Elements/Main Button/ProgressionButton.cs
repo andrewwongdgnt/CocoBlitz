@@ -6,8 +6,10 @@ public class ProgressionButton : MonoBehaviour {
 
     public ProgressionPage.ProgressionPageEnum progressPageEnum;
     public ProgressionPage progressionPage;
+    public MenuAudioManager menuAudioManager;
     public void SelectBananaProgressPage()
     {
+        menuAudioManager.PlayMainButtonClick();
         progressionPage.SelectProgressionPage(progressPageEnum);
     }
 }

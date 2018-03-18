@@ -2,13 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class MainButton : MonoBehaviour {
+
 
     public GameUtil.GameModeEnum gameMode;
     public MainPage mainMenu;
+    public MenuAudioManager menuAudioManager;
+
     public void Play()
     {
-        mainMenu.SelectGameMode(gameMode);
+        menuAudioManager.PlayMainButtonClick();
+         mainMenu.SelectGameMode(gameMode);
     }
     
 

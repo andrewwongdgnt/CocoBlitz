@@ -11,6 +11,8 @@ public class CpuPicker : MonoBehaviour {
     public Text nameText;
     public Button acceptBtn;
 
+    public MenuAudioManager menuAudioManager;
+
     private int cpuPortraitIndex;
     private int cpuPickedIndex;
     private List<Cpu> allCpus;
@@ -85,6 +87,13 @@ public class CpuPicker : MonoBehaviour {
 
     public void Close(bool cancel)
     {
+        Close(cancel, true);
+    }
+
+    public void Close(bool cancel, bool playSound)
+    {
+        if (playSound)
+        menuAudioManager.PlayMainButtonClick();
         if (gamePage != null)
         {
             if (!cancel)

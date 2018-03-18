@@ -28,6 +28,8 @@ public class GamePage : MonoBehaviour, Page {
     public Toggle singlePlayerToggle;
     public Toggle twoPlayersToggle;
 
+    public MenuAudioManager menuAudioManager;
+
     List<Cpu> allCpus;
 
     private int[] cpuIndexes = new int[GameSettingsUtil.MAX_CPU_IN_PLAY_COUNT];
@@ -46,7 +48,7 @@ public class GamePage : MonoBehaviour, Page {
         SetCpu(1, cpusInPlay[1]);
         SetCpu(2, cpusInPlay[2]);
 
-        cpuPicker.Close(true);
+        cpuPicker.Close(true,false);
 
         twoPlayersToggle.isOn = GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_TWO_PLAYERS;
     }
@@ -138,6 +140,8 @@ public class GamePage : MonoBehaviour, Page {
         {
             GameUtil.cpuList.Add((Cpu)allCpus[cpuIndexes[2]].RebuildToPlay());
         }
+
+        menuAudioManager.PlayMainButtonClick();
 
         SceneManager.LoadScene("Game");
     }
