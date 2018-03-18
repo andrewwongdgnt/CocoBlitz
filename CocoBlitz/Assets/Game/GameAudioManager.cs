@@ -7,13 +7,13 @@ public class GameAudioManager : MonoBehaviour {
     public AudioSource sfxSource;
     public AudioSource musicSource;
 
-    public AudioClip correct;
-    public AudioClip incorrect;
 
     //-----------------------
     // Guess Button
     //-----------------------
 
+    public AudioClip correct;
+    public AudioClip incorrect;
     public void PlayCorrectGuess()
     {
         AudioUtil.PlaySFX(sfxSource,correct);
@@ -24,5 +24,15 @@ public class GameAudioManager : MonoBehaviour {
         AudioUtil.PlaySFX(sfxSource,incorrect);
     }
 
-   
+    //-----------------------
+    // Main Button
+    //-----------------------
+
+    public AudioClip mainButtonClick;
+    public void PlayMainButtonClick()
+    {
+        AudioUtil.PlaySFX(sfxSource, mainButtonClick);
+    }
+
+
 }

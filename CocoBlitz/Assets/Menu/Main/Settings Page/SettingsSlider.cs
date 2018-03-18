@@ -6,14 +6,20 @@ using UnityEngine.UI;
 
 public class SettingsSlider : MonoBehaviour {
 
+    public MenuAudioManager menuAudioManager;
     public Text valueText;
     public SettingsPage.SettingsEnum settings;
     public SettingsPage settingsPage;
     public void SetSettings(float value)
     {
+
         float finalValue = GetFinalValue(value); 
         valueText.text = GetFinalValueString(finalValue);
         settingsPage.SetSettings(settings, finalValue);
+        if (settings == SettingsPage.SettingsEnum.Sound)
+        {
+            menuAudioManager.PlaySliderOnValueChanged();
+        }
     }
 
     private string GetFinalValueString(float v)

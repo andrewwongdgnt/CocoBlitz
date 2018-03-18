@@ -168,6 +168,7 @@ public class GamePage : MonoBehaviour, Page {
 
     public void SetGameTypeAsSinglePlayer(bool value)
     {
+        menuAudioManager.PlayToggleClick();
         if (!value)
         {
             UpdateCpu1PortaitToPlayer2(cpu1Portrait);
@@ -177,8 +178,6 @@ public class GamePage : MonoBehaviour, Page {
             List<int> cpusInPlay = GameSettingsUtil.GetCpusInPlayList();
             SetCpu(0, cpusInPlay[0]);
         }
-       // UpdateCpuPortaitAppearance(cpu2Portrait, 1, value);
-       // UpdateCpuPortaitAppearance(cpu3Portrait, 2, value);
         GameSettingsUtil.SetGameTypeKey(value ? GameSettingsUtil.GAME_TYPE_SINGLE_PLAYER : GameSettingsUtil.GAME_TYPE_TWO_PLAYERS);
     }
 

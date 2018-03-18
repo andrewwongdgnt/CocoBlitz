@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class AudioUtil  {
 
-    public static void PlaySFX(AudioSource audioSource, AudioClip audioClip)
+    public static void PlaySFX(AudioSource audioSource, AudioClip audioClip, bool forcePlay=true)
     {
         if (audioSource == null || audioClip == null)
             return;
         audioSource.volume = SettingsUtil.GetSFXVolume() / 100;
         audioSource.loop = false;
-        PlayAudio(audioSource, audioClip);
+        PlayAudio(audioSource, audioClip, forcePlay);
     }
 
     public static void PlayMusic(AudioSource audioSource, AudioClip audioClip)
@@ -22,12 +22,13 @@ public class AudioUtil  {
         PlayAudio(audioSource, audioClip);
     }
 
-    private static void PlayAudio(AudioSource audioSource, AudioClip audioClip)
+    private static void PlayAudio(AudioSource audioSource, AudioClip audioClip, bool forcePlay = true)
     {
         if (audioSource == null || audioClip == null)
             return;
         audioSource.clip = audioClip;
-        audioSource.Play();
+        if (forcePlay || !audioSource.isPlaying)
+            audioSource.Play();
     }
 
 }

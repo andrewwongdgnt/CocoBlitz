@@ -9,6 +9,8 @@ using UnityEngine.UI;
 public class PauseMenu : MonoBehaviour
 {
 
+    public GameAudioManager gameAudioManager;
+
     public Text resumeStats_txt;
 
 
@@ -60,7 +62,7 @@ public class PauseMenu : MonoBehaviour
         singlePlayerGroup.SetActive(GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_SINGLE_PLAYER);
         twoPlayersGroup.SetActive(GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_TWO_PLAYERS);
         statsIndex = 0;
-        Pause(false);
+        Pause(false,false);
     }
 
     void Update()
@@ -77,10 +79,15 @@ public class PauseMenu : MonoBehaviour
         ShowPauseContainer(true);
     }
 
-
-
     public void Pause(bool pause)
     {
+        Pause(pause, true);
+    }
+
+    public void Pause(bool pause, bool playSfx)
+    {
+        if (playSfx)
+        gameAudioManager.PlayMainButtonClick();
         if (statsList != null)
         {
             StringBuilder builder = new StringBuilder();
@@ -207,11 +214,13 @@ public class PauseMenu : MonoBehaviour
 
     public void Restart()
     {
+        gameAudioManager.PlayMainButtonClick();
         SceneManager.LoadScene("Game");
     }
 
     public void Quit()
     {
+        gameAudioManager.PlayMainButtonClick();
         GameUtil.fromGame = true;
         SceneManager.LoadScene("Main");
     }
