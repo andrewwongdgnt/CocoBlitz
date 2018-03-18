@@ -9,6 +9,8 @@ using UnityEngine.SceneManagement;
 public class GameModel : MonoBehaviour
 {
 
+    private readonly static float MIN_ROUND_DELAY_TO_DISPLAY_ROUND_SEP = 0.25f;
+
     public GameAudioManager gameAudioManager;
 
     public Card[] cards_2Entities;
@@ -64,8 +66,6 @@ public class GameModel : MonoBehaviour
     }
 
     List<GameProgressionLogicContainer> gameProgressionLogicContainerList = new List<GameProgressionLogicContainer>();
-
-    private float totalGamesPlayedInitial;
 
     // Use this for initialization
     void Start()
@@ -410,7 +410,7 @@ public class GameModel : MonoBehaviour
         cardInDelay = true;
         float totalDelay = SettingsUtil.GetCardDelay();
 
-        roundSeperator.SetActive(totalDelay > 0.25f);
+        roundSeperator.SetActive(totalDelay > MIN_ROUND_DELAY_TO_DISPLAY_ROUND_SEP);
 
         delayValue.text = "3";
         yield return new WaitForSeconds(totalDelay / 3);
@@ -421,6 +421,10 @@ public class GameModel : MonoBehaviour
 
         roundSeperator.SetActive(false);
 
+        if (totalDelay > MIN_ROUND_DELAY_TO_DISPLAY_ROUND_SEP)
+        {
+            gameAudioManager.PlayCardFlip();
+        }
         NewRound();
         cardInDelay = false;
     }

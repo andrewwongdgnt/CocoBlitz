@@ -227,6 +227,7 @@ public class PauseMenu : MonoBehaviour
 
     public void BackFromStats()
     {
+        gameAudioManager.PlayMainButtonClick();
         ShowStatsContainer(false);
         ShowPauseContainer(true);
     }
@@ -234,6 +235,7 @@ public class PauseMenu : MonoBehaviour
     public void StepStats(int step)
     {
         if (statsList != null) {
+            gameAudioManager.PlayCardFlip();
 
             Statistics playerStats = GetPlayerStats();
 
@@ -270,6 +272,7 @@ public class PauseMenu : MonoBehaviour
     {
         if (statsList != null)
         {
+            gameAudioManager.PlayCardFlip();
             Statistics playerStats = GetPlayerStats();
             int calculatedStatsIndex = last ? playerStats.StatisticsList.Count : 0;
 

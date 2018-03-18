@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -34,5 +35,13 @@ public class GameAudioManager : MonoBehaviour {
         AudioUtil.PlaySFX(sfxSource, mainButtonClick);
     }
 
+    //-----------------------
+    // Main Button
+    //-----------------------
 
+    public AudioClip cardFlip;
+    public void PlayCardFlip()
+    {
+        AudioUtil.PlaySFX(sfxSource, cardFlip);
+    }
 }

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class BananaRewardWindow : MonoBehaviour {
 
+    public GameAudioManager gameAudioManager;
     public BananaRewardWindowManager manager;
     public Text reasonText;
     public Text rewardText;
@@ -19,12 +20,14 @@ public class BananaRewardWindow : MonoBehaviour {
 
     public void Unlock()
     {
+        gameAudioManager.PlayMainButtonClick();
         countLeft--;
         UpdateOkToAllBtnText();
         manager.Unlock();
     }
     public void UnlockAll()
     {
+        gameAudioManager.PlayMainButtonClick();
         manager.UnlockAll();
     }
 
