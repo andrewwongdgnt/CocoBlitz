@@ -532,6 +532,12 @@ public class GameModel : MonoBehaviour
             showingGameOverMenu = true;
             ShowGameOverMenu();
 
+
+            if (GameUtil.cpuList.Count == 0 || GameUtil.cpuList.All(cpu => cpu.finalScore < player1.finalScore) || (GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_TWO_PLAYERS && GameUtil.cpuList.All(cpu => cpu.finalScore < player2.finalScore)))
+            {
+                gameAudioManager.PlayWinGame();
+            }
+
             gameProgressionLogicContainerList.ForEach(l =>
             {
                 RewardAndBarrier[] list = GameProgressionUtil.GetCorrectRewards(l.rewardAndBarriers, l.initialValue, GameProgressionUtil.GetGameProgressionField(l.lambda));

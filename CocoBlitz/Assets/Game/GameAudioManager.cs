@@ -44,4 +44,16 @@ public class GameAudioManager : MonoBehaviour {
     {
         AudioUtil.PlaySFX(sfxSource, cardFlip);
     }
+
+
+    //-----------------------
+    // End Game
+    //-----------------------
+
+    public AudioClip win;
+    public void PlayWinGame()
+    {
+        AudioUtil.PlaySFX(sfxSource, win);
+    }
+
 }
