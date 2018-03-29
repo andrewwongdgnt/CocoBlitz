@@ -73,6 +73,8 @@ public class GameModel : MonoBehaviour
 
         Debug.Log("Game Begins");
 
+        gameAudioManager.PlayBackgroundMusic();
+
         bananaRewardWindowManager.Hide();
 
         BuildGameProgressionLogicList();
