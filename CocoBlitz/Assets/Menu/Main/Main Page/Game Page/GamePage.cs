@@ -33,7 +33,10 @@ public class GamePage : MonoBehaviour, Page {
     List<Cpu> allCpus;
 
     private int[] cpuIndexes = new int[GameSettingsUtil.MAX_CPU_IN_PLAY_COUNT];
-    // Use this for initialization
+   
+    //hack to stop slider sound from playing
+    private bool allowGameOptionChangedSound;
+
     void Start () {
         allCpus = new List<Cpu>() { null, Cpu.KELSEY, Cpu.ANDREW, Cpu.MONKEY, Cpu.PENGUIN };
         allCpus.Add(Cpu.KONGO);
@@ -51,6 +54,8 @@ public class GamePage : MonoBehaviour, Page {
         cpuPicker.Close(true,false);
 
         twoPlayersToggle.isOn = GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_TWO_PLAYERS;
+
+        allowGameOptionChangedSound = false;
     }
     public void SetActive(bool activate)
     {
@@ -71,6 +76,9 @@ public class GamePage : MonoBehaviour, Page {
     }
     public void GameOptionChanged(float value)
     {
+        if (allowGameOptionChangedSound)
+            menuAudioManager.PlaySliderOnValueChanged();
+        allowGameOptionChangedSound = true;
         UpdateGameParams(value.ToString());
     }
 

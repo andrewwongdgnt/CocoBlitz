@@ -7,10 +7,14 @@ public class Cpu : Participant
 
     public static readonly string NO_CPU = "No CPU";
 
-    //TODO-AW Adjust these stats later
+
     public static readonly Cpu KELSEY = new Builder()
         .Name("Kelsey")
         .Sprite(Resources.Load<Sprite>("Portraits/Kelsey Portrait"))
+        .VoiceGreeting(Resources.Load<AudioClip>("Voices/Kelsey Greeting"))
+        .VoicePicked(Resources.Load<AudioClip>("Voices/Kelsey Picked"))
+        .VoiceCorrect(Resources.Load<AudioClip>("Voices/Kelsey Correct"))
+        .VoiceIncorrect(Resources.Load<AudioClip>("Voices/Kelsey Incorrect"))
         .Description("Kelsey just likes playing games.  She's still going to try, but her main goal is just to have fun.")
         .DelayLowerRangeBeforeAnswer(1.9f)
         .DelayUpperRangeBeforeAnswer(2.9f)
@@ -21,6 +25,10 @@ public class Cpu : Participant
     public static readonly Cpu ANDREW = new Builder()
         .Name("Andrew")
         .Sprite(Resources.Load<Sprite>("Portraits/Andrew Portrait"))
+        .VoiceGreeting(Resources.Load<AudioClip>("Voices/Kelsey Greeting"))
+        .VoicePicked(Resources.Load<AudioClip>("Voices/Kelsey Picked"))
+        .VoiceCorrect(Resources.Load<AudioClip>("Voices/Kelsey Correct"))
+        .VoiceIncorrect(Resources.Load<AudioClip>("Voices/Kelsey Incorrect"))
         .Description("Andrew is very competitive and so he can be a tough opponent to beat.  Are you up to the challenge?")
         .DelayLowerRangeBeforeAnswer(1.5f)
         .DelayUpperRangeBeforeAnswer(2.1F)
@@ -31,6 +39,10 @@ public class Cpu : Participant
     public static readonly Cpu MONKEY = new Builder()
         .Name("Monkey")
         .Sprite(Resources.Load<Sprite>("Portraits/Monkey Portrait"))
+        .VoiceGreeting(Resources.Load<AudioClip>("Voices/Kelsey Greeting"))
+        .VoicePicked(Resources.Load<AudioClip>("Voices/Kelsey Picked"))
+        .VoiceCorrect(Resources.Load<AudioClip>("Voices/Kelsey Correct"))
+        .VoiceIncorrect(Resources.Load<AudioClip>("Voices/Kelsey Incorrect"))
         .Description("Don't let the Monkey's profile picture fool you.  He may look playful, but when it comes to CoCo Go then he's not monkeying around.")
         .DelayLowerRangeBeforeAnswer(1.5f)
         .DelayUpperRangeBeforeAnswer(2.1F)
@@ -41,6 +53,10 @@ public class Cpu : Participant
     public static readonly Cpu PENGUIN = new Builder()
         .Name("Penguin")
         .Sprite(Resources.Load<Sprite>("Portraits/Penguin Portrait"))
+        .VoiceGreeting(Resources.Load<AudioClip>("Voices/Kelsey Greeting"))
+        .VoicePicked(Resources.Load<AudioClip>("Voices/Kelsey Picked"))
+        .VoiceCorrect(Resources.Load<AudioClip>("Voices/Kelsey Correct"))
+        .VoiceIncorrect(Resources.Load<AudioClip>("Voices/Kelsey Incorrect"))
         .Description("Penguin may be small, but what she lacks in size then she more than makes up for with enthusiasm.  Go Penguin!")
         .DelayLowerRangeBeforeAnswer(1.5f)
         .DelayUpperRangeBeforeAnswer(2.1F)
@@ -51,6 +67,10 @@ public class Cpu : Participant
     public static readonly Cpu KONGO = new Builder()
         .Name("Kongo")
         .Sprite(Resources.Load<Sprite>("Portraits/Kongo Portrait"))
+        .VoiceGreeting(Resources.Load<AudioClip>("Voices/Kelsey Greeting"))
+        .VoicePicked(Resources.Load<AudioClip>("Voices/Kelsey Picked"))
+        .VoiceCorrect(Resources.Load<AudioClip>("Voices/Kelsey Correct"))
+        .VoiceIncorrect(Resources.Load<AudioClip>("Voices/Kelsey Incorrect"))
         .Description("Kongo is super smart so he almost never gets it wrong. So what if it takes a bit longer to figure it out? If you're going to do something then you might as well do it right.")
         .UnlockDescription("Unlock this character by...?")
         .DelayLowerRangeBeforeAnswer(1.5f)
@@ -61,6 +81,10 @@ public class Cpu : Participant
     public static readonly Cpu PURPLE_MONKEY = new Builder()
         .Name("Purple Monkey")
         .Sprite(Resources.Load<Sprite>("Portraits/Purple Monkey Portrait"))
+        .VoiceGreeting(Resources.Load<AudioClip>("Voices/Kelsey Greeting"))
+        .VoicePicked(Resources.Load<AudioClip>("Voices/Kelsey Picked"))
+        .VoiceCorrect(Resources.Load<AudioClip>("Voices/Kelsey Correct"))
+        .VoiceIncorrect(Resources.Load<AudioClip>("Voices/Kelsey Incorrect"))
         .Description("Who cares if you get one wrong here and there?  Life's too short to always wait for the sure thing so when the Purple Monkey sees an opportunity then you'd better believe she's going to take it.")
         .UnlockDescription("Unlock this character by...?")
         .DelayLowerRangeBeforeAnswer(1.5f)
@@ -71,6 +95,10 @@ public class Cpu : Participant
     public static readonly Cpu MUFFIN = new Builder()
         .Name("Muffin")
         .Sprite(Resources.Load<Sprite>("Portraits/Muffin Portrait"))
+        .VoiceGreeting(Resources.Load<AudioClip>("Voices/Kelsey Greeting"))
+        .VoicePicked(Resources.Load<AudioClip>("Voices/Kelsey Picked"))
+        .VoiceCorrect(Resources.Load<AudioClip>("Voices/Kelsey Correct"))
+        .VoiceIncorrect(Resources.Load<AudioClip>("Voices/Kelsey Incorrect"))
         .Description("Muffin is Coco's best friend and they love to hang out together. But lately, Coco seems to always wander off and get lost. Luckily, Muffin is very good at finding Coco.")
         .UnlockDescription("Unlock this character by...?")
         .DelayLowerRangeBeforeAnswer(.8f)
@@ -81,6 +109,10 @@ public class Cpu : Participant
     public static readonly Cpu CHOMP = new Builder()
         .Name("Chomp")
         .Sprite(Resources.Load<Sprite>("Portraits/Chomp Portrait"))
+        .VoiceGreeting(Resources.Load<AudioClip>("Voices/Kelsey Greeting"))
+        .VoicePicked(Resources.Load<AudioClip>("Voices/Kelsey Picked"))
+        .VoiceCorrect(Resources.Load<AudioClip>("Voices/Kelsey Correct"))
+        .VoiceIncorrect(Resources.Load<AudioClip>("Voices/Kelsey Incorrect"))
         .Description("Chomp desc")
         .UnlockDescription("Unlock this character by...?")
         .DelayLowerRangeBeforeAnswer(1.5f)
@@ -93,6 +125,10 @@ public class Cpu : Participant
     public static readonly Cpu COCO = new Builder()
         .Name("Coco")
         .Sprite(Resources.Load<Sprite>("Portraits/Coco Portrait"))
+        .VoiceGreeting(Resources.Load<AudioClip>("Voices/Kelsey Greeting"))
+        .VoicePicked(Resources.Load<AudioClip>("Voices/Kelsey Picked"))
+        .VoiceCorrect(Resources.Load<AudioClip>("Voices/Kelsey Correct"))
+        .VoiceIncorrect(Resources.Load<AudioClip>("Voices/Kelsey Incorrect"))
         .Description("Coco's got the brains, the brawn and even the whole game named after him. You didn't think he'd just sit around and watch everyone else play, did you?")
         .UnlockDescription("Unlock this character by...?")
         .DelayLowerRangeBeforeAnswer(1.5f)
@@ -120,10 +156,20 @@ public class Cpu : Participant
 
     public bool starter { get; private set; }
 
-    public Cpu(string name, string description, string unlockDescription, float delayLowerRangeBeforeAnswer,float  delayUpperRangeBeforeAnswer,  float chanceOfCorrectForCorrectlyColored, float chanceOfCorrectForIncorrectlyColored
+    public AudioClip voiceGreeting { get; private set; }
+    public AudioClip voicePicked { get; private set; }
+    public AudioClip voiceCorrect { get; private set; }
+    public AudioClip voiceIncorrect { get; private set; }
+
+    public Cpu(string name, string description, Sprite sprite, AudioClip voiceGreeting, AudioClip voicePicked, AudioClip voiceCorrect, AudioClip voiceIncorrect, string unlockDescription, float delayLowerRangeBeforeAnswer,float  delayUpperRangeBeforeAnswer,  float chanceOfCorrectForCorrectlyColored, float chanceOfCorrectForIncorrectlyColored
         , Dictionary<CardUtil.EntityEnum, float> delayModiferDict, Dictionary<CardUtil.EntityEnum, float> chanceOfCorrectModiferDict, bool starter) : base(name)
     {
         this.description = description;
+        this.voiceGreeting = voiceGreeting;
+        this.voicePicked = voicePicked;
+        this.voiceCorrect = voiceCorrect;
+        this.voiceIncorrect = voiceIncorrect;
+        this.sprite = sprite;
         this.unlockDescription = unlockDescription;
         this.delayLowerRangeBeforeAnswer = delayLowerRangeBeforeAnswer;
         this.delayUpperRangeBeforeAnswer = delayUpperRangeBeforeAnswer;
@@ -139,6 +185,8 @@ public class Cpu : Participant
         return new Builder()
         .Name(name)
         .Sprite(sprite)
+        .VoiceCorrect(voiceCorrect)
+        .VoiceIncorrect(voiceIncorrect)
         .DelayLowerRangeBeforeAnswer(delayLowerRangeBeforeAnswer)
         .DelayUpperRangeBeforeAnswer(delayUpperRangeBeforeAnswer)
         .ChanceOfCorrectForCorrectlyColored(chanceOfCorrectForCorrectlyColored)
@@ -228,10 +276,43 @@ public class Cpu : Participant
             return this;
         }
 
+        private AudioClip voiceGreeting;
+        public Builder VoiceGreeting(AudioClip voiceGreeting)
+        {
+            this.voiceGreeting = voiceGreeting;
+            return this;
+        }
+
+        private AudioClip voicePicked;
+        public Builder VoicePicked(AudioClip voicePicked)
+        {
+            this.voicePicked = voicePicked;
+            return this;
+        }
+
+        private AudioClip voiceCorrect;
+        public Builder VoiceCorrect(AudioClip voiceCorrect)
+        {
+            this.voiceCorrect = voiceCorrect;
+            return this;
+        }
+
+        private AudioClip voiceIncorrect;
+        public Builder VoiceIncorrect(AudioClip voiceIncorrect)
+        {
+            this.voiceIncorrect = voiceIncorrect;
+            return this;
+        }
+
         public Cpu Build()
         {
             Cpu cpu = new Cpu(name,
                 description,
+                sprite,
+                voiceGreeting,
+                voicePicked,
+                voiceCorrect,
+                voiceIncorrect,
                 unlockDescription,
                 delayLowerRangeBeforeAnswer,
                 delayUpperRangeBeforeAnswer,
@@ -240,7 +321,6 @@ public class Cpu : Participant
                 delayModiferDict,
                 chanceOfCorrectModiferDict,
                 starter);
-            cpu.sprite = sprite;
             return cpu;
         }
     }

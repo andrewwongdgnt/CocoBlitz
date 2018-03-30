@@ -3,10 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MenuAudioManager : MonoBehaviour {
+public class MenuAudioManager : AudioManager {
 
-    public AudioSource sfxSource;
-    public AudioSource musicSource;
+
+
+
+
+    public void UpdateMusicVolume()
+    {
+        musicSource.volume = SettingsUtil.GetMusicVolume() / 100;
+    }
 
     //-----------------------
     // Main Button
@@ -16,7 +22,6 @@ public class MenuAudioManager : MonoBehaviour {
     {
         AudioUtil.PlaySFX(sfxSource, mainButtonClick);
     }
-
 
     //-----------------------
     // Nav Button
@@ -46,5 +51,4 @@ public class MenuAudioManager : MonoBehaviour {
     {
         AudioUtil.PlaySFX(sfxSource, sliderOnValueChanged,false);
     }
-
 }

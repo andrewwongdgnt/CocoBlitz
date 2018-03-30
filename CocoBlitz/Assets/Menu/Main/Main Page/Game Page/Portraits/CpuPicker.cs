@@ -54,6 +54,8 @@ public class CpuPicker : MonoBehaviour {
         Color tempButtonTextColor = acceptBtnText.color;
         tempButtonTextColor.a = interactable ? 1 : 0.5f;
         acceptBtnText.color = tempButtonTextColor;
+        if (cpu != null)
+            menuAudioManager.PlayAVoice(cpu.voiceGreeting);
     }
 
     public void NextCpu()
@@ -92,14 +94,18 @@ public class CpuPicker : MonoBehaviour {
 
     public void Close(bool cancel, bool playSound)
     {
-        if (playSound)
-        menuAudioManager.PlayMainButtonClick();
         if (gamePage != null)
         {
             if (!cancel)
             {
                 gamePage.SetCpu(cpuPortraitIndex, cpuPickedIndex);
+                Cpu cpu = allCpus[cpuPickedIndex];
+                if (cpu != null && playSound)
+                    menuAudioManager.PlayAVoice(cpu.voicePicked);
             }
+            else if (playSound)
+                menuAudioManager.PlayMainButtonClick();
+
             gamePage.ShowNavArea(true);
         }
         gameObject.SetActive(false);

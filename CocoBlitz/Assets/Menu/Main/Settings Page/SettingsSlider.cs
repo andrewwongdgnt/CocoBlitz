@@ -16,9 +16,13 @@ public class SettingsSlider : MonoBehaviour {
         float finalValue = GetFinalValue(value); 
         valueText.text = GetFinalValueString(finalValue);
         settingsPage.SetSettings(settings, finalValue);
-        if (settings == SettingsPage.SettingsEnum.Sound)
+        if (settings == SettingsPage.SettingsEnum.Sound || settings == SettingsPage.SettingsEnum.CardDelay)
         {
             menuAudioManager.PlaySliderOnValueChanged();
+        }
+        else if (settings == SettingsPage.SettingsEnum.Music)
+        {
+            menuAudioManager.UpdateMusicVolume();
         }
     }
 

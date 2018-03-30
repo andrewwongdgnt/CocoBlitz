@@ -73,8 +73,6 @@ public class GameModel : MonoBehaviour
 
         Debug.Log("Game Begins");
 
-        gameAudioManager.PlayBackgroundMusic();
-
         bananaRewardWindowManager.Hide();
 
         BuildGameProgressionLogicList();
@@ -353,9 +351,14 @@ public class GameModel : MonoBehaviour
                 {
                     GameProgressionUtil.UpdateGameProgression(rep => rep.totalCorrectGuessesUnderHalfASecond++);
                 }
+                gameAudioManager.PlayCorrectGuess();
+            }
+            else
+            {
+                Cpu cpu = (Cpu) participant;
+                gameAudioManager.PlayAVoice(cpu.voiceCorrect);
             }
 
-            gameAudioManager.PlayCorrectGuess();
 
         }
         else
@@ -372,8 +375,14 @@ public class GameModel : MonoBehaviour
             if (participant == player1 || (GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_TWO_PLAYERS && participant == player2))
             {
                 correctStreak = 0;
+                gameAudioManager.PlayIncorrectGuess();
+            } 
+            else
+            {
+                Cpu cpu = (Cpu)participant;
+                gameAudioManager.PlayAVoice(cpu.voiceIncorrect);
+
             }
-            gameAudioManager.PlayIncorrectGuess();
 
         }
 
