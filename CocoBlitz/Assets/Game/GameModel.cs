@@ -117,15 +117,63 @@ public class GameModel : MonoBehaviour
     {
         BuildGameProgressionLogicList(rep => rep.totalSinglePlayerGamesPlayed
         , RewardAndBarrier.TOTAL_SINGLE_PLAYER_GAMES_PLAYED_PROGRESSION
-        , "For playing {0} single player games");
+        , "Play {0} single player games");
 
         BuildGameProgressionLogicList(rep => rep.totalTwoPlayerGamesPlayed
-        , RewardAndBarrier.TOTAL_SINGLE_PLAYER_GAMES_PLAYED_PROGRESSION
-        , "For playing {0} two player games");
+        , RewardAndBarrier.TOTAL_TWO_PLAYER_GAMES_PLAYED_PROGRESSION
+        , "Play {0} two player games");
 
         BuildGameProgressionLogicList(rep => rep.totalTimeSpentPlaying
-        , RewardAndBarrier.TOTAL_SINGLE_PLAYER_GAMES_PLAYED_PROGRESSION
-        , "For spending {0} seconds playing");
+        , RewardAndBarrier.TOTAL_TIME_SPENT_PLAYING_PROGRESSION
+        , "Play for {0} seconds");
+
+        BuildGameProgressionLogicList(rep => rep.totalCpusDefeated
+        , RewardAndBarrier.TOTAL_CPUS_DEFEATED_PROGRESSION
+        , "Defeat {0} CPUs");
+
+        BuildGameProgressionLogicList(rep => rep.totalCorrectCorrectlyColoredGuesses
+        , RewardAndBarrier.TOTAL_CORRECT_CORRECTLY_COLORED_GUESSES_PROGRESSION
+        , "Guess {0} items correctly (correctly colored)");
+
+        BuildGameProgressionLogicList(rep => rep.totalCorrectIncorrectlyColoredGuesses
+        , RewardAndBarrier.TOTAL_CORRECT_INCORRECTLY_COLORED_GUESSES_PROGRESSION
+        , "Guess {0} items correctly (incorrectly colored)");
+
+        BuildGameProgressionLogicList(rep => rep.totalCorrectGuessesUnderOneSecond
+        , RewardAndBarrier.TOTAL_CORRECT_GUESSES_UNDER_ONE_SECOND_PROGRESSION
+        , "Guess {0} items correctly under one second");
+
+        BuildGameProgressionLogicList(rep => rep.totalTimesYellowBananaWasSeen
+        , RewardAndBarrier.TOTAL_TIMES_YELLOW_BANANA_WAS_SEEN_PROGRESSION
+        , "See the yellow banana {0} times");
+
+        BuildGameProgressionLogicList(rep => rep.totalTimesCocoWasPicked
+        , RewardAndBarrier.TOTAL_TIMES_COCO_WAS_PICKED_PROGRESSION
+        , "Guess Coco correctly {0} times");
+
+        BuildGameProgressionLogicList(rep => rep.totalTimesChompWasPicked
+        , RewardAndBarrier.TOTAL_TIMES_CHOMP_WAS_PICKED_PROGRESSION
+        , "Guess Chomp correctly {0} times");
+
+        BuildGameProgressionLogicList(rep => rep.totalCorrectGuessesUnderHalfASecond
+        , RewardAndBarrier.TOTAL_CORRECT_GUESSES_UNDER_HALF_A_SECOND_PROGRESSION
+        , "Guess {0} items correctly under half a second");
+
+        BuildGameProgressionLogicList(rep => rep.totalGamesWithAndrewAndKelsey
+        , RewardAndBarrier.TOTAL_GAMES_WITH_ANDREW_AND_KELSEY_PROGRESSION
+        , "Play {0} games with Andrew and Kelsey");
+
+        BuildGameProgressionLogicList(rep => rep.totalGamesWithCocoAndMuffin
+        , RewardAndBarrier.TOTAL_GAMES_WITH_COCO_AND_MUFFIN_PROGRESSION
+        , "Play {0} games with Coco and Muffin");
+
+        BuildGameProgressionLogicList(rep => rep.totalGamesWithMonkeyAndPenguin
+        , RewardAndBarrier.TOTAL_GAMES_WITH_MONKEY_AND_PENGUIN_PROGRESSION
+        , "Play {0} games with Monkey and Penguin");
+
+        BuildGameProgressionLogicList(rep => rep.totalCorrectGuessesStreak
+        , RewardAndBarrier.TOTAL_CORRECT_GUESSES_STREAK_PROGRESSION
+        , "Guess {0} items correctly in a row");
     }
 
     private void BuildGameProgressionLogicList(Func<GameProgressionRepresentation, float> getRepField, RewardAndBarrier[] rb, string reasonString)
@@ -542,13 +590,7 @@ public class GameModel : MonoBehaviour
 
             showingGameOverMenu = true;
             ShowGameOverMenu();
-
-
-            if (GameUtil.cpuList.Count == 0 || GameUtil.cpuList.All(cpu => cpu.finalScore < player1.finalScore) || (GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_TWO_PLAYERS && GameUtil.cpuList.All(cpu => cpu.finalScore < player2.finalScore)))
-            {
-                gameAudioManager.PlayWinGame();
-            }
-
+            
             gameProgressionLogicContainerList.ForEach(l =>
             {
                 RewardAndBarrier[] list = GameProgressionUtil.GetCorrectRewards(l.rewardAndBarriers, l.initialValue, GameProgressionUtil.GetGameProgressionField(l.lambda));

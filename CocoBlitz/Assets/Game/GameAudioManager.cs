@@ -34,7 +34,7 @@ public class GameAudioManager : AudioManager
     }
 
     //-----------------------
-    // Main Button
+    // Card Flip
     //-----------------------
 
     public AudioClip cardFlip;
@@ -48,10 +48,10 @@ public class GameAudioManager : AudioManager
     // End Game
     //-----------------------
 
-    public AudioClip win;
-    public void PlayWinGame()
+    public AudioClip reward;
+    public void PlayReward()
     {
-        AudioUtil.PlaySFX(sfxSource, win);
+        AudioUtil.PlaySFX(sfxSource, reward);
     }
 
 }

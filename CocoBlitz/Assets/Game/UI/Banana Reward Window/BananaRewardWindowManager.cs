@@ -16,7 +16,7 @@ public class BananaRewardWindowManager : MonoBehaviour {
             this.reasonString = reasonString;
         }
     }
-
+    public GameAudioManager gameAudioManager;
     private Stack<BananRewardInfo> bananaRewardInfoStack = new Stack<BananRewardInfo>();
     public BananaRewardWindow bananaRewardWindow;
 	// Use this for initialization
@@ -32,7 +32,7 @@ public class BananaRewardWindowManager : MonoBehaviour {
 
     public void Unlock()
     {
-        AttemptUnlock();
+        AttemptUnlock(false);
     }
     public void UnlockAll()
     {
@@ -48,7 +48,7 @@ public class BananaRewardWindowManager : MonoBehaviour {
     public void BeginUnlockPhase()
     {
         Show();
-        AttemptUnlock();
+        AttemptUnlock(true);
     }
 
     public void Hide()
@@ -62,10 +62,12 @@ public class BananaRewardWindowManager : MonoBehaviour {
         gameObject.SetActive(true);
     }
 
-    private void AttemptUnlock()
+    private void AttemptUnlock(bool playRewardSound)
     {
         if (bananaRewardInfoStack.Count > 0)
         {
+            if (playRewardSound)
+                gameAudioManager.PlayReward();
             bananaRewardWindow.Show(bananaRewardInfoStack.Count);
             BananRewardInfo bananRewardInfo = bananaRewardInfoStack.Pop();
 

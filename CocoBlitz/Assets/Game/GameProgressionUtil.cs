@@ -108,10 +108,9 @@ public class GameProgressionUtil {
 
     public static RewardAndBarrier[] GetCorrectRewards(RewardAndBarrier[] rewardAndBarriers, float initValue, float finalBarrier)
     {
-        return Array.FindAll(rewardAndBarriers, c => c.Barrier >= initValue && c.Barrier <= finalBarrier);
-    }
-
-   
+        return Array.FindAll(rewardAndBarriers, c => c.Barrier > initValue && c.Barrier <= finalBarrier);
+    }    
+    
     public static RewardAndBarrier GetNextRewardBarrier(RewardAndBarrier[] rewardAndBarriers, float currentValue)
     {
         

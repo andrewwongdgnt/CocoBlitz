@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class StoreItem : MonoBehaviour {
-
+    public MenuAudioManager menuAudioManager;
     public Text description;
     public Button buyButton;
 

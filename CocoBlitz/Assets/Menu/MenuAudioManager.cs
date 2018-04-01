@@ -32,6 +32,17 @@ public class MenuAudioManager : AudioManager {
     {
         AudioUtil.PlaySFX(sfxSource, navButtonClick);
     }
+
+    //-----------------------
+    // Buy Button
+    //-----------------------
+
+    public AudioClip buyButtonClick;
+    public void PlayBuyButtonClick()
+    {
+        AudioUtil.PlaySFX(sfxSource, buyButtonClick);
+    }
+
     //-----------------------
     // Toggle
     //-----------------------

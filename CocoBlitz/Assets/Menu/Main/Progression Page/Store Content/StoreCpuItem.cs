@@ -28,6 +28,7 @@ public class StoreCpuItem : StoreItem {
     }
 	
 	public void Buy () {
+        menuAudioManager.PlayBuyButtonClick();
         GameProgressionUtil.BuyStatus buyStatus = GameProgressionUtil.BuyCpu(buyableCpuEnum);
         if (buyStatus == GameProgressionUtil.BuyStatus.SUCCESSFUL)
         {
