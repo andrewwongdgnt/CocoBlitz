@@ -87,21 +87,19 @@ public class PauseMenu : MonoBehaviour
     public void Pause(bool pause, bool playSfx)
     {
         if (playSfx)
-        gameAudioManager.PlayMainButtonClick();
+            gameAudioManager.PlayMainButtonClick();
         if (statsList != null)
         {
             StringBuilder builder = new StringBuilder();
-            statsList.ForEach(stats => 
+            statsList.ForEach(stats =>
                 {
                     string statsForPrint = stats.GetStatsForPrint();
                     builder.Append(statsForPrint);
                     Debug.Log(statsForPrint);
                 }
             );
-            //EmailService.SendEmail(builder.ToString());
-           // statsIndex = 0;
             ShowStatsContainer(true);
-            
+
         }
         else
         {
@@ -109,6 +107,15 @@ public class PauseMenu : MonoBehaviour
             resumeStats_txt.text = "Resume";
             Time.timeScale = pause ? 0f : 1f;
             ShowPauseContainer(pause);
+
+            if (pause)
+            {
+                gameAudioManager.FadeOutBackgroundMusic();
+            }
+            else
+            {
+                gameAudioManager.FadeInBackgroundMusic();
+            }
         }
     }
 

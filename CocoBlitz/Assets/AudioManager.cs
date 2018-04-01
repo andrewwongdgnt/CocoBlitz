@@ -27,6 +27,42 @@ public class AudioManager : MonoBehaviour {
         AudioUtil.PlayMusic(musicSource, music1, music2, music2 == null ? null : this);
     }
 
+    public void FadeOutBackgroundMusic()
+    {
+        StartCoroutine(FadeOutBackgroundMusicInternal());
+    }
+
+    private IEnumerator FadeOutBackgroundMusicInternal()
+    {
+
+        while (musicSource.volume > 0)
+        {
+            musicSource.volume -= 0.1f;
+
+            yield return new WaitForSecondsRealtime(0.1f);
+        }
+
+        musicSource.volume = 0;
+
+    }
+
+    public void FadeInBackgroundMusic()
+    {
+        StartCoroutine(FadeInBackgroundMusicInternal());
+    }
+
+    private IEnumerator FadeInBackgroundMusicInternal()
+    {
+
+        while (musicSource.volume < SettingsUtil.GetMusicVolume() / 100)
+        {
+            musicSource.volume += 0.1f;
+
+            yield return new WaitForSecondsRealtime(0.1f);
+        }
+
+        musicSource.volume = SettingsUtil.GetMusicVolume() / 100;
+    }
 
 
     //-----------------------
