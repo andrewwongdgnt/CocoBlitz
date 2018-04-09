@@ -151,7 +151,7 @@ public class GamePage : MonoBehaviour, Page {
 
         menuAudioManager.PlayMainButtonClick();
 
-        SceneManager.LoadScene("Game");
+        SceneManager.LoadScene("Load Screen");
     }
 
     

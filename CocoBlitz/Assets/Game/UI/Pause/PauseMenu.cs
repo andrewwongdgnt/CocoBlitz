@@ -229,7 +229,7 @@ public class PauseMenu : MonoBehaviour
     {
         gameAudioManager.PlayMainButtonClick();
         GameUtil.fromGame = true;
-        SceneManager.LoadScene("Main");
+        SceneManager.LoadScene("Load Screen");
     }
 
     public void BackFromStats()

@@ -54,7 +54,7 @@ public class CpuPicker : MonoBehaviour {
         Color tempButtonTextColor = acceptBtnText.color;
         tempButtonTextColor.a = interactable ? 1 : 0.5f;
         acceptBtnText.color = tempButtonTextColor;
-        if (cpu != null)
+        if (cpu != null && available)
             menuAudioManager.PlayAVoice(cpu.voiceGreeting);
     }
 
