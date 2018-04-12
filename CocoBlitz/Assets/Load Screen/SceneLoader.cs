@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
-    public Image loadImage;
     private void Start()
     {
         StartCoroutine(LoadLevel());
@@ -23,7 +22,6 @@ public class SceneLoader : MonoBehaviour
         // While the asynchronous operation to load the new scene is not yet complete, continue waiting until it's done.
         while (!async.isDone)
         {
-            loadImage.transform.Rotate(Vector3.forward*3);
             Debug.Log("async.progress: " + async.progress);
             yield return null;
         }
