@@ -188,7 +188,9 @@ public class GameModel : MonoBehaviour
     {
         //Generate Card
         Debug.Log("Generating card");
-        Card card = cards_2Entities[UnityEngine.Random.Range(0, cards_2Entities.Length)];
+
+        int cardIndex = UnityEngine.Random.Range(0, cards_2Entities.Length);
+        Card card = cards_2Entities[cardIndex];
 
         Array.ForEach(cards_2Entities, c => c.gameObject.SetActive(c == card));
 
