@@ -14,7 +14,6 @@ public class GamePage : MonoBehaviour, Page {
     public CpuPortrait cpu2Portrait;
     public CpuPortrait cpu3Portrait;
 
-    public GameUtil.GameModeEnum CurrentGameMode { get;  set; }
     private int pointsToReach;
     private float timer;
 
@@ -25,8 +24,8 @@ public class GamePage : MonoBehaviour, Page {
     public GameObject titleArea;
     
 
-    public Toggle singlePlayerToggle;
     public Toggle twoPlayersToggle;
+    public Toggle gogoGameModeToggle;
 
     public MenuAudioManager menuAudioManager;
 
@@ -53,14 +52,22 @@ public class GamePage : MonoBehaviour, Page {
 
         cpuPicker.Close(true,false);
 
-        twoPlayersToggle.isOn = GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_TWO_PLAYERS;
-
+        twoPlayersToggle.isOn = GameSettingsUtil.GetGameType() == GameSettingsUtil.GameTypeEnum.Two;
+        gogoGameModeToggle.isOn = GameSettingsUtil.GetGameMode() == GameSettingsUtil.GameModeEnum.GoGo;
         allowGameOptionChangedSound = false;
     }
     public void SetActive(bool activate)
     {
-        if (CurrentGameMode == GameUtil.GameModeEnum.Coco)
-        { 
+        UpdateGameMode();
+
+        gameObject.SetActive(activate);
+        titleArea.SetActive(!activate);
+    }
+
+    private void UpdateGameMode()
+    {
+        if (GameSettingsUtil.GetGameMode() == GameSettingsUtil.GameModeEnum.Coco)
+        {
             int pointsToReach = GameSettingsUtil.GetCocoModePointsToReach();
             gameOption.value = pointsToReach;
         }
@@ -70,9 +77,8 @@ public class GamePage : MonoBehaviour, Page {
             float timer = GameSettingsUtil.GetGoGoModeTimer();
             gameOption.value = timer;
         }
-        gameObject.SetActive(activate);
         UpdateGameParams(gameOption.value.ToString());
-        titleArea.SetActive(!activate);
+
     }
     public void GameOptionChanged(float value)
     {
@@ -131,12 +137,11 @@ public class GamePage : MonoBehaviour, Page {
 
     public void PlayGame()
     {
-        GameUtil.currentGameMode = CurrentGameMode;
         GameUtil.pointsToReach = pointsToReach;
         GameUtil.timer = timer;
 
         GameUtil.cpuList.Clear();
-        if (GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_SINGLE_PLAYER && cpuIndexes[0] > 0)
+        if (GameSettingsUtil.GetGameType() == GameSettingsUtil.GameTypeEnum.Single && cpuIndexes[0] > 0)
         {
             GameUtil.cpuList.Add((Cpu)allCpus[cpuIndexes[0]].RebuildToPlay());
         } 
@@ -158,7 +163,7 @@ public class GamePage : MonoBehaviour, Page {
 
     void UpdateGameParams( string value)
     {
-        if (CurrentGameMode == GameUtil.GameModeEnum.Coco)
+        if (GameSettingsUtil.GetGameMode() == GameSettingsUtil.GameModeEnum.Coco)
         {
             instructions.text = "Get " + value + " correct\nas fast as you can!";
             instructions.fontSize = 80;
@@ -174,6 +179,14 @@ public class GamePage : MonoBehaviour, Page {
         }
     }
 
+    public void SetGameModeAsCoco(bool value)
+    {
+        menuAudioManager.PlayToggleClick();
+
+        GameSettingsUtil.SetGameMode(value ? GameSettingsUtil.GameModeEnum.Coco : GameSettingsUtil.GameModeEnum.GoGo);
+        UpdateGameMode();
+    }
+
     public void SetGameTypeAsSinglePlayer(bool value)
     {
         menuAudioManager.PlayToggleClick();
@@ -186,7 +199,7 @@ public class GamePage : MonoBehaviour, Page {
             List<int> cpusInPlay = GameSettingsUtil.GetCpusInPlayList();
             SetCpu(0, cpusInPlay[0]);
         }
-        GameSettingsUtil.SetGameTypeKey(value ? GameSettingsUtil.GAME_TYPE_SINGLE_PLAYER : GameSettingsUtil.GAME_TYPE_TWO_PLAYERS);
+        GameSettingsUtil.SetGameType(value ? GameSettingsUtil.GameTypeEnum.Single : GameSettingsUtil.GameTypeEnum.Two);
     }
 
     private void UpdateCpu1PortaitToPlayer2(CpuPortrait cpuPortrait)

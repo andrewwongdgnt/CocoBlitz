@@ -80,18 +80,18 @@ public class GameModel : MonoBehaviour
 
         showingGameOverMenu = false;
         cpuCoroutines.Clear();
-        timer = GameUtil.currentGameMode == GameUtil.GameModeEnum.GoGo ? GameUtil.timer : 0f;
+        timer = GameSettingsUtil.GetGameMode() == GameSettingsUtil.GameModeEnum.GoGo ? GameUtil.timer : 0f;
 
         player1 = (Player)Player.PLAYER_1.RebuildToPlay();
         player1.Stats.Restart();
         player1.finalScore = 0;
         player1.points = 0;
         player1.penalties = 0;
-        if (GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_SINGLE_PLAYER)
+        if (GameSettingsUtil.GetGameType() == GameSettingsUtil.GameTypeEnum.Single)
             player1.SetNewName(Player.SINGLE_PLAYER_NAME);
 
         player2 = (Player)Player.PLAYER_2.RebuildToPlay();
-        if (GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_TWO_PLAYERS)
+        if (GameSettingsUtil.GetGameType() == GameSettingsUtil.GameTypeEnum.Two)
         {
             player2.Stats.Restart();
             player2.finalScore = 0;
@@ -272,7 +272,7 @@ public class GameModel : MonoBehaviour
 
         player1.Stats.AddPickedCard(time, card, entityToColor, useCorrectColor);
         player1.guessed = false;
-        if (GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_TWO_PLAYERS)
+        if (GameSettingsUtil.GetGameType() == GameSettingsUtil.GameTypeEnum.Two)
         {
             player2.Stats.AddPickedCard(time, card, entityToColor, useCorrectColor);
             player2.guessed = false;
@@ -362,7 +362,7 @@ public class GameModel : MonoBehaviour
             {
                 player1.Stats.AddMissed(correctEntity.Value);
             }
-            if (GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_TWO_PLAYERS && participant != player2 && !player2.guessed)
+            if (GameSettingsUtil.GetGameType() == GameSettingsUtil.GameTypeEnum.Two && participant != player2 && !player2.guessed)
             {
                 player2.Stats.AddMissed(correctEntity.Value);
             }
@@ -374,7 +374,7 @@ public class GameModel : MonoBehaviour
                 }
             });
 
-            if (participant == player1 || (GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_TWO_PLAYERS && participant == player2))
+            if (participant == player1 || (GameSettingsUtil.GetGameType() == GameSettingsUtil.GameTypeEnum.Two && participant == player2))
             {
                 correctStreak++;
                 if (useCorrectColor)
@@ -422,7 +422,7 @@ public class GameModel : MonoBehaviour
                 }
             }
 
-            if (participant == player1 || (GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_TWO_PLAYERS && participant == player2))
+            if (participant == player1 || (GameSettingsUtil.GetGameType() == GameSettingsUtil.GameTypeEnum.Two && participant == player2))
             {
                 correctStreak = 0;
                 gameAudioManager.PlayIncorrectGuess();
@@ -450,8 +450,8 @@ public class GameModel : MonoBehaviour
         UpdateScoresAndNameText();
 
         CheckForGameOver();
-        bool player2Guessed = GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_TWO_PLAYERS && player2.guessed;
-        if (!gameOver && (entity == correctEntity || ((GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_SINGLE_PLAYER || player2Guessed) && player1.guessed && GameUtil.cpuList.All(cpu => cpu.guessed))))
+        bool player2Guessed = GameSettingsUtil.GetGameType() == GameSettingsUtil.GameTypeEnum.Two && player2.guessed;
+        if (!gameOver && (entity == correctEntity || ((GameSettingsUtil.GetGameType() == GameSettingsUtil.GameTypeEnum.Single || player2Guessed) && player1.guessed && GameUtil.cpuList.All(cpu => cpu.guessed))))
         {
             StartCoroutine(NewRoundWithDelay());
         }
@@ -499,7 +499,7 @@ public class GameModel : MonoBehaviour
         string cpu2Score = GameUtil.cpuList.Count > 1 ? GameUtil.cpuList[1].finalScore.ToString() : "-";
         string cpu3Score = GameUtil.cpuList.Count > 2 ? GameUtil.cpuList[2].finalScore.ToString() : "-";
 
-        if (GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_TWO_PLAYERS)
+        if (GameSettingsUtil.GetGameType() == GameSettingsUtil.GameTypeEnum.Two)
         {
             cpu1ScoreText.text = player2.finalScore.ToString();
             cpu1NameText.text = player2.name;
@@ -521,14 +521,14 @@ public class GameModel : MonoBehaviour
 
     private void CheckForGameOver()
     {
-        if (GameUtil.currentGameMode == GameUtil.GameModeEnum.Coco)
+        if (GameSettingsUtil.GetGameMode() == GameSettingsUtil.GameModeEnum.Coco)
         {
             if (player1.finalScore >= GameUtil.pointsToReach
-                || (GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_TWO_PLAYERS && player2.finalScore >= GameUtil.pointsToReach)
+                || (GameSettingsUtil.GetGameType() == GameSettingsUtil.GameTypeEnum.Two && player2.finalScore >= GameUtil.pointsToReach)
                 || GameUtil.cpuList.Any(cpu => cpu.finalScore >= GameUtil.pointsToReach))
                 gameOver = true;
         }
-        else if (GameUtil.currentGameMode == GameUtil.GameModeEnum.GoGo && timer <= 0)
+        else if (GameSettingsUtil.GetGameMode() == GameSettingsUtil.GameModeEnum.GoGo && timer <= 0)
         {
             gameOver = true;
         }
@@ -540,11 +540,11 @@ public class GameModel : MonoBehaviour
 
         if (!cardInDelay && !gameOver)
         {
-            if (GameUtil.currentGameMode == GameUtil.GameModeEnum.Coco)
+            if (GameSettingsUtil.GetGameMode() == GameSettingsUtil.GameModeEnum.Coco)
             {
                 timer += Time.deltaTime;
             }
-            else if (GameUtil.currentGameMode == GameUtil.GameModeEnum.GoGo)
+            else if (GameSettingsUtil.GetGameMode() == GameSettingsUtil.GameModeEnum.GoGo)
             {
                 timer -= Time.deltaTime;
             }
@@ -563,16 +563,16 @@ public class GameModel : MonoBehaviour
         if (gameOver && !showingGameOverMenu)
         {
 
-            GameProgressionUtil.UpdateGameProgression(rep => rep.totalTimeSpentPlaying += GameUtil.currentGameMode == GameUtil.GameModeEnum.GoGo ? GameUtil.timer : timer);
-            if (GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_SINGLE_PLAYER)
+            GameProgressionUtil.UpdateGameProgression(rep => rep.totalTimeSpentPlaying += GameSettingsUtil.GetGameMode() == GameSettingsUtil.GameModeEnum.GoGo ? GameUtil.timer : timer);
+            if (GameSettingsUtil.GetGameType() == GameSettingsUtil.GameTypeEnum.Single)
             {
                 GameProgressionUtil.UpdateGameProgression(rep => rep.totalSinglePlayerGamesPlayed++);
             }
-            if (GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_TWO_PLAYERS)
+            if (GameSettingsUtil.GetGameType() == GameSettingsUtil.GameTypeEnum.Two)
             {
                 GameProgressionUtil.UpdateGameProgression(rep => rep.totalTwoPlayerGamesPlayed++);
             }
-            if (GameUtil.cpuList.All(cpu => cpu.finalScore < player1.finalScore) || (GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_TWO_PLAYERS && GameUtil.cpuList.All(cpu => cpu.finalScore < player2.finalScore)))
+            if (GameUtil.cpuList.All(cpu => cpu.finalScore < player1.finalScore) || (GameSettingsUtil.GetGameType() == GameSettingsUtil.GameTypeEnum.Two && GameUtil.cpuList.All(cpu => cpu.finalScore < player2.finalScore)))
             {
                 GameProgressionUtil.UpdateGameProgression(rep => rep.totalCpusDefeated += GameUtil.cpuList.Count);
             }
@@ -620,7 +620,7 @@ public class GameModel : MonoBehaviour
     {
         List<Statistics> statsList = new List<Statistics>();
         statsList.Add(player1.Stats);
-        if (GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_TWO_PLAYERS)
+        if (GameSettingsUtil.GetGameType() == GameSettingsUtil.GameTypeEnum.Two)
         {
             statsList.Add(player2.Stats);
         }

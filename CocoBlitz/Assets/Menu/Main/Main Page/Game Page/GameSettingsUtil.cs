@@ -6,6 +6,33 @@ using System;
 
 public class GameSettingsUtil  {
 
+
+    public enum GameModeEnum { Coco, GoGo };
+
+    private readonly static string GAME_MODE_KEY = "GameModeKey";
+
+    public static void SetGameMode(GameModeEnum value)
+    {
+        PlayerPrefs.SetString(GAME_MODE_KEY, value.ToString());
+    }
+    public static GameModeEnum GetGameMode()
+    {
+        GameModeEnum ret;
+
+        string gameModeString = PlayerPrefs.GetString(GAME_MODE_KEY, GameModeEnum.Coco.ToString());
+
+        try
+        {
+            ret = (GameModeEnum)Enum.Parse(typeof(GameModeEnum), gameModeString);
+        }
+        catch (Exception ex)
+        {
+            Debug.Log("Could not parse GameModeEnum: "+  ex.Message);
+            ret = GameModeEnum.Coco;
+        }
+        return ret;
+    }
+
     private readonly static string COCO_MODE_POINTS_TO_REACH_KEY = "CocoModePointsToReachKey";
 
     public static void SetCocoModePointsToReach(int value)
@@ -77,20 +104,30 @@ public class GameSettingsUtil  {
         }
         return cpuIndex;
     }
-
-
-
+    
+    public enum GameTypeEnum { Single, Two };
     private readonly static string GAME_TYPE_KEY = "GameTypeKey";
-    public readonly static string GAME_TYPE_SINGLE_PLAYER = "GameTypeSinglePlayer";
-    public readonly static string GAME_TYPE_TWO_PLAYERS = "GameTypeTwoPlayers";
 
-    public static void SetGameTypeKey(string value)
+    public static void SetGameType(GameTypeEnum value)
     {
-        PlayerPrefs.SetString(GAME_TYPE_KEY, value);
+        PlayerPrefs.SetString(GAME_TYPE_KEY, value.ToString());
     }
-    public static string GetGameTypeKey()
+    public static GameTypeEnum GetGameType()
     {
-        string gameTypeString = PlayerPrefs.GetString(GAME_TYPE_KEY, GAME_TYPE_SINGLE_PLAYER);
-        return gameTypeString == GAME_TYPE_SINGLE_PLAYER || gameTypeString == GAME_TYPE_TWO_PLAYERS ? gameTypeString : GAME_TYPE_SINGLE_PLAYER;
+
+        GameTypeEnum ret;
+
+        string gameTypeString = PlayerPrefs.GetString(GAME_TYPE_KEY, GameTypeEnum.Single.ToString());
+
+        try
+        {
+            ret = (GameTypeEnum)Enum.Parse(typeof(GameTypeEnum), gameTypeString);
+        }
+        catch (Exception ex)
+        {
+            Debug.Log("Could not parse GameTypeEnum: " + ex.Message);
+            ret = GameTypeEnum.Single;
+        }
+        return ret;
     }
 }

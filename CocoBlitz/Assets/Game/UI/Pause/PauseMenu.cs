@@ -59,8 +59,8 @@ public class PauseMenu : MonoBehaviour
     void Start()
     {
 
-        singlePlayerGroup.SetActive(GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_SINGLE_PLAYER);
-        twoPlayersGroup.SetActive(GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_TWO_PLAYERS);
+        singlePlayerGroup.SetActive(GameSettingsUtil.GetGameType() == GameSettingsUtil.GameTypeEnum.Single);
+        twoPlayersGroup.SetActive(GameSettingsUtil.GetGameType() == GameSettingsUtil.GameTypeEnum.Two);
         statsIndex = 0;
         Pause(false,false);
     }
@@ -141,7 +141,7 @@ public class PauseMenu : MonoBehaviour
             card = null;
         }
 
-        playerStatsToggleContainer.SetActive(GameSettingsUtil.GetGameTypeKey() != GameSettingsUtil.GAME_TYPE_SINGLE_PLAYER);
+        playerStatsToggleContainer.SetActive(GameSettingsUtil.GetGameType() != GameSettingsUtil.GameTypeEnum.Single);
         
 
         Statistics playerStats = GetPlayerStats();
@@ -203,7 +203,7 @@ public class PauseMenu : MonoBehaviour
     {
         bool forPlayer2 = !player1StatsToggle.isOn;
         //Assume first element is player1 and second element is player 2 IF game type is for 2 players.
-        return GameSettingsUtil.GetGameTypeKey() == GameSettingsUtil.GAME_TYPE_TWO_PLAYERS && forPlayer2 ? statsList[1] : statsList[0];
+        return GameSettingsUtil.GetGameType() == GameSettingsUtil.GameTypeEnum.Two && forPlayer2 ? statsList[1] : statsList[0];
     }
 
     private void ShowPauseContainer(bool pause)

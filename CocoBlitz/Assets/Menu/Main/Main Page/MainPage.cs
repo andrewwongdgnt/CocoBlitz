@@ -30,10 +30,10 @@ public class MainPage : MonoBehaviour, Page {
         
     }
 
-    public void SelectGameMode(GameUtil.GameModeEnum gameMode)
+    public void PlayOffline()
     {
 
-        gamePage.CurrentGameMode = gameMode;
+
         DeactivateAllGroup();
         gamePage.SetActive(true);
 

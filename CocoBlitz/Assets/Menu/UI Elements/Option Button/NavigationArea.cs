@@ -18,7 +18,7 @@ public class NavigationArea : MonoBehaviour {
         if (GameUtil.fromGame)
         {
             GameUtil.fromGame = false;
-            mainPage.SelectGameMode(GameUtil.currentGameMode);
+            mainPage.PlayOffline();
         }
     }
 
