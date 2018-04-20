@@ -24,6 +24,58 @@ public class GameProgressionUtil {
         return PlayerPrefs.GetInt(BANANA_COUNT_KEY, 0);
     }
 
+    public enum BuyStatus { NOT_ENOUGH_BANANAS, ALREADY_BOUGHT, SUCCESSFUL };
+
+    public enum BuyableCardEnum { CocoShoe1 };
+    public static Dictionary<BuyableCardEnum, int> CARD_COST_MAP = new Dictionary<BuyableCardEnum, int>()
+    {
+        { BuyableCardEnum.CocoShoe1, 100},
+    };
+
+    public static bool GetCardAvailability(BuyableCardEnum card)
+    {
+
+        HashSet<string> unlockedCards = GetBoughtCards();
+        return unlockedCards.Contains(card.ToString());
+    }
+
+
+    private static HashSet<string> GetBoughtCards()
+    {
+        string commaSeperatedListOfCards = PlayerPrefs.GetString(CARD_AVAILABILITY_KEY);
+        return new HashSet<string>(commaSeperatedListOfCards.Split(',').Select(c => c).ToList());
+    }
+
+
+    private readonly static string CARD_AVAILABILITY_KEY = "CardAvailabilityKey";
+
+    public static BuyStatus BuyCard(BuyableCardEnum cardToBuy)
+    {
+        //check if card already bought
+        if (GetCardAvailability(cardToBuy))
+        {
+            return BuyStatus.ALREADY_BOUGHT;
+        }
+
+        bool boughtSuccessful = ChangeBananaCountBy(-CARD_COST_MAP[cardToBuy]);
+        if (boughtSuccessful)
+        {
+            HashSet<string> unlockedCards = GetBoughtCards();
+            if (!unlockedCards.Contains(cardToBuy.ToString()))
+            {            
+                unlockedCards.Add(cardToBuy.ToString());
+                string newCommaSeperatedListOfCards = string.Join(",", unlockedCards.ToArray<string>());
+                PlayerPrefs.SetString(CARD_AVAILABILITY_KEY, newCommaSeperatedListOfCards);
+                return BuyStatus.SUCCESSFUL;
+            }
+            return BuyStatus.ALREADY_BOUGHT;
+        }
+        else
+        {
+            return BuyStatus.NOT_ENOUGH_BANANAS;
+        }
+    }
+    
 
     public enum BuyableCpuEnum { Kongo, PurpleMonkey, Coco, Muffin, Chomp };
 
@@ -46,7 +98,6 @@ public class GameProgressionUtil {
         { BuyableCpuEnum.Chomp, Cpu.CHOMP},
     };
 
-    public enum BuyStatus { NOT_ENOUGH_BANANAS, ALREADY_BOUGHT, SUCCESSFUL };
     public static BuyStatus BuyCpu(BuyableCpuEnum cpuToBuy)
     {
         //check if cpu already unlocked
@@ -58,8 +109,14 @@ public class GameProgressionUtil {
         bool boughtSuccessful = ChangeBananaCountBy(-CPU_COST_MAP[cpuToBuy]);
         if (boughtSuccessful)
         {
-            UnlockCpu(CPU_MAP[cpuToBuy]);
-            return BuyStatus.SUCCESSFUL;
+            if (UnlockCpu(CPU_MAP[cpuToBuy]))
+            {
+                return BuyStatus.SUCCESSFUL;
+            }
+            else
+            {
+                return BuyStatus.ALREADY_BOUGHT;
+            }
         } else
         {
             return BuyStatus.NOT_ENOUGH_BANANAS;
@@ -68,23 +125,24 @@ public class GameProgressionUtil {
 
     private readonly static string CPU_AVAILABILITY_KEY = "CpuAvailabilityKey";
 
-    public static void UnlockCpu(Cpu cpu)
+    public static bool UnlockCpu(Cpu cpu)
     {
         if (cpu.starter)
         {
-            return;
+            return false;
         }
 
         HashSet<string> unlockedCpus = GetUnlockedCpus();
         if (unlockedCpus.Contains(cpu.name))
         {
             //Already unlocked
-            return;
+            return false;
         }
         unlockedCpus.Add(cpu.name);
         string newCommaSeperatedListOfCpus = string.Join(",", unlockedCpus.ToArray<string>());
         PlayerPrefs.SetString(CPU_AVAILABILITY_KEY, newCommaSeperatedListOfCpus);
 
+        return true;
     }
     public static bool GetCpuAvailability(Cpu cpu)
     {

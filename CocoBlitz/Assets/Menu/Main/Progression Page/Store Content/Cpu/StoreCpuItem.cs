@@ -15,12 +15,12 @@ public class StoreCpuItem : StoreItem {
     // Use this for initialization
     void Start () {
 
-        //Check if cpu already bought
         Cpu cpu = GameProgressionUtil.CPU_MAP[buyableCpuEnum];
 
         portrait.sprite = cpu.sprite;
         description.text = cpu.name;
 
+        //Check if cpu already bought
         EnableCpu(!GameProgressionUtil.GetCpuAvailability(cpu));
 
         UpdatePrice(GameProgressionUtil.CPU_COST_MAP[buyableCpuEnum]);
@@ -41,6 +41,7 @@ public class StoreCpuItem : StoreItem {
     {
         Enable(value);
 
+        ChangeAlpha(description, value ? 1 : 0.5f);
         ChangeAlpha(portraitFrame, value ? 1 : 0.5f);
         ChangeAlpha(portrait, value ? 1 : 0.5f);
     }

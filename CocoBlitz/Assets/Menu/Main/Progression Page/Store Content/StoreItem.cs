@@ -27,8 +27,6 @@ public class StoreItem : MonoBehaviour {
     protected void Enable(bool value)
     {
 
-        ChangeAlpha(description, value ? 1 : 0.5f);
-
         ChangeAlpha(buyButton.image, value ? 1 : 0.5f);
         buyButton.interactable = value;
         

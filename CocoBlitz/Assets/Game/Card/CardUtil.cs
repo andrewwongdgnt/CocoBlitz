@@ -30,7 +30,7 @@ public class CardUtil  {
             { ColorEnum.Yellow, new Color32(255,250,40, 255) }, //#FFFA28FF
             { ColorEnum.Green, new Color32(85,184,83, 255) }, //#55B853FF
             { ColorEnum.Red, new Color32(222,0,0, 255) }, //#DE0000FF
-            { ColorEnum.Blue, new Color32(15,167,217, 255) }, //#0FA7D9
+            { ColorEnum.Blue, new Color32(15,167,217, 255) }, //#0FA7D9FF
         };
 
     public static HashSet<EntityEnum> Entities_2Card = new HashSet<EntityEnum>
