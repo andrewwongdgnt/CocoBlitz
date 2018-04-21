@@ -52,4 +52,9 @@ public class ProgressContent : MonoBehaviour {
         progressBar.SetNextReward(nextRB.Reward);
         progressBar.SetLabelValue(nextRB.Secret);
     }
+
+    public void SetActive(bool value)
+    {
+        gameObject.SetActive(value);
+    }
 }

@@ -8,9 +8,11 @@ public class StoreCardItem : StoreItem
 {
     public Image cardIcon;
     public Image cardDisplay;
+    public StoreContent storeContent;
 
 
     public GameProgressionUtil.BuyableCardEnum buyableCardEnum;
+    public Card cardToDisplay;
 
     // Use this for initialization
     void Start()
@@ -40,15 +42,18 @@ public class StoreCardItem : StoreItem
 
         ChangeAlpha(description, value ? 1 : 0);
         ChangeAlpha(cardIcon, value ? 1 : 0);
-        ChangeAlpha(cardDisplay, value ? 0 : 1);
-        Array.ForEach(cardDisplay.GetComponentsInChildren<Image>(), im =>
-        {
-            ChangeAlpha(im, value ? 0 : 1);            
-        });
+
+        cardDisplay.gameObject.SetActive(!value);
+
+       // ChangeAlpha(cardDisplay, value ? 0 : 1);
+        //Array.ForEach(cardDisplay.GetComponentsInChildren<Image>(), im =>
+       // {
+      //      ChangeAlpha(im, value ? 0 : 1);            
+       // });
     }
 
     public void DisplayCard()
     {
-
+        storeContent.DisplayCard(cardToDisplay);
     }
 }

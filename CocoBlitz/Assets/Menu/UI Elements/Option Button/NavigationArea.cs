@@ -49,4 +49,9 @@ public class NavigationArea : MonoBehaviour {
             ActivatePage(helpPage);
 
     }
+
+    public void SetActive(bool value)
+    {
+        gameObject.SetActive(value);
+    }
 }

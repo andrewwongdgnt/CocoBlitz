@@ -132,7 +132,7 @@ public class GamePage : MonoBehaviour, Page {
 
     public void ShowNavArea(bool show)
     {
-        navArea.gameObject.SetActive(show);
+        navArea.SetActive(show);
     }
 
     public void PlayGame()

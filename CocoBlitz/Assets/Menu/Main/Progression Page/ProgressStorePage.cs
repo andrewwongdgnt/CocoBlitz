@@ -40,10 +40,10 @@ public class ProgressStorePage : MonoBehaviour, Page
         } else
         {
 
-            instructions.text = "Unlock cards & characters with your hard earned bananas.";
+            instructions.text = "Unlock cards & friends with your hard earned bananas.";
         }
 
-        progressContent.gameObject.SetActive(progressionPageEnum == ProgressionPage.ProgressionPageEnum.BananaProgress);
-        storeContent.gameObject.SetActive(progressionPageEnum == ProgressionPage.ProgressionPageEnum.CocoStore );
+        progressContent.SetActive(progressionPageEnum == ProgressionPage.ProgressionPageEnum.BananaProgress);
+        storeContent.SetActive(progressionPageEnum == ProgressionPage.ProgressionPageEnum.CocoStore );
     }
 }
