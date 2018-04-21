@@ -26,7 +26,7 @@ public class GameProgressionUtil {
 
     public enum BuyStatus { NOT_ENOUGH_BANANAS, ALREADY_BOUGHT, SUCCESSFUL };
 
-    public enum BuyableCardEnum { CocoShoe1 };
+    public enum BuyableCardEnum { None,CocoShoe1 };
     public static Dictionary<BuyableCardEnum, int> CARD_COST_MAP = new Dictionary<BuyableCardEnum, int>()
     {
         { BuyableCardEnum.CocoShoe1, 100},
@@ -34,7 +34,10 @@ public class GameProgressionUtil {
 
     public static bool GetCardAvailability(BuyableCardEnum card)
     {
-
+        if (card == BuyableCardEnum.None)
+        {
+            return false;
+        }
         HashSet<string> unlockedCards = GetBoughtCards();
         return unlockedCards.Contains(card.ToString());
     }

@@ -46,4 +46,9 @@ public class StoreCardItem : StoreItem
             ChangeAlpha(im, value ? 0 : 1);            
         });
     }
+
+    public void DisplayCard()
+    {
+
+    }
 }

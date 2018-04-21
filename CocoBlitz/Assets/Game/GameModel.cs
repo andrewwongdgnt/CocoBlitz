@@ -12,8 +12,9 @@ public class GameModel : MonoBehaviour
     private readonly static float MIN_ROUND_DELAY_TO_DISPLAY_ROUND_SEP = 0.25f;
 
     public GameAudioManager gameAudioManager;
-
+    public GameObject cardContainer;
     public Card[] cards_2Entities;
+    public Card[] secretCards_2Entities;
     public Text playerScoreText;
     public Text playerNameText;
     public Text cpu1ScoreText;
@@ -32,6 +33,8 @@ public class GameModel : MonoBehaviour
 
     public BananaRewardWindowManager bananaRewardWindowManager;
 
+    private List<Card> allCards;
+
     private Player player1;
     private Player player2;
     private CardUtil.EntityEnum? correctEntity = null;
@@ -48,6 +51,8 @@ public class GameModel : MonoBehaviour
     private bool cardInDelay;
 
     private int correctStreak;
+
+    private Card cardGameObject;
 
     private class GameProgressionLogicContainer
     {
@@ -77,6 +82,16 @@ public class GameModel : MonoBehaviour
 
         BuildGameProgressionLogicList();
 
+        //Building card list including secret cards
+        allCards = new List<Card>();
+        allCards.AddRange(cards_2Entities);
+        Array.ForEach(secretCards_2Entities, card =>
+        {
+
+            if (GameProgressionUtil.GetCardAvailability(card.cardEnum)){
+                allCards.Add(card);
+            }
+        });
 
         showingGameOverMenu = false;
         cpuCoroutines.Clear();
@@ -109,7 +124,6 @@ public class GameModel : MonoBehaviour
         gameOver = false;
         cardInDelay = false;
         roundSeperator.SetActive(false);
-        Array.ForEach(cards_2Entities, c => c.gameObject.SetActive(false));
         StartCoroutine(NewRoundWithDelay());
     }
 
@@ -184,15 +198,19 @@ public class GameModel : MonoBehaviour
             , rb
             , reasonString));
     }
+
+    private Card generateCard()
+    {
+        Debug.Log("Generating card");       
+
+        int cardIndex = UnityEngine.Random.Range(0, allCards.Count);
+        Card card = allCards[cardIndex];
+
+        return card;
+    }
     private void NewRound()
     {
-        //Generate Card
-        Debug.Log("Generating card");
-
-        int cardIndex = UnityEngine.Random.Range(0, cards_2Entities.Length);
-        Card card = cards_2Entities[cardIndex];
-
-        Array.ForEach(cards_2Entities, c => c.gameObject.SetActive(c == card));
+        Card card = generateCard();
 
         CardUtil.EntityEnum[] allEntities = new CardUtil.EntityEnum[CardUtil.Entities_2Card.Count];
         CardUtil.Entities_2Card.CopyTo(allEntities);
@@ -227,7 +245,7 @@ public class GameModel : MonoBehaviour
             entityToColor[cardEntity.entity] = color;
             Debug.Log(cardEntity.entity + ": " + color);
 
-            cardEntity.spriteRenderer.color = CardUtil.ColorColorMap[color];
+            cardEntity.image.color = CardUtil.ColorColorMap[color];
 
         });
 
@@ -259,9 +277,10 @@ public class GameModel : MonoBehaviour
         if (correctEntity == null)
             correctEntity = allEntities.Except(incorrectEntities).First();
 
+         cardGameObject = Instantiate(card, cardContainer.transform);
 
         //Enable all buttons
-        
+
         SetButtonsEnabled(player1Buttons, true);        
         SetButtonsEnabled(player2Buttons, true);
         
@@ -292,6 +311,8 @@ public class GameModel : MonoBehaviour
         {
             cpuCoroutines.Add(StartCoroutine(CpuGuess(cpu)));
         });
+
+
     }
 
     IEnumerator CpuGuess(Cpu cpu)
@@ -451,9 +472,17 @@ public class GameModel : MonoBehaviour
 
         CheckForGameOver();
         bool player2Guessed = GameSettingsUtil.GetGameType() == GameSettingsUtil.GameTypeEnum.Two && player2.guessed;
-        if (!gameOver && (entity == correctEntity || ((GameSettingsUtil.GetGameType() == GameSettingsUtil.GameTypeEnum.Single || player2Guessed) && player1.guessed && GameUtil.cpuList.All(cpu => cpu.guessed))))
+        if (entity == correctEntity || ((GameSettingsUtil.GetGameType() == GameSettingsUtil.GameTypeEnum.Single || player2Guessed) && player1.guessed && GameUtil.cpuList.All(cpu => cpu.guessed)))
         {
-            StartCoroutine(NewRoundWithDelay());
+
+            if (cardGameObject != null)
+            {
+                DestroyImmediate(cardGameObject.gameObject);
+                cardGameObject = null;
+            }
+
+            if (!gameOver)
+                StartCoroutine(NewRoundWithDelay());
         }
     }
 

@@ -131,9 +131,8 @@ public class PauseMenu : MonoBehaviour
         statsContainer.SetActive(show);
         inGameUiContainer.SetActive(false);
         pauseUiContainer.SetActive(!show);
-        cardContainer.SetActive(false);
         scoreUiContainer.SetActive(!show);
-        
+        cardContainer.SetActive(show);
 
 
         if (card != null) { 
@@ -179,14 +178,14 @@ public class PauseMenu : MonoBehaviour
                 statsPointContainer.SetActive(true);
                 
                 StatisticsPoint statsPoint = playerStats.StatisticsList[statsIndex - 1];
-                card = Instantiate(statsPoint.Card);
+                card = Instantiate(statsPoint.Card, cardContainer.transform);
                 card.gameObject.SetActive(true);
 
                 Array.ForEach(card.cardEntities, cardEntity =>
                 {
 
                     CardUtil.ColorEnum color = statsPoint.EntityToColor[cardEntity.entity];
-                    cardEntity.spriteRenderer.color = CardUtil.ColorColorMap[color];
+                    cardEntity.image.color = CardUtil.ColorColorMap[color];
                 });
                 
 
@@ -207,16 +206,12 @@ public class PauseMenu : MonoBehaviour
     }
 
     private void ShowPauseContainer(bool pause)
-    {
-
-
-        cardContainer.SetActive(!pause);
+    {        
         inGameUiContainer.SetActive(!pause);
         pauseUiContainer.SetActive(pause);
         scoreUiContainer.SetActive(true);
         statsContainer.SetActive(false);
-        
-
+        cardContainer.SetActive(!pause);
     }
 
     public void Restart()
