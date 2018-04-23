@@ -26,10 +26,19 @@ public class GameProgressionUtil {
 
     public enum BuyStatus { NOT_ENOUGH_BANANAS, ALREADY_BOUGHT, SUCCESSFUL };
 
-    public enum BuyableCardEnum { None,CocoShoe1 };
+    public enum BuyableCardEnum { None, BananaPillow1, BananaShoe1, ChompBanana1, ChompPillow1, ChompShoe1, CocoBanana1, CocoChomp1, CocoPillow1, CocoShoe1, ShoePillow1 };
     public static Dictionary<BuyableCardEnum, int> CARD_COST_MAP = new Dictionary<BuyableCardEnum, int>()
     {
+        { BuyableCardEnum.BananaPillow1, 100},
+        { BuyableCardEnum.BananaShoe1, 100},
+        { BuyableCardEnum.ChompBanana1, 100},
+        { BuyableCardEnum.ChompPillow1, 100},
+        { BuyableCardEnum.ChompShoe1, 100},
+        { BuyableCardEnum.CocoBanana1, 100},
+        { BuyableCardEnum.CocoChomp1, 100},
+        { BuyableCardEnum.CocoPillow1, 100},
         { BuyableCardEnum.CocoShoe1, 100},
+        { BuyableCardEnum.ShoePillow1, 100},
     };
 
     public static bool GetCardAvailability(BuyableCardEnum card)

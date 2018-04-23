@@ -45,11 +45,6 @@ public class StoreCardItem : StoreItem
 
         cardDisplay.gameObject.SetActive(!value);
 
-       // ChangeAlpha(cardDisplay, value ? 0 : 1);
-        //Array.ForEach(cardDisplay.GetComponentsInChildren<Image>(), im =>
-       // {
-      //      ChangeAlpha(im, value ? 0 : 1);            
-       // });
     }
 
     public void DisplayCard()
