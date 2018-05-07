@@ -5,14 +5,12 @@ using UnityEngine;
 
 public class CardDisplay : MonoBehaviour {
 
-    public NavigationArea navArea;
     public GameObject cardBackground;
 
     private Card cardToDisplayGameObject;
     public void SetActive(bool value)
     {
         gameObject.SetActive(value);
-        navArea.SetActive(!value);
     }
 
     public void Display(Card cardToDisplay)

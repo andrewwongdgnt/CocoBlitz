@@ -6,11 +6,14 @@ using UnityEngine.UI;
 
 public class ProgressStorePage : MonoBehaviour, Page
 {
+    public MenuAudioManager menuAudioManager;
     public Text instructions;
     public Text bananaCount;
     public ProgressContent progressContent;
     public StoreContent storeContent;
     public GameObject titleArea;
+
+    public IAPWindowDisplay iapWindowDisplay;
     // Use this for initialization
     void Start()
     {
@@ -45,5 +48,19 @@ public class ProgressStorePage : MonoBehaviour, Page
 
         progressContent.SetActive(progressionPageEnum == ProgressionPage.ProgressionPageEnum.BananaProgress);
         storeContent.SetActive(progressionPageEnum == ProgressionPage.ProgressionPageEnum.CocoStore );
+    }
+
+
+
+    public void ShowIapWindow()
+    {
+        menuAudioManager.PlayMainButtonClick();
+        iapWindowDisplay.SetActive(true);
+    }
+
+    public void HideIapWindow()
+    {
+        menuAudioManager.PlayMainButtonClick();
+        iapWindowDisplay.SetActive(false);
     }
 }

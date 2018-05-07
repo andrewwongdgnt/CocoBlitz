@@ -106,7 +106,6 @@ public class CpuPicker : MonoBehaviour {
             else if (playSound)
                 menuAudioManager.PlayMainButtonClick();
 
-            gamePage.ShowNavArea(true);
         }
         gameObject.SetActive(false);
     }

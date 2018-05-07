@@ -20,7 +20,6 @@ public class GamePage : MonoBehaviour, Page {
     public Sprite player2Sprite;
 
     public CpuPicker cpuPicker;
-    public NavigationArea navArea;
     public GameObject titleArea;
     
 
@@ -91,7 +90,6 @@ public class GamePage : MonoBehaviour, Page {
     public void OpenCpuPicker(int cpuPortraitIndex)
     {
         cpuPicker.Open(this,cpuPortraitIndex, cpuIndexes[cpuPortraitIndex], allCpus);
-        ShowNavArea(false);
     }
     
 
@@ -128,11 +126,6 @@ public class GamePage : MonoBehaviour, Page {
         }
 
         GameSettingsUtil.SetCpuInPlay(cpuPortraitIndex, cpuIndex);
-    }
-
-    public void ShowNavArea(bool show)
-    {
-        navArea.SetActive(show);
     }
 
     public void PlayGame()
