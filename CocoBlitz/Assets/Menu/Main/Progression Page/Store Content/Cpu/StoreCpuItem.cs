@@ -26,15 +26,15 @@ public class StoreCpuItem : StoreItem {
         UpdatePrice(GameProgressionUtil.CPU_COST_MAP[buyableCpuEnum]);
     
     }
-	
-	public void Buy () {
-        menuAudioManager.PlayBuyButtonClick();
-        GameProgressionUtil.BuyStatus buyStatus = GameProgressionUtil.BuyCpu(buyableCpuEnum);
-        if (buyStatus == GameProgressionUtil.BuyStatus.SUCCESSFUL)
-        {
-            EnableCpu(false);
-            progressStorePage.UpdateBananaCount();
-        }
+
+    protected override GameProgressionUtil.BuyStatus BuyItem()
+    {
+        return GameProgressionUtil.BuyCpu(buyableCpuEnum);
+    }
+
+    protected override void EnableItem(bool value)
+    {
+        EnableCpu(value);
     }
 
     private void EnableCpu(bool value)

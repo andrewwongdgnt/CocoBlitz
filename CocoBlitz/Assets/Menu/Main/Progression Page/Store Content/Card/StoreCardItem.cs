@@ -25,15 +25,14 @@ public class StoreCardItem : StoreItem
 
     }
 
-    public void Buy()
+    protected override GameProgressionUtil.BuyStatus BuyItem()
     {
-        menuAudioManager.PlayBuyButtonClick();
-        GameProgressionUtil.BuyStatus buyStatus = GameProgressionUtil.BuyCard(buyableCardEnum);
-        if (buyStatus == GameProgressionUtil.BuyStatus.SUCCESSFUL)
-        {
-            EnableCard(false);
-            progressStorePage.UpdateBananaCount();
-        }
+        return GameProgressionUtil.BuyCard(buyableCardEnum);
+    }
+
+    protected override void EnableItem(bool value)
+    {
+        EnableCard(value);
     }
 
     private void EnableCard(bool value)
