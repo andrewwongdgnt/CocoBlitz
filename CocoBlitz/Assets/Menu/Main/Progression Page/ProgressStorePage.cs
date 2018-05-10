@@ -33,6 +33,7 @@ public class ProgressStorePage : MonoBehaviour, Page
 
         gameObject.SetActive(activate);
         titleArea.SetActive(!activate);
+        iapWindowDisplay.SetActive(false);
     }
 
     public void SetPageType(ProgressionPage.ProgressionPageEnum progressionPageEnum)

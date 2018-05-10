@@ -93,11 +93,11 @@ public class GameProgressionUtil {
 
     public static Dictionary<BuyableCpuEnum, int> CPU_COST_MAP = new Dictionary<BuyableCpuEnum, int>()
     {
-        { BuyableCpuEnum.Kongo, 100},
-        { BuyableCpuEnum.PurpleMonkey, 100},
-        { BuyableCpuEnum.Coco, 100},
-        { BuyableCpuEnum.Muffin, 100},
-        { BuyableCpuEnum.Chomp, 100},
+        { BuyableCpuEnum.Kongo, 150},
+        { BuyableCpuEnum.PurpleMonkey, 150},
+        { BuyableCpuEnum.Coco, 150},
+        { BuyableCpuEnum.Muffin, 150},
+        { BuyableCpuEnum.Chomp, 150},
     };
 
 
