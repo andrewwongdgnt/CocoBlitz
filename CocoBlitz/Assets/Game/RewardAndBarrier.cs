@@ -152,9 +152,9 @@ public class RewardAndBarrier
 
     public readonly static RewardAndBarrier[] TOTAL_CORRECT_GUESSES_STREAK_PROGRESSION
      = new RewardAndBarrier[] {
-            new RewardAndBarrier(25,20,true)
-            ,new RewardAndBarrier(50,40)
-            ,new RewardAndBarrier(100,80)};
+            new RewardAndBarrier(100,20,true)
+            ,new RewardAndBarrier(200,40)
+            ,new RewardAndBarrier(400,80)};
 
 
     public RewardAndBarrier(float barrier, int reward, bool secret=false)
