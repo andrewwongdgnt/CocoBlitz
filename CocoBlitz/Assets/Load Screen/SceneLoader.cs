@@ -22,7 +22,6 @@ public class SceneLoader : MonoBehaviour
         // While the asynchronous operation to load the new scene is not yet complete, continue waiting until it's done.
         while (!async.isDone)
         {
-            Debug.Log("async.progress: " + async.progress);
             yield return null;
         }
 
