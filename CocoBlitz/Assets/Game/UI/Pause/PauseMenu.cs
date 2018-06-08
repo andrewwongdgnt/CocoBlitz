@@ -77,6 +77,7 @@ public class PauseMenu : MonoBehaviour
         resumeStats_txt.text = "Stats";
         this.statsList = statsList;
         ShowPauseContainer(true);
+        gameAudioManager.FadeOutBackgroundMusic();
     }
 
     public void Pause(bool pause)

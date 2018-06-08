@@ -48,7 +48,12 @@ public class BananaRewardWindowManager : MonoBehaviour {
     public void BeginUnlockPhase()
     {
         Show();
-        AttemptUnlock(true);
+        bool windowShowing = AttemptUnlock(true);
+
+        if (!windowShowing)
+        {
+            gameAudioManager.PlayCheer();
+        }
     }
 
     public void Hide()
@@ -62,7 +67,7 @@ public class BananaRewardWindowManager : MonoBehaviour {
         gameObject.SetActive(true);
     }
 
-    private void AttemptUnlock(bool playRewardSound)
+    private bool AttemptUnlock(bool playRewardSound)
     {
         if (bananaRewardInfoStack.Count > 0)
         {
@@ -74,9 +79,12 @@ public class BananaRewardWindowManager : MonoBehaviour {
             bananaRewardWindow.SetReason(bananRewardInfo.reasonString);
             bananaRewardWindow.SetReward("x"+bananRewardInfo.rb.Reward);
 
+            return true;
+
         } else
         {
             bananaRewardWindow.Hide();
+            return false;
         }
     }
 }

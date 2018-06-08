@@ -54,4 +54,10 @@ public class GameAudioManager : AudioManager
         AudioUtil.PlaySFX(sfxSource, reward);
     }
 
+    public AudioClip cheer;
+    public void PlayCheer()
+    {
+        AudioUtil.PlaySFX(sfxSource, cheer);
+    }
+
 }
