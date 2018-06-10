@@ -62,7 +62,7 @@ Muffin is Coco's best friend and they love to hang out together. But lately, Coc
 
 <img src="/CocoBlitz/Assets/Resources/Portraits/Chomp%20Portrait.png" width="200"> 
 
-TODO Chomp's Description
+Chomp is cute, cunning, quick, and he also has an eye for colour. He's one clever crocodile.
 
 ### Coco
 
