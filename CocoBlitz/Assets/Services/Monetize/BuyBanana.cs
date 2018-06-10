@@ -8,6 +8,10 @@ using UnityEngine.UI;
 
 public class BuyBanana : MonoBehaviour {
 
+
+    public enum ProductIdEnum { Banana1, Banana2, Banana3, Banana4, Banana5, Banana6};
+
+    public ProductIdEnum productIdEnum;
     public int costInCents;
     public Text costInCentsTxt;
     public int bananaCount;
@@ -15,22 +19,22 @@ public class BuyBanana : MonoBehaviour {
     public ProgressStorePage progressStorePage;
     public IAPWindowDisplay iapWindowDisplay;
     public MenuAudioManager menuAudioManager;
+    public IAPManager iapManager;
 
     void Start()
     {
-        if  (costInCents > 0) {
+        if  (productIdEnum!= ProductIdEnum.Banana1) {
 
             float costInDollar = costInCents / 100f;
             costInCentsTxt.text = "$"+costInDollar.ToString();
         }
-
-
+        
         bananaCountTxt.text = bananaCount.ToString();
     }
 
     void Update()
     {
-        if (costInCents == 0)
+        if (productIdEnum == ProductIdEnum.Banana1)
         {
             int nextTimeToWatch = AdUtil.GetNextTimeToWatch();
             if (nextTimeToWatch == 0)
@@ -59,16 +63,36 @@ public class BuyBanana : MonoBehaviour {
 
     public void Buy()
     {
-        if (costInCents == 0) {
-            if (AdUtil.GetNextTimeToWatch() == 0)
-            {
-                menuAudioManager.PlayMainButtonClick();
-                ShowAd();
-            }
+        if (productIdEnum == ProductIdEnum.Banana1 && AdUtil.GetNextTimeToWatch() == 0)
+        {
+            menuAudioManager.PlayMainButtonClick();
+            ShowAd();
         }
         else
         {
+            menuAudioManager.PlayMainButtonClick();
+            if (productIdEnum == ProductIdEnum.Banana2)
+            {
+                iapManager.Buy100Bananas(this);
+            }
+            else if (productIdEnum == ProductIdEnum.Banana3)
+            {
+                iapManager.Buy250Bananas(this);
+            }
+            else if (productIdEnum == ProductIdEnum.Banana4)
+            {
+                iapManager.Buy500Bananas(this);
+            }
+            else if (productIdEnum == ProductIdEnum.Banana5)
+            {
+                iapManager.Buy1000Bananas(this);
+            }
+            else if (productIdEnum == ProductIdEnum.Banana6)
+            {
+                iapManager.Buy2000Bananas(this);
+            }
 
+            iapWindowDisplay.SetActive(false);
         }
     }
 
@@ -121,10 +145,10 @@ public class BuyBanana : MonoBehaviour {
         Debug.Log("Ad has failed for some reason");
     }
 
-    private void IncreaseBananaCount(int value)
+    public void IncreaseBananaCount(int value)
     {
 
-        Debug.Log("Banana count increase from IAP");
+        Debug.Log("Banana count increase from IAP: "+ value);
         GameProgressionUtil.ChangeBananaCountBy(value);
         progressStorePage.UpdateBananaCount();
     }
