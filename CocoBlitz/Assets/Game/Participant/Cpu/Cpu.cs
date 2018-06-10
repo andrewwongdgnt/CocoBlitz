@@ -113,7 +113,7 @@ public class Cpu : Participant
         .VoicePicked(Resources.Load<AudioClip>("Voices/Chomp Picked"))
         .VoiceCorrect(Resources.Load<AudioClip>("Voices/Chomp Correct"))
         .VoiceIncorrect(Resources.Load<AudioClip>("Voices/Chomp Incorrect"))
-        .Description("CHomp is cute, cunning, quick, and he also has an eye for colour. He's one clever crocodile.")
+        .Description("Chomp is cute, cunning, quick, and he also has an eye for colour. He's one clever crocodile.")
         .UnlockDescription("To unlock, check out the Coco Store!")
         .DelayLowerRangeBeforeAnswer(1.5f)
         .DelayUpperRangeBeforeAnswer(2.0F)
