@@ -70,7 +70,7 @@ public class BuyBanana : MonoBehaviour {
         }
         else
         {
-            menuAudioManager.PlayMainButtonClick();
+            menuAudioManager.PlayBuyButtonClick();
             if (productIdEnum == ProductIdEnum.Banana2)
             {
                 iapManager.Buy100Bananas(this);
