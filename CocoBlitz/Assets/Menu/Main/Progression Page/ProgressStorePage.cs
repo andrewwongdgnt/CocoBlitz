@@ -13,6 +13,8 @@ public class ProgressStorePage : MonoBehaviour, Page
     public StoreContent storeContent;
     public GameObject titleArea;
 
+    public Animator bananaTextAnim;
+
     public IAPWindowDisplay iapWindowDisplay;
     // Use this for initialization
     void Start()
@@ -24,6 +26,13 @@ public class ProgressStorePage : MonoBehaviour, Page
     {
 
         bananaCount.text = "x" + GameProgressionUtil.GetBananas().ToString();
+    }
+
+    public void DisplayNotEnough()
+    {
+        bananaTextAnim.SetTrigger("NotEnough");
+
+
     }
 
 

@@ -42,6 +42,11 @@ public class MenuAudioManager : AudioManager {
     {
         AudioUtil.PlaySFX(sfxSource, buyButtonClick);
     }
+    public AudioClip buyButtonNotEnoughClick;
+    public void PlayBuyButtonNotEnoughClick()
+    {
+        AudioUtil.PlaySFX(sfxSource, buyButtonNotEnoughClick);
+    }
 
     //-----------------------
     // Toggle

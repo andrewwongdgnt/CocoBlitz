@@ -25,7 +25,8 @@ public abstract class StoreItem : MonoBehaviour {
         }
         else if (buyStatus == GameProgressionUtil.BuyStatus.NOT_ENOUGH_BANANAS)
         {
-            //TODO-AW play not enough bananas audio
+            menuAudioManager.PlayBuyButtonNotEnoughClick();
+            progressStorePage.DisplayNotEnough();
         }
     }
 
