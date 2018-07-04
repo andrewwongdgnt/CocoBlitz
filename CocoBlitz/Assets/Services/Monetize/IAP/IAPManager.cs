@@ -89,30 +89,30 @@ public class IAPManager : MonoBehaviour, IStoreListener
 
     // Buy the consumable product using its general identifier. Expect a response either 
     // through ProcessPurchase or OnPurchaseFailed asynchronously.
-    public void Buy100Bananas(BuyBanana bananaInfo)
+    public bool Buy100Bananas(BuyBanana bananaInfo)
     {
         this.bananaInfo = bananaInfo;
-        BuyProductID(PRODUCT_ID_100_BANANAS);
+        return BuyProductID(PRODUCT_ID_100_BANANAS);
     }
-    public void Buy250Bananas(BuyBanana bananaInfo)
+    public bool Buy250Bananas(BuyBanana bananaInfo)
     {
         this.bananaInfo = bananaInfo;
-        BuyProductID(PRODUCT_ID_250_BANANAS);
+        return BuyProductID(PRODUCT_ID_250_BANANAS);
     }
-    public void Buy500Bananas(BuyBanana bananaInfo)
+    public bool Buy500Bananas(BuyBanana bananaInfo)
     {
         this.bananaInfo = bananaInfo;
-        BuyProductID(PRODUCT_ID_500_BANANAS);
+        return BuyProductID(PRODUCT_ID_500_BANANAS);
     }
-    public void Buy1000Bananas(BuyBanana bananaInfo)
+    public bool Buy1000Bananas(BuyBanana bananaInfo)
     {
         this.bananaInfo = bananaInfo;
-        BuyProductID(PRODUCT_ID_1000_BANANAS);
+        return BuyProductID(PRODUCT_ID_1000_BANANAS);
     }
-    public void Buy2000Bananas(BuyBanana bananaInfo)
+    public bool Buy2000Bananas(BuyBanana bananaInfo)
     {
         this.bananaInfo = bananaInfo;
-        BuyProductID(PRODUCT_ID_2000_BANANAS);
+        return BuyProductID(PRODUCT_ID_2000_BANANAS);
     }
 
 
@@ -134,7 +134,7 @@ public class IAPManager : MonoBehaviour, IStoreListener
     }
 
 
-    void BuyProductID(string productId)
+    private bool BuyProductID(string productId)
     {
         // If Purchasing has been initialized ...
         if (IsInitialized())
@@ -150,12 +150,14 @@ public class IAPManager : MonoBehaviour, IStoreListener
                 // ... buy the product. Expect a response either through ProcessPurchase or OnPurchaseFailed 
                 // asynchronously.
                 m_StoreController.InitiatePurchase(product);
+                return true;
             }
             // Otherwise ...
             else
             {
                 // ... report the product look-up failure situation  
                 Debug.Log("BuyProductID: FAIL. Not purchasing product, either is not found or is not available for purchase");
+                return false;
             }
         }
         // Otherwise ...
@@ -164,6 +166,7 @@ public class IAPManager : MonoBehaviour, IStoreListener
             // ... report the fact Purchasing has not succeeded initializing yet. Consider waiting longer or 
             // retrying initiailization.
             Debug.Log("BuyProductID FAIL. Not initialized.");
+            return false;
         }
     }
 

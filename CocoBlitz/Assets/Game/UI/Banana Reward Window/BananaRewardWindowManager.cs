@@ -19,11 +19,7 @@ public class BananaRewardWindowManager : MonoBehaviour {
     public GameAudioManager gameAudioManager;
     private Stack<BananRewardInfo> bananaRewardInfoStack = new Stack<BananRewardInfo>();
     public BananaRewardWindow bananaRewardWindow;
-	// Use this for initialization
-	void Start () {
-        bananaRewardInfoStack.Clear();
 
-    }
 	
 	// Update is called once per frame
 	void Update () {

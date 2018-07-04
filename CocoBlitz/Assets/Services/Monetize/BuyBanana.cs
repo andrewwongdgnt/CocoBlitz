@@ -65,48 +65,59 @@ public class BuyBanana : MonoBehaviour {
     {
         if (productIdEnum == ProductIdEnum.Banana1 && AdUtil.GetNextTimeToWatch() == 0)
         {
+            bool successfulAdShown = false;
             menuAudioManager.PlayMainButtonClick();
-            ShowAd();
+            successfulAdShown = ShowAd();
+            if (successfulAdShown)
+            {
+                iapWindowDisplay.SetActive(false);
+            }
         }
         else
         {
-            menuAudioManager.PlayBuyButtonClick();
+            bool successfulBuy = false;
             if (productIdEnum == ProductIdEnum.Banana2)
             {
-                iapManager.Buy100Bananas(this);
+                successfulBuy = iapManager.Buy100Bananas(this);
             }
             else if (productIdEnum == ProductIdEnum.Banana3)
             {
-                iapManager.Buy250Bananas(this);
+                successfulBuy = iapManager.Buy250Bananas(this);
             }
             else if (productIdEnum == ProductIdEnum.Banana4)
             {
-                iapManager.Buy500Bananas(this);
+                successfulBuy = iapManager.Buy500Bananas(this);
             }
             else if (productIdEnum == ProductIdEnum.Banana5)
             {
-                iapManager.Buy1000Bananas(this);
+                successfulBuy = iapManager.Buy1000Bananas(this);
             }
             else if (productIdEnum == ProductIdEnum.Banana6)
             {
-                iapManager.Buy2000Bananas(this);
+                successfulBuy = iapManager.Buy2000Bananas(this);
             }
-
-            iapWindowDisplay.SetActive(false);
+            
+            if (successfulBuy)
+            {
+                menuAudioManager.PlayBuyButtonClick();
+                iapWindowDisplay.SetActive(false);
+            }
         }
     }
 
-	private void ShowAd()
+	private bool ShowAd()
     {
 
         if (Advertisement.IsReady())
         {
             Debug.Log("Ad is ready");
             Advertisement.Show("rewardedVideo", new ShowOptions() { resultCallback = HandleAdResult });
+            return true;
         }
         else
         {
             Debug.Log("Ad not ready");
+            return false;
         }
     }
 

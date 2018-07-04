@@ -12,6 +12,8 @@ public class NavigationArea : MonoBehaviour {
     public CreditsPage creditsPage;
     public HelpPage helpPage;
 
+    public GameObject titleArea;
+
     // Use this for initialization
     void Start () {
         ActivatePage(mainPage);
@@ -23,7 +25,7 @@ public class NavigationArea : MonoBehaviour {
     }
 
 
-    void ActivatePage(Page page)
+    void ActivatePage(Page page, bool titleAreaActive=true)
     {
 
         mainPage.SetActive(false);
@@ -33,6 +35,8 @@ public class NavigationArea : MonoBehaviour {
         helpPage.SetActive(false);
 
         page.SetActive(true);
+
+        titleArea.SetActive(titleAreaActive);
     }
 
     public void NavigateTo(NavigationEnum nav)
@@ -44,9 +48,9 @@ public class NavigationArea : MonoBehaviour {
         else if (nav == NavigationEnum.Progression)
             ActivatePage(progressionPage);
         else if (nav == NavigationEnum.Credits)
-            ActivatePage(creditsPage);
+            ActivatePage(creditsPage, false);
         else if (nav == NavigationEnum.Help)
-            ActivatePage(helpPage);
+            ActivatePage(helpPage, false);
 
     }
 
