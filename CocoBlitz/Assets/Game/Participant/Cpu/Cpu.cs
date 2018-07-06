@@ -101,8 +101,8 @@ public class Cpu : Participant
         .VoiceIncorrect(Resources.Load<AudioClip>("Voices/Muffin Incorrect"))
         .Description("Muffin is Coco's best friend and they love to hang out together. But lately, Coco seems to always wander off and get lost. Luckily, Muffin is very good at finding Coco.")
         .UnlockDescription("To unlock, check out the Coco Store!")
-        .DelayLowerRangeBeforeAnswer(.8f)
-        .DelayUpperRangeBeforeAnswer(1.2F)
+        .DelayLowerRangeBeforeAnswer(1.2f)
+        .DelayUpperRangeBeforeAnswer(1.8F)
         .ChanceOfCorrectForCorrectlyColored(95)
         .ChanceOfCorrectForIncorrectlyColored(90)
         .Build();
