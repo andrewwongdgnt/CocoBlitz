@@ -323,7 +323,7 @@ public class GameModel : MonoBehaviour
             cpu.delayModiferDict.TryGetValue(correctEntity.Value, out delayModifier);
         }
 
-        float delayBeforeAnswer = UnityEngine.Random.Range(cpu.delayLowerRangeBeforeAnswer + delayModifier, cpu.delayUpperRangeBeforeAnswer + delayModifier);
+        float delayBeforeAnswer = RandomUtil.nonUniformDistributedRandom(cpu.delayLowerRangeBeforeAnswer + delayModifier, cpu.delayUpperRangeBeforeAnswer + delayModifier, x=> (float)(1f - Math.Pow(x - 1, 4)));
 
         yield return new WaitForSeconds(delayBeforeAnswer);
 
@@ -335,7 +335,7 @@ public class GameModel : MonoBehaviour
             cpu.chanceOfCorrectModiferDict.TryGetValue(correctEntity.Value, out chanceOfCorrectModifier);
         }
 
-        float randomPercent = UnityEngine.Random.Range(0, 100);
+        float randomPercent = RandomUtil.nonUniformDistributedRandom(0, 100, x => (float)Math.Pow(x - 1, 4));
         CardUtil.EntityEnum entityToGuess;
         if (useCorrectColor)
         {
