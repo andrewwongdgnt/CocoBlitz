@@ -591,7 +591,11 @@ public class GameModel : MonoBehaviour
         }
         if (gameOver && !showingGameOverMenu)
         {
-
+            if (cardGameObject != null)
+            {
+                DestroyImmediate(cardGameObject.gameObject);
+                cardGameObject = null;
+            }
             GameProgressionUtil.UpdateGameProgression(rep => rep.totalTimeSpentPlaying += GameSettingsUtil.GetGameMode() == GameSettingsUtil.GameModeEnum.GoGo ? GameUtil.timer : timer);
             if (GameSettingsUtil.GetGameType() == GameSettingsUtil.GameTypeEnum.Single)
             {

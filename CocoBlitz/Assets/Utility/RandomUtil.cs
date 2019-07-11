@@ -7,7 +7,7 @@ public class RandomUtil : MonoBehaviour {
 
 	public static float nonUniformDistributedRandom(float min, float max, Func<float,float> distributionModel)
     {
-        float x = UnityEngine.Random.Range(0, 1);
+        float x = UnityEngine.Random.Range(0.0f, 1.0f);
 
         float y = distributionModel(x);
 
